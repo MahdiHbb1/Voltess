@@ -20,6 +20,7 @@ import { BusinessService } from '../business/business.service';
 import { MissionService } from '../mission/mission.service';
 import { StorageService } from '../storage/storage.service';
 import { QueueService } from '../queue/queue.service';
+import { MeterValidationService } from './meter-validation.service';
 import type { Job } from '../queue/queue.service';
 import { toCaptureContract } from './capture.entity';
 import type {
@@ -27,6 +28,7 @@ import type {
   VerifyCaptureRequest,
   Capture as CaptureContract,
   OcrLabelResponse,
+  OcrMeterResponse,
 } from '@voltra/contracts';
 
 interface AuthRequest extends Request {
@@ -45,6 +47,7 @@ export class CaptureController {
     private readonly missionService: MissionService,
     private readonly storageService: StorageService,
     private readonly queueService: QueueService,
+    private readonly meterValidation: MeterValidationService,
   ) {}
 
   /** P2.1: Create capture + upload file + queue OCR */
@@ -110,9 +113,88 @@ export class CaptureController {
         storageKey,
       });
       jobId = job.id;
+    } else if (body.type === 'meter') {
+      const job = await this.queueService.add('ocr', 'ocr-meter', {
+        captureId: capture.capture_id,
+        storageKey,
+      });
+      jobId = job.id;
     }
 
     return { ...toCaptureContract(capture), job_id: jobId };
+  }
+
+  /** M2: Pair meter readings and validate */
+  @Post('meter-pair')
+  async pairMeter(
+    @Body() body: { business_id: string; open_capture_id: string; close_capture_id: string; window_days: number },
+    @Req() req: AuthRequest,
+  ): Promise<{ valid: boolean; reason?: string; needs_confirmation?: boolean; delta_kwh?: number; event_id?: string }> {
+    const userId = req.userId;
+    if (!userId) throw new ForbiddenException('Unauthorized');
+
+    const business = this.businessService.findById(body.business_id);
+    if (!business || business.user_id !== userId) {
+      throw new ForbiddenException('Business not owned by user');
+    }
+
+    const openCapture = this.captureService.findById(body.open_capture_id);
+    const closeCapture = this.captureService.findById(body.close_capture_id);
+
+    if (!openCapture || !closeCapture) {
+      throw new NotFoundException('Capture not found');
+    }
+
+    if (openCapture.type !== 'meter' || closeCapture.type !== 'meter') {
+      throw new BadRequestException('Both captures must be meter type');
+    }
+
+    if (!openCapture.result || !closeCapture.result) {
+      throw new BadRequestException('Both captures must have OCR results');
+    }
+
+    // Validate pair
+    const validation = this.meterValidation.validatePair({
+      open_kwh: openCapture.result.kwh as number,
+      close_kwh: closeCapture.result.kwh as number,
+      open_hash: openCapture.file_ref, // ponytail: use actual image hash when storage ready
+      close_hash: closeCapture.file_ref,
+      window_days: body.window_days,
+    });
+
+    if (!validation.valid) {
+      return validation;
+    }
+
+    // Check daily reward limit
+    if (!this.meterValidation.canReceiveReward(body.business_id)) {
+      return { valid: false, reason: 'Daily reward limit reached (3/day)' };
+    }
+
+    // Create M2 mission event
+    const event = await this.missionService.createEvent({
+      type: 'mission_completed',
+      mission_id: 'M2',
+      business_id: body.business_id,
+      payload: {
+        capture_id: closeCapture.capture_id,
+        meter_kwh: validation.delta_kwh!,
+        window: `${body.window_days} days`,
+      },
+      verification: {
+        status: 'verified',
+        reason: null,
+        confidence: closeCapture.confidence || 'high',
+      },
+      reward: {
+        points: 15,
+        badge: null,
+      },
+    });
+
+    this.meterValidation.incrementRewardCount(body.business_id);
+
+    return { valid: true, delta_kwh: validation.delta_kwh, event_id: event.event_id };
   }
 
   /** P2.2: Verify capture - confirm and update appliance */
@@ -251,23 +333,56 @@ export class CaptureController {
     return mockResponse;
   }
 
+  /** Call AI Gateway /ai/ocr-meter - stub inline OCR */
+  private async callOcrMeter(_storageKey: string): Promise<OcrMeterResponse> {
+    // ponytail: HTTP call AI Gateway when live, mock inline for now
+    const mockResponse: OcrMeterResponse = {
+      request_id: `req_${Date.now()}`,
+      engine_version: '0.1.0',
+      mode: 'mock',
+      confidence: 'high',
+      warnings: [],
+      kwh: 1250.5,
+      unit: 'kWh',
+      digits_confidence: [0.98, 0.97, 0.99, 0.96, 0.95],
+      needs_retake: false,
+    };
+    return mockResponse;
+  }
+
   /** Process OCR job - worker simulation */
-  async processOcrJob(captureId: string): Promise<void> {
+  async processOcrJob(captureId: string, jobType: 'label' | 'meter'): Promise<void> {
     const capture = this.captureService.findById(captureId);
     if (!capture) throw new Error('Capture not found');
 
-    const ocrResult = await this.callOcrLabel(capture.file_ref);
-    const needsRetake = ocrResult.needs_retake || ocrResult.confidence === 'low';
+    if (jobType === 'label') {
+      const ocrResult = await this.callOcrLabel(capture.file_ref);
+      const needsRetake = ocrResult.needs_retake || ocrResult.confidence === 'low';
 
-    this.captureService.update(captureId, {
-      result: {
-        name: ocrResult.name,
-        power_w: ocrResult.power_w,
-        brand: ocrResult.brand,
-      },
-      confidence: ocrResult.confidence,
-      status: needsRetake ? 'needs_retake' : 'pending',
-      request_id: ocrResult.request_id,
-    });
+      this.captureService.update(captureId, {
+        result: {
+          name: ocrResult.name,
+          power_w: ocrResult.power_w,
+          brand: ocrResult.brand,
+        },
+        confidence: ocrResult.confidence,
+        status: needsRetake ? 'needs_retake' : 'pending',
+        request_id: ocrResult.request_id,
+      });
+    } else if (jobType === 'meter') {
+      const ocrResult = await this.callOcrMeter(capture.file_ref);
+      const needsRetake = ocrResult.needs_retake || ocrResult.confidence === 'low';
+
+      this.captureService.update(captureId, {
+        result: {
+          kwh: ocrResult.kwh,
+          unit: ocrResult.unit,
+          digits_confidence: ocrResult.digits_confidence,
+        },
+        confidence: ocrResult.confidence,
+        status: needsRetake ? 'needs_retake' : 'pending',
+        request_id: ocrResult.request_id,
+      });
+    }
   }
 }
