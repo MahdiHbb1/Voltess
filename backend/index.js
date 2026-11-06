@@ -1,6 +1,7 @@
 // Express server - AI Gateway API
 const express = require('express');
 const cors = require('cors');
+const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 
 const aiRoutes = require('./routes/ai');
@@ -8,26 +9,37 @@ const aiRoutes = require('./routes/ai');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Rate limiter: 100 req/min per IP
+const limiter = rateLimit({
+  windowMs: 60000,
+  max: 100,
+  message: { error: 'Terlalu banyak permintaan, coba lagi nanti' }
+});
+
 // Middleware
-app.use(cors());
-app.use(express.json({ limit: '10mb' })); // Support base64 images
+const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || [];
+app.use(cors({ 
+  origin: allowedOrigins.length > 0 ? allowedOrigins : false 
+}));
+app.use(express.json({ limit: '1mb' }));
+app.use('/api', limiter);
+
+// Request timeout: 2 minutes
+app.use((req, res, next) => {
+  req.setTimeout(120000);
+  res.setTimeout(120000);
+  next();
+});
 
 // Routes
 app.use('/api/ai', aiRoutes);
 
-// Health check
+// Health check (minimal info)
 app.get('/health', async (req, res) => {
-  const db = require('./services/db');
-  try {
-    const { error } = await db.from('users').select('count', { count: 'exact', head: true });
-    res.json({ 
-      status: 'ok', 
-      db: error ? 'error' : 'connected',
-      timestamp: new Date().toISOString() 
-    });
-  } catch (e) {
-    res.json({ status: 'ok', db: 'error', timestamp: new Date().toISOString() });
-  }
+  res.json({ 
+    status: 'ok',
+    timestamp: new Date().toISOString() 
+  });
 });
 
 // 404
@@ -35,10 +47,10 @@ app.use((req, res) => {
   res.status(404).json({ error: 'Not found' });
 });
 
-// Error handler
+// Error handler (no stack leaks)
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: 'Internal server error' });
+  console.error('Unhandled error:', err);
+  res.status(500).json({ error: 'Terjadi kesalahan sistem' });
 });
 
 app.listen(PORT, () => {
