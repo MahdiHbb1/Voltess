@@ -6,15 +6,19 @@ import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
 import { BusinessController } from './business/business.controller';
 import { BusinessModule } from './business/business.module';
+import { EntitlementController } from './entitlement/entitlement.controller';
+import { EntitlementModule } from './entitlement/entitlement.module';
 import { RequestIdMiddleware } from './ai/request-id.middleware';
 import { AppController } from './app.controller';
 
 @Module({
-  imports: [AiModule, AuthModule, BusinessModule],
+  imports: [AiModule, AuthModule, BusinessModule, EntitlementModule],
   controllers: [AppController],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
-    consumer.apply(RequestIdMiddleware).forRoutes(AiController, AuthController, BusinessController, AppController);
+    consumer
+      .apply(RequestIdMiddleware)
+      .forRoutes(AiController, AuthController, BusinessController, EntitlementController, AppController);
   }
 }
