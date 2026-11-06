@@ -81,10 +81,10 @@ importers:
       '@supabase/supabase-js':
         specifier: ^2.119.0
         version: 2.119.0
-      '@voltra/contracts':
+      '@voltess/contracts':
         specifier: workspace:*
         version: link:../../packages/contracts
-      '@voltra/energy-calc':
+      '@voltess/energy-calc':
         specifier: workspace:*
         version: link:../../packages/energy-calc
       assemblyai:
@@ -103,10 +103,10 @@ importers:
 
   apps/web:
     dependencies:
-      '@voltra/contracts':
+      '@voltess/contracts':
         specifier: workspace:*
         version: link:../../packages/contracts
-      '@voltra/energy-calc':
+      '@voltess/energy-calc':
         specifier: workspace:*
         version: link:../../packages/energy-calc
       next:
@@ -123,7 +123,7 @@ importers:
 
   packages/energy-calc:
     dependencies:
-      '@voltra/contracts':
+      '@voltess/contracts':
         specifier: workspace:*
         version: link:../contracts
 

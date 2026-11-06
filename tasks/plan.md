@@ -50,7 +50,7 @@ Issue GitHub adalah sumber status. Tabel ini hanya indeks urutan kerja; `VOLT-xx
 | VOLT-07 | [#7 Prototipe Kios Virtual 1 template](https://github.com/MahdiHbb1/voltra/issues/7) | Dhifansa | P0 | 4 |
 | VOLT-08 | [#8 AI Gateway mock + fixture gagal](https://github.com/MahdiHbb1/voltra/issues/8) | Mahdi | P0 | 3 |
 | VOLT-09 | [#9 Fondasi QA + Playwright + smoke CI](https://github.com/MahdiHbb1/voltra/issues/9) | Yusri | P0 | 2 |
-| VOLT-10 | [#10 Inventaris placeholder AI + matriks live T0–T5](https://github.com/MahdiHbb1/voltra/issues/10) | Muchsin | P1 | 2 |
+| VOLT-10 | [#10 Inventaris placeholder AI + matriks live T0–T5](https://github.com/MahdiHbb1/voltess/issues/10) | Mahdi | P1 | 2 |
 | VOLT-11 | [#11 Katalog template v0 + verifikasi sumber](https://github.com/MahdiHbb1/voltra/issues/11) | Dhifansa | P1 | 3 |
 
 **Checkpoint S1:** kontrak beku, CI hijau, FE dan BE dapat bekerja paralel dari mock.
@@ -81,7 +81,7 @@ Issue GitHub adalah sumber status. Tabel ini hanya indeks urutan kerja; `VOLT-xx
 | VOLT-24 | [#24 FE antrean offline + retry](https://github.com/MahdiHbb1/voltra/issues/24) | Dhifansa | P0 | 3 |
 | VOLT-25 | [#25 FE konfirmasi/koreksi + label evaluasi](https://github.com/MahdiHbb1/voltra/issues/25) | Dhifansa | P0 | 3 |
 | VOLT-26 | [#26 BE M2 meter + anti-curang](https://github.com/MahdiHbb1/voltra/issues/26) | Mahdi | P0 | 4 |
-| VOLT-27 | [#27 Estimate v0 + rekomendasi v0](https://github.com/MahdiHbb1/voltra/issues/27) | Muchsin | P0 | 5 |
+| VOLT-27 | [#27 Estimate v0 + rekomendasi v0](https://github.com/MahdiHbb1/voltess/issues/27) | Mahdi | P0 | 5 |
 | VOLT-28 | [#28 QA capture E2E + matriks 5 perangkat](https://github.com/MahdiHbb1/voltra/issues/28) | Yusri | P0 | 3 |
 
 **Checkpoint S3:** foto/suara masuk antrean, diproses, dikonfirmasi, dan menjadi data berlabel; estimate v0 tersedia untuk laporan.
@@ -93,18 +93,18 @@ Issue GitHub adalah sumber status. Tabel ini hanya indeks urutan kerja; `VOLT-xx
 | VOLT-29 | [#29 BE trial engine 30 hari + reminder H-25](https://github.com/MahdiHbb1/voltra/issues/29) | Mahdi | P0 | 3 |
 | VOLT-30 | [#30 FE Laporan Pertama Hari 7 + share PDF/gambar](https://github.com/MahdiHbb1/voltra/issues/30) | Dhifansa | P0 | 4 |
 | VOLT-31 | [#31 BE notifikasi opt-in + batas harian](https://github.com/MahdiHbb1/voltra/issues/31) | Mahdi | P1 | 2 |
-| VOLT-32 | [#32 AI OCR live P1–P3 + gate kualitas](https://github.com/MahdiHbb1/voltra/issues/32) | Muchsin | P0 | 5 |
+| VOLT-32 | [#32 AI OCR live P1–P3 + gate kualitas](https://github.com/MahdiHbb1/voltess/issues/32) | Mahdi | P0 | 5 |
 | VOLT-33 | [#33 QA E2E trial + Laporan Pertama](https://github.com/MahdiHbb1/voltra/issues/33) | Yusri | P0 | 3 |
 
 ### S5 — OCR/STT Live & Admin (4–17 Jan 2027) · 16 hari
 
 | ID | Issue | Owner | Prioritas | Est. |
 |---|---|---|---|---|
-| VOLT-34 | [#34 AI STT live P4 + ekstraksi + konfirmasi](https://github.com/MahdiHbb1/voltra/issues/34) | Muchsin | P0 | 4 |
+| VOLT-34 | [#34 AI STT live P4 + ekstraksi + konfirmasi](https://github.com/MahdiHbb1/voltess/issues/34) | Mahdi | P0 | 4 |
 | VOLT-35 | [#35 BE admin API v0 (funnel, akurasi, biaya)](https://github.com/MahdiHbb1/voltra/issues/35) | Mahdi | P1 | 3 |
 | VOLT-36 | [#36 FE admin UI v0](https://github.com/MahdiHbb1/voltra/issues/36) | Dhifansa | P1 | 3 |
 | VOLT-37 | [#37 QA harness evaluasi akurasi OCR/STT](https://github.com/MahdiHbb1/voltra/issues/37) | Yusri | P0 | 3 |
-| VOLT-38 | [#38 AI cost guardrails + kuota + cache + `ai_usage`](https://github.com/MahdiHbb1/voltra/issues/38) | Muchsin | P1 | 3 |
+| VOLT-38 | [#38 AI cost guardrails + kuota + cache + `ai_usage`](https://github.com/MahdiHbb1/voltess/issues/38) | Mahdi | P1 | 3 |
 
 **Checkpoint S5:** gerbang OCR ≥90% dan STT ≥85% terukur pada dataset awal.
 
@@ -113,11 +113,11 @@ Issue GitHub adalah sumber status. Tabel ini hanya indeks urutan kerja; `VOLT-xx
 | ID | Issue | Owner | Prioritas | Est. |
 |---|---|---|---|---|
 | VOLT-39 | [#39 Cross-validation P6 + tampilan keyakinan](https://github.com/MahdiHbb1/voltra/issues/39) | Mahdi | P0 | 4 |
-| VOLT-40 | [#40 Rekomendasi v1 + keputusan + cooldown](https://github.com/MahdiHbb1/voltra/issues/40) | Muchsin | P0 | 3 |
+| VOLT-40 | [#40 Rekomendasi v1 + keputusan + cooldown](https://github.com/MahdiHbb1/voltess/issues/40) | Mahdi | P0 | 3 |
 | VOLT-41 | [#41 FE rekomendasi + decision tracking](https://github.com/MahdiHbb1/voltra/issues/41) | Dhifansa | P0 | 3 |
 | VOLT-42 | [#42 FE Laporan Hasil Hari 30 + pisah tarif/volume](https://github.com/MahdiHbb1/voltra/issues/42) | Dhifansa | P0 | 4 |
 | VOLT-43 | [#43 BE privasi + lihat/hapus akun dan data](https://github.com/MahdiHbb1/voltra/issues/43) | Mahdi | P0 | 3 |
-| VOLT-44 | [#44 AI P8 explainer validator tanpa angka baru](https://github.com/MahdiHbb1/voltra/issues/44) | Muchsin | P0 | 3 |
+| VOLT-44 | [#44 AI P8 explainer validator tanpa angka baru](https://github.com/MahdiHbb1/voltess/issues/44) | Mahdi | P0 | 3 |
 | VOLT-45 | [#45 QA kalkulasi golden + keyakinan + privasi](https://github.com/MahdiHbb1/voltra/issues/45) | Yusri | P0 | 3 |
 
 **Checkpoint S6:** estimasi, rekomendasi, laporan, dan hapus data berjalan end-to-end; tidak ada angka baru dari LLM.
@@ -137,8 +137,8 @@ Issue GitHub adalah sumber status. Tabel ini hanya indeks urutan kerja; `VOLT-xx
 
 | ID | Issue | Owner | Prioritas | Est. |
 |---|---|---|---|---|
-| VOLT-50 | [#50 AI P10 Tanya Terra + sources + tool terbatas](https://github.com/MahdiHbb1/voltess/issues/50) | Muchsin | P1 | 5 |
-| VOLT-51 | [#51 AI P11–P13 alert, prediksi token, ROI](https://github.com/MahdiHbb1/voltra/issues/51) | Muchsin | P1 | 5 |
+| VOLT-50 | [#50 AI P10 Tanya Terra + sources + tool terbatas](https://github.com/MahdiHbb1/voltess/issues/50) | Mahdi | P1 | 5 |
+| VOLT-51 | [#51 AI P11–P13 alert, prediksi token, ROI](https://github.com/MahdiHbb1/voltess/issues/51) | Mahdi | P1 | 5 |
 | VOLT-52 | [#52 Sensor pembanding 2–3 usaha + kalibrasi ambang](https://github.com/MahdiHbb1/voltra/issues/52) | Mahdi | P1 | 4 |
 | VOLT-53 | [#53 QA lapangan + kualitas data + anti-curang](https://github.com/MahdiHbb1/voltra/issues/53) | Yusri | P0 | 5 |
 
