@@ -1,5 +1,7 @@
 import type { MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { Module } from '@nestjs/common';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 import { AiController } from './ai/ai.controller';
 import { AiModule } from './ai/ai.module';
 import { AuthController } from './auth/auth.controller';
@@ -15,13 +17,35 @@ import { MissionModule } from './mission/mission.module';
 import { StorageModule } from './storage/storage.module';
 import { QueueModule } from './queue/queue.module';
 import { DatabaseModule } from './database/database.module';
+import { SubscriptionModule } from './subscription/subscription.module';
 import { RequestIdMiddleware } from './ai/request-id.middleware';
 import { IdempotencyMiddleware } from './capture/idempotency.middleware';
 import { AppController } from './app.controller';
 
 @Module({
-  imports: [DatabaseModule, AiModule, AuthModule, BusinessModule, CaptureModule, EntitlementModule, MissionModule, StorageModule, QueueModule],
+  imports: [
+    ThrottlerModule.forRoot([{
+      ttl: 60000,
+      limit: 100,
+    }]),
+    DatabaseModule,
+    AiModule,
+    AuthModule,
+    BusinessModule,
+    CaptureModule,
+    EntitlementModule,
+    MissionModule,
+    StorageModule,
+    QueueModule,
+    SubscriptionModule,
+  ],
   controllers: [AppController],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {

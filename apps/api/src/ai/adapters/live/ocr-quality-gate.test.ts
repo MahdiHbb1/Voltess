@@ -148,8 +148,8 @@ describe('OCR Quality Gate', () => {
 
       const metrics = aggregateQualityMetrics(results);
 
-      expect(metrics.byPipeline['ocr-meter'].count).toBe(2);
-      expect(metrics.byPipeline['ocr-label'].count).toBe(1);
+      expect(metrics.byPipeline['ocr-meter']?.count).toBe(2);
+      expect(metrics.byPipeline['ocr-label']?.count).toBe(1);
     });
   });
 });
