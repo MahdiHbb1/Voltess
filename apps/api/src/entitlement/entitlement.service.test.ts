@@ -132,8 +132,8 @@ describe('EntitlementService', () => {
       const log = await service.getAuditLog('biz_audit');
 
       expect(log.length).toBeGreaterThanOrEqual(2); // free->trial
-      expect(log[0].to_status).toBe('free');
-      expect(log[1].to_status).toBe('trial');
+      expect(log[0]?.to_status).toBe('free');
+      expect(log[1]?.to_status).toBe('trial');
     });
   });
 });

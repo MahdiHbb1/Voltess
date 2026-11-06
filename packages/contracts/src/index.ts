@@ -7,3 +7,4 @@ export * from './confidence';
 export * from './ai';
 export * from './auth';
 export * from './business';
+export * from './capture';

@@ -4,9 +4,12 @@
  */
 
 import { Injectable, ForbiddenException, NotFoundException } from '@nestjs/common';
+import { randomUUID } from 'node:crypto';
 import type {
   BusinessProfilePayload,
   BusinessProfile,
+  Appliance,
+  ApplianceSource,
 } from '@voltra/contracts';
 
 @Injectable()
@@ -29,6 +32,7 @@ export class BusinessService {
       electricity_rate: payload.electricity_rate,
       billing_type: payload.billing_type,
       unit_label: payload.unit_label ?? 'unit',
+      appliances: [],
       address: payload.address,
       notes: payload.notes,
       created_at: now,
@@ -94,5 +98,42 @@ export class BusinessService {
     }
 
     return this.profiles.get(businessId) ?? null;
+  }
+
+  /** Find by ID (internal, no authz) */
+  findById(businessId: string): BusinessProfile | undefined {
+    return this.profiles.get(businessId);
+  }
+
+  /** Add appliance to business profile */
+  addAppliance(
+    businessId: string,
+    data: {
+      name: string;
+      power_w: number;
+      brand?: string;
+      source: ApplianceSource;
+      verified: boolean;
+      capture_id?: string;
+    },
+  ): Appliance {
+    const profile = this.profiles.get(businessId);
+    if (!profile) throw new NotFoundException('Business profile not found');
+
+    const appliance: Appliance = {
+      appliance_id: randomUUID(),
+      name: data.name,
+      power_w: data.power_w,
+      brand: data.brand,
+      source: data.source,
+      verified: data.verified,
+      capture_id: data.capture_id,
+      created_at: new Date().toISOString(),
+    };
+
+    profile.appliances.push(appliance);
+    profile.updated_at = new Date().toISOString();
+
+    return appliance;
   }
 }

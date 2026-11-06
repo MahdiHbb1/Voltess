@@ -22,6 +22,29 @@ export interface BusinessProfilePayload {
   notes?: string;
 }
 
+/** Appliance source verification */
+export type ApplianceSource = 'manual' | 'label' | 'estimate';
+
+/** Appliance in business profile */
+export interface Appliance {
+  /** Appliance ID */
+  appliance_id: string;
+  /** Nama alat */
+  name: string;
+  /** Daya (watt) */
+  power_w: number;
+  /** Brand opsional */
+  brand?: string;
+  /** Source verifikasi */
+  source: ApplianceSource;
+  /** Verified flag */
+  verified: boolean;
+  /** Capture ID jika dari label */
+  capture_id?: string;
+  /** Timestamp created */
+  created_at: string;
+}
+
 /** P3.2: Business profile result */
 export interface BusinessProfile {
   /** Business ID */
@@ -38,6 +61,8 @@ export interface BusinessProfile {
   billing_type: 'prepaid' | 'postpaid';
   /** Unit label */
   unit_label: string;
+  /** Appliances */
+  appliances: Appliance[];
   /** Alamat opsional */
   address?: string;
   /** Catatan opsional */
