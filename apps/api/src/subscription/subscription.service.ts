@@ -4,15 +4,17 @@ import { SubscriptionTier } from './subscription.types';
 
 @Injectable()
 export class SubscriptionService {
-  private stripe: Stripe;
+  private stripe?: Stripe;
 
   constructor() {
     const key = process.env.STRIPE_SECRET_KEY;
-    if (!key) throw new Error('STRIPE_SECRET_KEY not set');
-    this.stripe = new Stripe(key, { apiVersion: '2026-10-28.endive' });
+    if (key) {
+      this.stripe = new Stripe(key, { apiVersion: '2026-10-28.endive' });
+    }
   }
 
   async createCheckoutSession(userId: string, tier: SubscriptionTier): Promise<string> {
+    if (!this.stripe) throw new Error('Stripe not configured');
     const priceId = this.getPriceId(tier);
     const session = await this.stripe.checkout.sessions.create({
       mode: 'subscription',
@@ -25,6 +27,7 @@ export class SubscriptionService {
   }
 
   async cancelSubscription(stripeSubscriptionId: string): Promise<void> {
+    if (!this.stripe) throw new Error('Stripe not configured');
     await this.stripe.subscriptions.cancel(stripeSubscriptionId);
   }
 

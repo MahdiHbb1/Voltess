@@ -3,12 +3,13 @@ import Stripe from 'stripe';
 
 @Controller('webhook')
 export class WebhookController {
-  private stripe: Stripe;
+  private stripe?: Stripe;
 
   constructor() {
     const key = process.env.STRIPE_SECRET_KEY;
-    if (!key) throw new Error('STRIPE_SECRET_KEY not set');
-    this.stripe = new Stripe(key, { apiVersion: '2026-10-28.endive' });
+    if (key) {
+      this.stripe = new Stripe(key, { apiVersion: '2026-10-28.endive' });
+    }
   }
 
   @Post('stripe')
@@ -16,6 +17,7 @@ export class WebhookController {
     @Headers('stripe-signature') sig: string,
     @Req() req: RawBodyRequest<Request>,
   ) {
+    if (!this.stripe) throw new Error('Stripe not configured');
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
     if (!webhookSecret) throw new Error('STRIPE_WEBHOOK_SECRET not set');
 
