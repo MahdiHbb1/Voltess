@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import Ajv from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
-import type { Capture, MissionEvent } from '@voltra/contracts';
+import type { Capture, MissionEvent } from '@voltess/contracts';
 
 const ajv = new Ajv({ strict: true, allErrors: true });
 addFormats(ajv);

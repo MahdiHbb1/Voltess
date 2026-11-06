@@ -10,13 +10,13 @@ Accepted — O17 dikunci 2026-11-06; scaffold mengikuti keputusan ini pada issue
 
 ## Context
 
-Voltra memiliki modul auth, business, template, mission, capture, trial, billing, report, notify, admin, analytics, dan AI. Tim kecil, waktu pengembangan singkat, dan kontrak antarmodul harus tetap terjaga. PRD merekomendasikan modular monolith, dengan opsi Node.js (NestJS/Express) atau Python (FastAPI).
+Voltess memiliki modul auth, business, template, mission, capture, trial, billing, report, notify, admin, analytics, dan AI. Tim kecil, waktu pengembangan singkat, dan kontrak antarmodul harus tetap terjaga. PRD merekomendasikan modular monolith, dengan opsi Node.js (NestJS/Express) atau Python (FastAPI).
 
 ## Decision
 
 Gunakan **TypeScript + NestJS** sebagai modular monolith, **PostgreSQL** sebagai database utama, **Redis + BullMQ** untuk queue/cache, dan **S3-compatible object storage** untuk foto/suara. Paket `energy-calc` dan `contracts` dibagikan dalam monorepo sebagai paket TypeScript.
 
-Keputusan O17: `energy-calc` adalah **paket TypeScript** `@voltra/energy-calc`, bukan layanan terpisah. FE memakainya untuk simulasi dan BE memakainya untuk estimasi; keduanya mengimpor kode yang sama sehingga rumus tidak diduplikasi. Rincian ada di ADR-003.
+Keputusan O17: `energy-calc` adalah **paket TypeScript** `@voltess/energy-calc`, bukan layanan terpisah. FE memakainya untuk simulasi dan BE memakainya untuk estimasi; keduanya mengimpor kode yang sama sehingga rumus tidak diduplikasi. Rincian ada di ADR-003.
 
 Batas modul:
 

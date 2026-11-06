@@ -10,7 +10,7 @@ import type {
   EntitlementStatus,
   EntitlementFeatures,
   EntitlementStatusChange,
-} from '@voltra/contracts';
+} from '@voltess/contracts';
 
 @Injectable()
 export class EntitlementService {
@@ -128,7 +128,7 @@ export class EntitlementService {
           kios: true,
           m1: true,
           ai_analysis: false,
-          wati_real_data: false,
+          terra_real_data: false,
           cosmetic_rewards: true,
         };
       case 'trial':
@@ -137,7 +137,7 @@ export class EntitlementService {
           kios: true,
           m1: true,
           ai_analysis: true,
-          wati_real_data: true,
+          terra_real_data: true,
           cosmetic_rewards: true,
         };
       case 'locked':
@@ -145,7 +145,7 @@ export class EntitlementService {
           kios: true,
           m1: true,
           ai_analysis: false,
-          wati_real_data: false,
+          terra_real_data: false,
           cosmetic_rewards: true,
         };
     }

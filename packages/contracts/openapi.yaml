@@ -1,9 +1,9 @@
 openapi: 3.1.0
 info:
-  title: Voltra AI Gateway (C3)
+  title: Voltess AI Gateway (C3)
   version: 0.1.0
   description: |
-    Kontrak AI Gateway Voltra v0.1.0 (release candidate S1).
+    Kontrak AI Gateway Voltess v0.1.0 (release candidate S1).
 
     Pipeline P1-P8 dan P10 diekspos sebagai endpoint. P5/P6 digabung pada
     `/ai/estimate`. P9 adalah verifikasi dampak internal yang dihitung oleh
@@ -16,7 +16,7 @@ info:
 servers:
   - url: http://localhost:3001
     description: Lokal
-  - url: https://api.voltra.local
+  - url: https://api.voltess.local
     description: Staging (placeholder, belum diputuskan)
 security:
   - bearerAuth: []
@@ -25,7 +25,7 @@ tags:
   - name: STT
   - name: Energi
   - name: Rekomendasi
-  - name: Wati
+  - name: Terra
 paths:
   /ai/ocr-meter:
     post:
@@ -253,10 +253,10 @@ paths:
           $ref: '#/components/responses/ProviderError'
   /ai/ask:
     post:
-      tags: [Wati]
-      summary: P10 - Tanya Wati
+      tags: [Terra]
+      summary: P10 - Tanya Terra
       description: Menjawab pertanyaan dari data yang tersedia. Jawaban numerik wajib punya sumber dan keyakinan; data kurang dijawab "belum cukup data".
-      operationId: askWati
+      operationId: askTerra
       x-pipeline: P10
       requestBody:
         required: true
@@ -266,7 +266,7 @@ paths:
               $ref: '#/components/schemas/AskRequest'
       responses:
         '200':
-          description: Jawaban Wati.
+          description: Jawaban Terra.
           content:
             application/json:
               schema:

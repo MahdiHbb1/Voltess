@@ -13,10 +13,10 @@ Implement live AI adapters (Gemini 3.5 Flash-Lite + AssemblyAI) untuk menggantik
 
 **Success criteria:**
 - P1-P4 (OCR/STT) works dengan Gemini/AssemblyAI free tier
-- P8 (Explain) dan P10 (Tanya Wati) works dengan Gemini free tier
+- P8 (Explain) dan P10 (Tanya Terra) works dengan Gemini free tier
 - P11-P13 (Alert, Token prediction, ROI) works dengan backend logic
 - Rate limiting mencegah exceed 500 RPD Gemini
-- Fallback graceful: STT → text input, Wati → FAQ, OCR → queue
+- Fallback graceful: STT → text input, Terra → FAQ, OCR → queue
 - User messaging ramah: "Fitur suara lagi penuh, coba ketik manual ya" bukan "429 rate limit exceeded"
 
 ## Tech Stack
@@ -148,7 +148,7 @@ export class RateLimiterService {
       case 'stt-extract':
         return `Fitur suara lagi penuh hari ini. Coba lagi jam ${timeStr} atau ketik manual ya 😊`;
       case 'ask':
-        return `Chat dengan Wati lagi penuh. Coba lagi jam ${timeStr} atau lihat pertanyaan umum dulu`;
+        return `Chat dengan Terra lagi penuh. Coba lagi jam ${timeStr} atau lihat pertanyaan umum dulu`;
       case 'ocr-meter':
         return `Upload foto lagi penuh hari ini. Coba lagi jam ${timeStr} atau masukkan angka manual`;
       default:
@@ -157,7 +157,7 @@ export class RateLimiterService {
   }
   
   private getQuotaForPriority(pipeline: string, priority: string) {
-    // Priority tiering: OCR high 40%, Explain/STT medium 20%, Wati low 20%
+    // Priority tiering: OCR high 40%, Explain/STT medium 20%, Terra low 20%
     const dailyTotal = 500; // Gemini Flash-Lite RPD
     
     const allocations = {
@@ -179,7 +179,7 @@ export class RateLimiterService {
 - User messages: Bahasa Indonesia casual, emoji OK (😊), hindari jargon
 - Error codes internal: tetap `RATE_LIMIT_EXCEEDED`, tapi `userMessage` ramah
 - Time format: HH:mm WIB untuk user display
-- Priority: `high` (OCR core value), `medium` (explain/STT), `low` (Wati chat)
+- Priority: `high` (OCR core value), `medium` (explain/STT), `low` (Terra chat)
 
 ## Testing Strategy
 
@@ -239,7 +239,7 @@ export class RateLimiterService {
 - P2/P3 OCR Label/Token: **Medium** (20% = 100 calls)
 - P8 Explain: **Medium** (20% = 100 calls)
 - P4 STT: **Low** (fallback text input, 20% = 100 calls)
-- P10 Wati: **Low** (fallback FAQ, 20% = 100 calls)
+- P10 Terra: **Low** (fallback FAQ, 20% = 100 calls)
 
 **Time-based split:**
 - Midnight PT reset (15:00 or 16:00 WIB depending on DST)
@@ -253,7 +253,7 @@ export class RateLimiterService {
 
 **Graceful degradation:**
 - STT hit limit → fallback form text input manual
-- Wati hit limit → show FAQ canned responses
+- Terra hit limit → show FAQ canned responses
 - OCR hit limit → queue untuk besok atau manual input
 - Explain hit limit → show basic template response (non-LLM)
 
@@ -280,7 +280,7 @@ export class RateLimiterService {
 
 ### Phase 3: Fallback Logic
 - STT → text input fallback
-- Wati → FAQ fallback
+- Terra → FAQ fallback
 - OCR → queue/manual fallback
 - Explain → template fallback
 - UI state updates for degraded mode
@@ -288,7 +288,7 @@ export class RateLimiterService {
 ### Phase 4: Backend Logic (P11-P13)
 - P11: Alert service (median ± MAD)
 - P12: Token prediction service
-- P13: ROI calculator (use `@voltra/energy-calc`)
+- P13: ROI calculator (use `@voltess/energy-calc`)
 
 ### Phase 5: Testing + Verification
 - Contract tests
@@ -302,7 +302,7 @@ export class RateLimiterService {
 - [ ] P1-P3 OCR works dengan Gemini (meter, label, token)
 - [ ] P4 STT works dengan AssemblyAI (voice notes transcribed)
 - [ ] P8 Explain works dengan Gemini (explanations generated)
-- [ ] P10 Tanya Wati works dengan Gemini (Q&A conversation)
+- [ ] P10 Tanya Terra works dengan Gemini (Q&A conversation)
 - [ ] P11 Alert works (penyimpangan detection)
 - [ ] P12 Token prediction works (perkiraan habis)
 - [ ] P13 ROI calculator works (balik modal calculation)
@@ -316,7 +316,7 @@ export class RateLimiterService {
 
 **Fallback:**
 - [ ] STT fallback ke text input saat limit
-- [ ] Wati fallback ke FAQ saat limit
+- [ ] Terra fallback ke FAQ saat limit
 - [ ] OCR fallback ke manual input saat limit
 - [ ] User tidak melihat technical error (429, 502, dll)
 
@@ -339,7 +339,7 @@ export class RateLimiterService {
    - Kalo somehow exceed: fallback ke Whisper API OpenAI ($0.006/menit)?
    - **Recommendation:** Monitor usage, alert di 80%, belum butuh fallback
 
-3. **P10 Wati tool use scope?**
+3. **P10 Terra tool use scope?**
    - PRD: "tool terbatas untuk estimasi, riwayat, rekomendasi, prediksi token"
    - Tools implementation: separate spec atau inline di P10?
    - **Recommendation:** Inline tools di P10 adapter (fetch from DB), simple

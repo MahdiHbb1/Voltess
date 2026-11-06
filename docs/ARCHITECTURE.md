@@ -96,7 +96,7 @@ Aturan:
 | P7 | Rekomendasi | aturan + skor | mock | T4 (Feb 2027) |
 | P8 | Penjelas | LLM tanpa angka baru | mock | T4 |
 | P9 | Verifikasi dampak | `energy-calc` | mock | T5 |
-| P10 | Tanya Wati | LLM + tool terbatas | mock | T5 (Mar–Apr 2027) |
+| P10 | Tanya Terra | LLM + tool terbatas | mock | T5 (Mar–Apr 2027) |
 | P11 | Peringatan penyimpangan | aturan statistik | mock | T5 |
 | P12 | Prediksi token | aturan | mock | T5 |
 | P13 | Kalkulator ROI | `energy-calc` | mock | T5 |
@@ -121,7 +121,7 @@ Flag per endpoint, misalnya `AI_MODE_OCR_METER=mock|live`. Dukungan nilai `hybri
 | Database | PostgreSQL | Accepted — ADR-002 |
 | Queue/cache | Redis + BullMQ | Accepted — ADR-002 |
 | Storage | S3-compatible object storage | Accepted — ADR-002 |
-| Hitung energi | Paket TypeScript `@voltra/energy-calc` | Accepted — ADR-003 |
+| Hitung energi | Paket TypeScript `@voltess/energy-calc` | Accepted — ADR-003 |
 | Game 2D | DOM/SVG/Canvas; PixiJS hanya bila profiling menuntut | Accepted — ADR-004 |
 | Test | Vitest + contract test (JSON Schema + OpenAPI); Playwright menyusul issue #9 | S1 |
 | Monorepo | pnpm workspaces | S1 |

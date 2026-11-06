@@ -14,7 +14,7 @@ import type {
   GuestMergePayload,
   GuestMergeResult,
   SessionClaims,
-} from '@voltra/contracts';
+} from '@voltess/contracts';
 
 const ajv = new Ajv({ strict: true, allErrors: true });
 addFormats(ajv);

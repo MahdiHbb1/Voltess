@@ -1,7 +1,7 @@
 import type { ArgumentsHost, ExceptionFilter } from '@nestjs/common';
 import { Catch, HttpException, HttpStatus } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
-import type { ErrorCode } from '@voltra/contracts';
+import type { ErrorCode } from '@voltess/contracts';
 import { AiGatewayException } from './ai-gateway.exception';
 
 function codeForStatus(status: number): ErrorCode {

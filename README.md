@@ -73,7 +73,7 @@ Detail ownership ada di [`docs/TEAM.md`](docs/TEAM.md).
 
 ## Prinsip yang tidak boleh dilanggar
 
-- **Satu sumber hitung.** Semua kWh/Rupiah berasal dari paket `energy-calc`; game, backend, laporan, dan Wati tidak boleh punya rumus sendiri.
+- **Satu sumber hitung.** Semua kWh/Rupiah berasal dari paket `energy-calc`; game, backend, laporan, dan Terra tidak boleh punya rumus sendiri.
 - **LLM tidak membuat angka.** LLM hanya menjelaskan angka yang sudah dihitung. Validator memblokir angka baru.
 - **Keyakinan eksplisit.** Setiap estimasi membawa Tinggi/Sedang/Rendah; data kurang ditampilkan sebagai "belum cukup data".
 - **Tidak ada klaim real-time.** Tanpa sensor/AMI, Voltra menganalisis setelah input masuk, bukan memantau tiap alat 24 jam.

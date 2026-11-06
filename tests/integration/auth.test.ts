@@ -15,7 +15,7 @@ import type {
   OtpVerifyResult,
   GuestMergePayload,
   GuestMergeResult,
-} from '@voltra/contracts';
+} from '@voltess/contracts';
 
 describe('Auth Integration', () => {
   let app: INestApplication;

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://voltra.local/schemas/c1-template.schema.json",
+  "$id": "https://voltess.local/schemas/c1-template.schema.json",
   "title": "C1 Kios Template",
   "type": "object",
   "additionalProperties": false,

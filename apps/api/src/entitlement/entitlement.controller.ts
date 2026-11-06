@@ -6,7 +6,7 @@
 import { Controller, Get, Post, Body, Request, Headers } from '@nestjs/common';
 import { EntitlementService } from './entitlement.service';
 import { TrialService } from './trial.service';
-import type { EntitlementStatusResponse, Entitlement } from '@voltra/contracts';
+import type { EntitlementStatusResponse, Entitlement } from '@voltess/contracts';
 
 @Controller('entitlement')
 export class EntitlementController {

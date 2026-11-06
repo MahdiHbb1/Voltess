@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://voltra.local/schemas/c5-entitlement.schema.json",
+  "$id": "https://voltess.local/schemas/c5-entitlement.schema.json",
   "title": "C5 Entitlement",
   "type": "object",
   "additionalProperties": false,
@@ -24,14 +24,14 @@
         "kios",
         "m1",
         "ai_analysis",
-        "wati_real_data",
+        "terra_real_data",
         "cosmetic_rewards"
       ],
       "properties": {
         "kios": { "type": "boolean" },
         "m1": { "type": "boolean" },
         "ai_analysis": { "type": "boolean" },
-        "wati_real_data": { "type": "boolean" },
+        "terra_real_data": { "type": "boolean" },
         "cosmetic_rewards": { "type": "boolean" }
       }
     },

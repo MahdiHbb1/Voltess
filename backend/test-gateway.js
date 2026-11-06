@@ -42,10 +42,10 @@ async function test() {
     console.log('✗ P9 failed:', e.message);
   }
 
-  // P10: Wati FAQ
+  // P10: Terra FAQ
   try {
     const faq = await gateway.route(10, { message: 'Apa itu omzet?' });
-    console.log('✓ P10 Wati:', faq.source, '-', faq.reply.substring(0, 50) + '...');
+    console.log('✓ P10 Terra:', faq.source, '-', faq.reply.substring(0, 50) + '...');
   } catch (e) {
     console.log('✗ P10 failed:', e.message);
   }

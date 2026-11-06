@@ -74,7 +74,7 @@ export function AiMockDemo() {
 
       <div className="actions">
         <button type="button" onClick={() => ask('success')} disabled={state.kind === 'loading'}>
-          Tanya Wati
+          Tanya Terra
         </button>
         <button type="button" onClick={() => ask('low_confidence')} disabled={state.kind === 'loading'}>
           Paksa keyakinan rendah

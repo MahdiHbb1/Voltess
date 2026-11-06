@@ -31,7 +31,7 @@ import type {
   CaptureType,
   OcrLabelResponse,
   OcrMeterResponse,
-} from '@voltra/contracts';
+} from '@voltess/contracts';
 
 interface AuthRequest extends Request {
   userId?: string;
@@ -297,7 +297,7 @@ export class CaptureController {
 
       // Add appliance to business profile (M1 label only)
       if (capture.type === 'label' && capture.result) {
-        const appliance = this.businessService.addAppliance(
+        this.businessService.addAppliance(
           capture.business_id,
           {
             name: (body.edits?.name as string) || (capture.result.name as string),

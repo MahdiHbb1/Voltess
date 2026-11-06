@@ -7,7 +7,7 @@ export interface StorageConfig {
 }
 
 export const storageConfig: StorageConfig = {
-  bucket: process.env.S3_BUCKET || 'voltra-captures',
+  bucket: process.env.S3_BUCKET || 'voltess-captures',
   region: process.env.S3_REGION || 'us-east-1',
   endpoint: process.env.S3_ENDPOINT,
   signedUrlExpiry: 3600, // 1 hour

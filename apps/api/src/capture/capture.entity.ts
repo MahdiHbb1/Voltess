@@ -1,5 +1,5 @@
-import type { Capture as CaptureContract, CaptureType, CaptureStatus } from '@voltra/contracts';
-import type { Confidence } from '@voltra/contracts';
+import type { Capture as CaptureContract, CaptureType, CaptureStatus } from '@voltess/contracts';
+import type { Confidence } from '@voltess/contracts';
 
 /** Capture entity - DB model */
 export interface CaptureEntity {

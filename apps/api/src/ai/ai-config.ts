@@ -1,4 +1,4 @@
-import type { AiMode } from '@voltra/contracts';
+import type { AiMode } from '@voltess/contracts';
 
 export const AI_SCENARIOS = [
   'success',
@@ -9,7 +9,7 @@ export const AI_SCENARIOS = [
 
 export type AiScenario = (typeof AI_SCENARIOS)[number];
 
-export const AI_CONFIG = 'VOLTRA_AI_CONFIG';
+export const AI_CONFIG = 'VOLTESS_AI_CONFIG';
 
 export interface AiConfig {
   mode: AiMode;

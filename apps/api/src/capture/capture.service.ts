@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import type { CaptureEntity } from './capture.entity';
-import type { CaptureType, CaptureStatus, Confidence } from '@voltra/contracts';
+import type { CaptureType, CaptureStatus, Confidence } from '@voltess/contracts';
 
 /** In-memory capture store */
 const captures = new Map<string, CaptureEntity>();

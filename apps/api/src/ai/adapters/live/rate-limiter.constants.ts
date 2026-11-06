@@ -8,7 +8,7 @@
  * Priority allocation distributes the 500 RPD across pipelines:
  * - High (OCR): 40% = 200 calls/day (core value proposition)
  * - Medium (Explain, STT): 20% each = 100 calls/day
- * - Low (Wati): 20% = 100 calls/day (fallback available)
+ * - Low (Terra): 20% = 100 calls/day (fallback available)
  */
 
 export const RATE_LIMIT_CONSTANTS = {
@@ -52,7 +52,7 @@ export const PRIORITY_TIERS = {
   /** Important but has fallback (Explain, STT, other OCR) */
   medium: 'medium',
   
-  /** Nice-to-have with good fallback (Wati chat) */
+  /** Nice-to-have with good fallback (Terra chat) */
   low: 'low',
 } as const;
 

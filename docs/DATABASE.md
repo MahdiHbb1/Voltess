@@ -46,7 +46,7 @@ Services using Map now (need DB integration later):
 
 1. Run migration in Supabase
 2. Set env vars
-3. Restart API: `pnpm -F @voltra/api dev`
+3. Restart API: `pnpm -F @voltess/api dev`
 4. Services auto-fallback to Map if Supabase not configured
 
 ## Cleanup (scheduled)

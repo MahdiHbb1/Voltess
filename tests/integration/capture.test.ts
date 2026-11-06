@@ -7,7 +7,7 @@ import type {
   CreateCaptureRequest,
   VerifyCaptureRequest,
   BusinessProfilePayload,
-} from '@voltra/contracts';
+} from '@voltess/contracts';
 
 describe('Capture Integration', () => {
   let app: INestApplication;

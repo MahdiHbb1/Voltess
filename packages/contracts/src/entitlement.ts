@@ -5,7 +5,7 @@ export interface EntitlementFeatures {
   kios: boolean;
   m1: boolean;
   ai_analysis: boolean;
-  wati_real_data: boolean;
+  terra_real_data: boolean;
   cosmetic_rewards: boolean;
 }
 

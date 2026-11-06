@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://voltra.local/schemas/c6-confidence.schema.json",
+  "$id": "https://voltess.local/schemas/c6-confidence.schema.json",
   "title": "C6 Confidence Assessment",
   "type": "object",
   "additionalProperties": false,

@@ -137,7 +137,7 @@ Issue GitHub adalah sumber status. Tabel ini hanya indeks urutan kerja; `VOLT-xx
 
 | ID | Issue | Owner | Prioritas | Est. |
 |---|---|---|---|---|
-| VOLT-50 | [#50 AI P10 Tanya Wati + sources + tool terbatas](https://github.com/MahdiHbb1/voltra/issues/50) | Muchsin | P1 | 5 |
+| VOLT-50 | [#50 AI P10 Tanya Terra + sources + tool terbatas](https://github.com/MahdiHbb1/voltess/issues/50) | Muchsin | P1 | 5 |
 | VOLT-51 | [#51 AI P11–P13 alert, prediksi token, ROI](https://github.com/MahdiHbb1/voltra/issues/51) | Muchsin | P1 | 5 |
 | VOLT-52 | [#52 Sensor pembanding 2–3 usaha + kalibrasi ambang](https://github.com/MahdiHbb1/voltra/issues/52) | Mahdi | P1 | 4 |
 | VOLT-53 | [#53 QA lapangan + kualitas data + anti-curang](https://github.com/MahdiHbb1/voltra/issues/53) | Yusri | P0 | 5 |

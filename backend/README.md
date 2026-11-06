@@ -81,7 +81,7 @@ Body: { "text": "Test audio" }
 Response: { "audioUrl": null, "text": "Test audio", "mock": true }
 ```
 
-### P10: Wati Chat
+### P10: Terra Chat
 ```bash
 POST /api/ai/chat
 Body: { "message": "Apa itu omzet?", "context": {...} }

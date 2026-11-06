@@ -8,7 +8,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
 import { JwtService } from '@nestjs/jwt';
 import { OtpMockAdapter } from './adapters/otp-mock.adapter';
-import type { GuestMergePayload, SessionClaims } from '@voltra/contracts';
+import type { GuestMergePayload, SessionClaims } from '@voltess/contracts';
 
 describe('AuthService.mergeGuest', () => {
   let service: AuthService;

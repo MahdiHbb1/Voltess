@@ -325,7 +325,7 @@
 **Acceptance criteria:**
 - [ ] `ask(businessId: string, question: string, conversationId?: string)` method
 - [ ] Tools defined: `getEstimate`, `getHistory`, `getRecommendations`, `getPrediction`
-- [ ] `WatiToolsService` created for DB queries
+- [ ] `TerraToolsService` created for DB queries
 - [ ] Permission check: user can only query own business_id
 - [ ] Tool execution fetches from DB (estimates, history, recommendations tables)
 - [ ] Returns answer with sources (which tools called)
@@ -344,8 +344,8 @@
 
 **Files:**
 - `apps/api/src/ai/adapters/live/gemini-llm.adapter.ts` (add method)
-- `apps/api/src/ai/tools/wati-tools.service.ts`
-- `apps/api/src/ai/tools/wati-tools.service.spec.ts`
+- `apps/api/src/ai/tools/terra-tools.service.ts`
+- `apps/api/src/ai/tools/terra-tools.service.spec.ts`
 - `apps/api/src/ai/tools/tool-definitions.ts`
 
 ---
@@ -378,7 +378,7 @@
 
 ## Checkpoint 4: LLM Works
 - [ ] P8 Explain generates explanations without new numbers
-- [ ] P10 Wati answers questions with DB context
+- [ ] P10 Terra answers questions with DB context
 - [ ] Tools execute correctly with permission checks
 - [ ] Contract tests pass for P8, P10 live
 
@@ -422,7 +422,7 @@
 - [ ] `getFriendlyMessage(pipeline, resetAt)` function created
 - [ ] Messages in Bahasa Indonesia, ramah, clear
 - [ ] Includes retry time in WIB (format: "jam 15:00")
-- [ ] Different messages per pipeline (STT, Wati, OCR, Explain)
+- [ ] Different messages per pipeline (STT, Terra, OCR, Explain)
 - [ ] Example: "Fitur suara lagi penuh hari ini. Coba lagi jam 15:00 atau ketik manual ya 😊"
 
 **Verification:**
@@ -447,7 +447,7 @@
   - OCR (P1-P3): 200 calls/day (high priority, 40% of 500)
   - Explain (P8): 100 calls/day (medium, 20%)
   - STT (P4): 100 calls/day (medium, 20%)
-  - Wati (P10): 100 calls/day (low, 20%)
+  - Terra (P10): 100 calls/day (low, 20%)
 - [ ] Per-user cap: 150 calls/day total across all pipelines
 - [ ] `getQuotaForPriority(pipeline, priority)` function
 - [ ] Total quota validation (sum = 500 RPD max)
@@ -556,11 +556,11 @@
 
 ---
 
-### Task 6.2: Implement Wati fallback service
-**Description:** Return FAQ list when Wati quota exceeded.
+### Task 6.2: Implement Terra fallback service
+**Description:** Return FAQ list when Terra quota exceeded.
 
 **Acceptance criteria:**
-- [ ] Returns `fallbackAvailable: true` when Wati limit hit
+- [ ] Returns `fallbackAvailable: true` when Terra limit hit
 - [ ] `fallbackData.type = 'faq'`
 - [ ] Pre-defined FAQ list (10 common questions + answers)
 - [ ] FAQs in Bahasa Indonesia, ramah
@@ -577,7 +577,7 @@
 **Files:**
 - `apps/api/src/ai/pipelines/p10-ask.ts` (add fallback)
 - `apps/api/src/ai/fallback/faq.data.ts`
-- `apps/api/src/ai/fallback/wati-fallback.service.ts`
+- `apps/api/src/ai/fallback/terra-fallback.service.ts`
 
 ---
 
@@ -634,7 +634,7 @@
 
 ## Checkpoint 6: Fallbacks Work
 - [ ] STT fallback shows text input option
-- [ ] Wati fallback shows FAQ
+- [ ] Terra fallback shows FAQ
 - [ ] OCR fallback shows manual input
 - [ ] Explain fallback shows template
 - [ ] All responses match contract
@@ -702,7 +702,7 @@
 
 **Acceptance criteria:**
 - [ ] `RoiCalculatorService` created
-- [ ] Uses `@voltra/energy-calc` for kWh/Rupiah calculations
+- [ ] Uses `@voltess/energy-calc` for kWh/Rupiah calculations
 - [ ] Compare old vs new appliance (power, hours, cost)
 - [ ] Calculate monthly savings
 - [ ] Return payback period range (min/max months)
@@ -954,7 +954,7 @@
 
 **Acceptance criteria:**
 - [ ] Load test script simulates 1-3 users
-- [ ] Typical usage pattern: 2 OCR/week, 5 Explain/day, 3 STT/day, 2 Wati/day
+- [ ] Typical usage pattern: 2 OCR/week, 5 Explain/day, 3 STT/day, 2 Terra/day
 - [ ] Run for 1 simulated day (compressed time)
 - [ ] Verify total usage stays <500 RPD
 - [ ] Verify fallbacks trigger correctly when quota approached
@@ -991,7 +991,7 @@
 - [ ] P1-P3 OCR works with Gemini
 - [ ] P4 STT works with AssemblyAI (including webhook)
 - [ ] P8 Explain works with Gemini
-- [ ] P10 Tanya Wati works with Gemini + tools
+- [ ] P10 Tanya Terra works with Gemini + tools
 - [ ] P11-P13 backend logic works
 
 ### Rate Limiting
@@ -1003,7 +1003,7 @@
 
 ### Fallbacks
 - [ ] STT fallback → text input
-- [ ] Wati fallback → FAQ
+- [ ] Terra fallback → FAQ
 - [ ] OCR fallback → manual input
 - [ ] Explain fallback → template
 

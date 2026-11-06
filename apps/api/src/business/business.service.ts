@@ -10,7 +10,7 @@ import type {
   BusinessProfile,
   Appliance,
   ApplianceSource,
-} from '@voltra/contracts';
+} from '@voltess/contracts';
 
 @Injectable()
 export class BusinessService {

@@ -3,9 +3,9 @@ import type { ReactNode } from 'react';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Voltra',
+  title: 'Voltess',
   description:
-    'Voltra membantu UMKM memahami biaya listrik dan menemukan cara pemakaian yang lebih efisien.',
+    'Voltess membantu UMKM memahami biaya listrik dan menemukan cara pemakaian yang lebih efisien.',
 };
 
 export const viewport: Viewport = {

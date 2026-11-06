@@ -5,8 +5,8 @@ import type {
   DisplayLevel,
   EstimateInput,
   EstimateResult,
-} from '@voltra/contracts';
-import { CONFIDENCE_THRESHOLDS } from '@voltra/contracts';
+} from '@voltess/contracts';
+import { CONFIDENCE_THRESHOLDS } from '@voltess/contracts';
 
 /**
  * Versi mesin hitung. Setiap hasil C2 harus membawa nilai ini.

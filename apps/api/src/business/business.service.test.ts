@@ -6,7 +6,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { BusinessService } from './business.service';
-import type { BusinessProfilePayload } from '@voltra/contracts';
+import type { BusinessProfilePayload } from '@voltess/contracts';
 
 describe('BusinessService', () => {
   let service: BusinessService;

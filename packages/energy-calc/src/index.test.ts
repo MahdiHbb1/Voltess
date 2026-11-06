@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { EstimateInput } from '@voltra/contracts';
+import type { EstimateInput } from '@voltess/contracts';
 import {
   ENGINE_VERSION,
   ENERGY_CALC_CONFIG,

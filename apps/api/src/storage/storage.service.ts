@@ -27,7 +27,7 @@ export class StorageService {
       throw new Error('Object not found');
     }
     // ponytail: S3 getSignedUrl when live, stub now
-    return `https://stub-storage.voltra.local/${key}?expires=${Date.now() + expiresIn * 1000}`;
+    return `https://stub-storage.voltess.local/${key}?expires=${Date.now() + expiresIn * 1000}`;
   }
 
   /** Check if object exists */
