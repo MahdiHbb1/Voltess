@@ -1,8 +1,8 @@
-# Implementation Plan: Voltra MVP
+# Implementation Plan: Voltess MVP
 
 ## Overview
 
-Membangun Voltra dari Fase 0 sampai MVP internal: PWA mobile untuk Kios Virtual, capture foto/suara, estimasi energi, rekomendasi, laporan, trial, dan Plus. Pekerjaan dilacak sebagai GitHub Issues di GitHub Project; dokumen ini adalah indeks dan catatan keputusan, bukan duplikat issue.
+Membangun Voltess dari Fase 0 sampai MVP internal: PWA mobile untuk Kios Virtual, capture foto/suara, estimasi energi, rekomendasi, laporan, trial, dan Plus. Pekerjaan dilacak sebagai GitHub Issues di GitHub Project; dokumen ini adalah indeks dan catatan keputusan, bukan duplikat issue.
 
 **Target:** MVP internal akhir Februari 2027, pilot Maret–April 2027, Demo Day Mei 2027.
 
