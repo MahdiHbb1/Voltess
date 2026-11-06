@@ -710,7 +710,7 @@
 
 **Verification:**
 - [ ] Unit test with sample appliances passes
-- [ ] Integration test with `@voltra/energy-calc` passes
+- [ ] Integration test with `@voltess/energy-calc` passes
 - [ ] Payback calculation accurate
 - [ ] Edge cases tested (negative savings, very long payback)
 - [ ] Response matches PRD P13 spec
