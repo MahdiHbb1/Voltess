@@ -166,7 +166,7 @@ export function aggregateQualityMetrics(
     if (!byPipeline[result.pipeline]) {
       byPipeline[result.pipeline] = { count: 0, avgConfidence: 0 };
     }
-    byPipeline[result.pipeline].count += 1;
+    byPipeline[result.pipeline]!.count += 1;
   }
 
   return {

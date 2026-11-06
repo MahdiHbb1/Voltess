@@ -17,6 +17,7 @@
     "@voltess/contracts": "workspace:*",
     "@voltess/energy-calc": "workspace:*",
     "assemblyai": "^4.42.0",
+    "bullmq": "^6.7.1",
     "reflect-metadata": "0.2.2",
     "rxjs": "7.8.2"
   },

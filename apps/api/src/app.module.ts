@@ -15,12 +15,24 @@ import { MissionModule } from './mission/mission.module';
 import { StorageModule } from './storage/storage.module';
 import { QueueModule } from './queue/queue.module';
 import { DatabaseModule } from './database/database.module';
+import { NotificationModule } from './notifications/notification.module';
 import { RequestIdMiddleware } from './ai/request-id.middleware';
 import { IdempotencyMiddleware } from './capture/idempotency.middleware';
 import { AppController } from './app.controller';
 
 @Module({
-  imports: [DatabaseModule, AiModule, AuthModule, BusinessModule, CaptureModule, EntitlementModule, MissionModule, StorageModule, QueueModule],
+  imports: [
+    DatabaseModule,
+    AiModule,
+    AuthModule,
+    BusinessModule,
+    CaptureModule,
+    EntitlementModule,
+    MissionModule,
+    StorageModule,
+    QueueModule,
+    NotificationModule,
+  ],
   controllers: [AppController],
 })
 export class AppModule implements NestModule {
