@@ -11,11 +11,14 @@ import { CaptureModule } from './capture/capture.module';
 import { EntitlementController } from './entitlement/entitlement.controller';
 import { EntitlementModule } from './entitlement/entitlement.module';
 import { MissionModule } from './mission/mission.module';
+import { StorageModule } from './storage/storage.module';
+import { QueueModule } from './queue/queue.module';
 import { RequestIdMiddleware } from './ai/request-id.middleware';
+import { IdempotencyMiddleware } from './capture/idempotency.middleware';
 import { AppController } from './app.controller';
 
 @Module({
-  imports: [AiModule, AuthModule, BusinessModule, CaptureModule, EntitlementModule, MissionModule],
+  imports: [AiModule, AuthModule, BusinessModule, CaptureModule, EntitlementModule, MissionModule, StorageModule, QueueModule],
   controllers: [AppController],
 })
 export class AppModule implements NestModule {
@@ -23,5 +26,9 @@ export class AppModule implements NestModule {
     consumer
       .apply(RequestIdMiddleware)
       .forRoutes(AiController, AuthController, BusinessController, CaptureController, EntitlementController, AppController);
+    
+    consumer
+      .apply(IdempotencyMiddleware)
+      .forRoutes(CaptureController);
   }
 }

@@ -8,11 +8,19 @@ import {
   NotFoundException,
   BadRequestException,
   ForbiddenException,
+  UploadedFile,
+  UseInterceptors,
+  PayloadTooLargeException,
+  UnsupportedMediaTypeException,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import type { Request } from 'express';
 import { CaptureService } from './capture.service';
 import { BusinessService } from '../business/business.service';
 import { MissionService } from '../mission/mission.service';
+import { StorageService } from '../storage/storage.service';
+import { QueueService } from '../queue/queue.service';
+import type { Job } from '../queue/queue.service';
 import { toCaptureContract } from './capture.entity';
 import type {
   CreateCaptureRequest,
@@ -23,22 +31,30 @@ import type {
 
 interface AuthRequest extends Request {
   userId?: string;
+  idempotencyKey?: string;
 }
 
 @Controller('captures')
 export class CaptureController {
+  private readonly MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
+  private readonly ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+
   constructor(
     private readonly captureService: CaptureService,
     private readonly businessService: BusinessService,
     private readonly missionService: MissionService,
+    private readonly storageService: StorageService,
+    private readonly queueService: QueueService,
   ) {}
 
-  /** P2.1: Create capture + call OCR */
+  /** P2.1: Create capture + upload file + queue OCR */
   @Post()
+  @UseInterceptors(FileInterceptor('file'))
   async create(
     @Body() body: CreateCaptureRequest,
+    @UploadedFile() file: { buffer: Buffer; mimetype: string; size: number },
     @Req() req: AuthRequest,
-  ): Promise<CaptureContract> {
+  ): Promise<CaptureContract & { job_id?: string }> {
     const userId = req.userId;
     if (!userId) throw new ForbiddenException('Unauthorized');
 
@@ -48,42 +64,55 @@ export class CaptureController {
       throw new ForbiddenException('Business not owned by user');
     }
 
-    // Validate request
-    if (body.type === 'label' && !body.image_data) {
-      throw new BadRequestException('image_data required for label capture');
+    // Validate file upload
+    if (!file) {
+      throw new BadRequestException('File upload required');
     }
 
-    // ponytail: store file_ref stub, add S3 upload when storage ready
-    const fileRef = `stub://${body.type}/${Date.now()}.jpg`;
+    if (file.size > this.MAX_FILE_SIZE) {
+      throw new PayloadTooLargeException(`File size exceeds ${this.MAX_FILE_SIZE / 1024 / 1024} MB`);
+    }
+
+    if (!this.ALLOWED_TYPES.includes(file.mimetype)) {
+      throw new UnsupportedMediaTypeException(`Allowed types: ${this.ALLOWED_TYPES.join(', ')}`);
+    }
+
+    // Idempotency check
+    if (req.idempotencyKey) {
+      const existing = this.captureService.findByIdempotencyKey(req.idempotencyKey);
+      if (existing) {
+        const job = this.queueService.getJob(existing.capture_id);
+        return { ...toCaptureContract(existing), job_id: job?.id };
+      }
+    }
+
+    // Upload to storage
+    const storageKey = await this.storageService.upload(
+      file.buffer,
+      file.mimetype,
+      body.business_id,
+      body.type,
+    );
 
     // Create capture
     const capture = this.captureService.create(
       body.business_id,
       body.type,
-      fileRef,
+      storageKey,
+      req.idempotencyKey,
     );
 
-    // Call AI Gateway for label OCR
+    // Queue OCR job
+    let jobId: string | undefined;
     if (body.type === 'label') {
-      const ocrResult = await this.callOcrLabel(fileRef);
-      const needsRetake = ocrResult.needs_retake || ocrResult.confidence === 'low';
-
-      this.captureService.update(capture.capture_id, {
-        result: {
-          name: ocrResult.name,
-          power_w: ocrResult.power_w,
-          brand: ocrResult.brand,
-        },
-        confidence: ocrResult.confidence,
-        status: needsRetake ? 'needs_retake' : 'pending',
-        request_id: ocrResult.request_id,
+      const job = await this.queueService.add('ocr', 'ocr-label', {
+        captureId: capture.capture_id,
+        storageKey,
       });
+      jobId = job.id;
     }
 
-    const updated = this.captureService.findById(capture.capture_id);
-    if (!updated) throw new NotFoundException('Capture not found');
-
-    return toCaptureContract(updated);
+    return { ...toCaptureContract(capture), job_id: jobId };
   }
 
   /** P2.2: Verify capture - confirm and update appliance */
@@ -158,6 +187,33 @@ export class CaptureController {
     return toCaptureContract(updated);
   }
 
+  /** Get job status */
+  @Get('jobs/:jobId')
+  async getJobStatus(
+    @Param('jobId') jobId: string,
+    @Req() req: AuthRequest,
+  ): Promise<Job> {
+    const userId = req.userId;
+    if (!userId) throw new ForbiddenException('Unauthorized');
+
+    const job = this.queueService.getJob(jobId);
+    if (!job) throw new NotFoundException('Job not found');
+
+    // Authz: check capture ownership via job data
+    const captureId = (job.data as { captureId?: string }).captureId;
+    if (captureId) {
+      const capture = this.captureService.findById(captureId);
+      if (!capture) throw new NotFoundException('Capture not found');
+
+      const business = this.businessService.findById(capture.business_id);
+      if (!business || business.user_id !== userId) {
+        throw new ForbiddenException('Job not owned by user');
+      }
+    }
+
+    return job;
+  }
+
   /** Get capture by ID */
   @Get(':id')
   async findOne(
@@ -178,8 +234,8 @@ export class CaptureController {
     return toCaptureContract(capture);
   }
 
-  /** Call AI Gateway /ai/ocr-label */
-  private async callOcrLabel(fileRef: string): Promise<OcrLabelResponse> {
+  /** Call AI Gateway /ai/ocr-label - stub inline OCR */
+  private async callOcrLabel(_storageKey: string): Promise<OcrLabelResponse> {
     // ponytail: HTTP call AI Gateway when live, mock inline for now
     const mockResponse: OcrLabelResponse = {
       request_id: `req_${Date.now()}`,
@@ -193,5 +249,25 @@ export class CaptureController {
       needs_retake: false,
     };
     return mockResponse;
+  }
+
+  /** Process OCR job - worker simulation */
+  async processOcrJob(captureId: string): Promise<void> {
+    const capture = this.captureService.findById(captureId);
+    if (!capture) throw new Error('Capture not found');
+
+    const ocrResult = await this.callOcrLabel(capture.file_ref);
+    const needsRetake = ocrResult.needs_retake || ocrResult.confidence === 'low';
+
+    this.captureService.update(captureId, {
+      result: {
+        name: ocrResult.name,
+        power_w: ocrResult.power_w,
+        brand: ocrResult.brand,
+      },
+      confidence: ocrResult.confidence,
+      status: needsRetake ? 'needs_retake' : 'pending',
+      request_id: ocrResult.request_id,
+    });
   }
 }

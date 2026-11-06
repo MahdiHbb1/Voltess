@@ -28,7 +28,7 @@ describe('Contract: Capture & Mission', () => {
         confidence: { type: ['string', 'null'], enum: ['high', 'medium', 'low', null] },
         status: {
           type: 'string',
-          enum: ['pending', 'verified', 'rejected', 'needs_retake'],
+          enum: ['queued', 'pending', 'verified', 'rejected', 'needs_retake'],
         },
         request_id: { type: ['string', 'null'] },
         created_at: { type: 'string', format: 'date-time' },

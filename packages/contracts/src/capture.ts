@@ -7,7 +7,7 @@ import type { Confidence } from './common';
  */
 
 export type CaptureType = 'label' | 'meter' | 'token';
-export type CaptureStatus = 'pending' | 'verified' | 'rejected' | 'needs_retake';
+export type CaptureStatus = 'queued' | 'pending' | 'verified' | 'rejected' | 'needs_retake';
 
 /** Capture entity */
 export interface Capture {

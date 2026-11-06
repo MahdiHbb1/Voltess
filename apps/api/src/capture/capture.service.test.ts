@@ -10,16 +10,22 @@ describe('CaptureService', () => {
   });
 
   describe('create', () => {
-    it('creates capture with pending status', () => {
+    it('creates capture with queued status', () => {
       const capture = service.create('biz_1', 'label', 'file_ref_1');
 
       expect(capture.capture_id).toBeTruthy();
       expect(capture.business_id).toBe('biz_1');
       expect(capture.type).toBe('label');
       expect(capture.file_ref).toBe('file_ref_1');
-      expect(capture.status).toBe('pending');
+      expect(capture.status).toBe('queued');
       expect(capture.result).toBeNull();
       expect(capture.confidence).toBeNull();
+    });
+
+    it('stores idempotency key', () => {
+      const capture = service.create('biz_1', 'label', 'file_ref_1', 'idem_key_123');
+      const found = service.findByIdempotencyKey('idem_key_123');
+      expect(found).toEqual(capture);
     });
   });
 

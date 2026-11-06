@@ -1,19 +1,16 @@
 import { randomUUID } from 'node:crypto';
-import type {
-  CaptureEntity,
-  CaptureType,
-  CaptureStatus,
-  Confidence,
-} from './capture.entity';
-import type { Confidence as ConfidenceType } from '@voltra/contracts';
+import type { CaptureEntity } from './capture.entity';
+import type { CaptureType, CaptureStatus, Confidence } from '@voltra/contracts';
 
 /** In-memory capture store */
 const captures = new Map<string, CaptureEntity>();
+const idempotencyKeys = new Map<string, string>(); // key -> captureId
 
 export class CaptureService {
   /** Clear store - for tests */
   clearAll(): void {
     captures.clear();
+    idempotencyKeys.clear();
   }
 
   /** Create capture */
@@ -21,6 +18,7 @@ export class CaptureService {
     businessId: string,
     type: CaptureType,
     fileRef: string,
+    idempotencyKey?: string,
   ): CaptureEntity {
     const capture: CaptureEntity = {
       capture_id: randomUUID(),
@@ -29,13 +27,24 @@ export class CaptureService {
       file_ref: fileRef,
       result: null,
       confidence: null,
-      status: 'pending',
+      status: 'queued',
       request_id: null,
       created_at: new Date(),
       updated_at: new Date(),
     };
     captures.set(capture.capture_id, capture);
+
+    if (idempotencyKey) {
+      idempotencyKeys.set(idempotencyKey, capture.capture_id);
+    }
+
     return capture;
+  }
+
+  /** Find by idempotency key */
+  findByIdempotencyKey(key: string): CaptureEntity | undefined {
+    const captureId = idempotencyKeys.get(key);
+    return captureId ? captures.get(captureId) : undefined;
   }
 
   /** Find by ID */
