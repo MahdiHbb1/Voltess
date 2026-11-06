@@ -9,11 +9,12 @@ import {
   BadRequestException,
   ForbiddenException,
   UploadedFile,
+  UploadedFiles,
   UseInterceptors,
   PayloadTooLargeException,
   UnsupportedMediaTypeException,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import type { Request } from 'express';
 import { CaptureService } from './capture.service';
 import { BusinessService } from '../business/business.service';
@@ -27,6 +28,7 @@ import type {
   CreateCaptureRequest,
   VerifyCaptureRequest,
   Capture as CaptureContract,
+  CaptureType,
   OcrLabelResponse,
   OcrMeterResponse,
 } from '@voltra/contracts';
@@ -52,7 +54,11 @@ export class CaptureController {
 
   /** P2.1: Create capture + upload file + queue OCR */
   @Post()
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('file', {
+    limits: {
+      fileSize: 10 * 1024 * 1024,
+    },
+  }))
   async create(
     @Body() body: CreateCaptureRequest,
     @UploadedFile() file: { buffer: Buffer; mimetype: string; size: number },
@@ -100,7 +106,7 @@ export class CaptureController {
     // Create capture
     const capture = this.captureService.create(
       body.business_id,
-      body.type,
+      body.type as CaptureType,
       storageKey,
       req.idempotencyKey,
     );
@@ -122,6 +128,70 @@ export class CaptureController {
     }
 
     return { ...toCaptureContract(capture), job_id: jobId };
+  }
+
+  /** P2.1b: Batch upload multiple captures */
+  @Post('batch')
+  @UseInterceptors(FilesInterceptor('files', 100, {
+    limits: {
+      fileSize: 10 * 1024 * 1024,
+    },
+  }))
+  async createBatch(
+    @Body() body: { business_id: string; type: string },
+    @UploadedFiles() files: Array<{ buffer: Buffer; mimetype: string; size: number }>,
+    @Req() req: AuthRequest,
+  ): Promise<Array<CaptureContract & { job_id?: string }>> {
+    const userId = req.userId;
+    if (!userId) throw new ForbiddenException('Unauthorized');
+
+    const business = this.businessService.findById(body.business_id);
+    if (!business || business.user_id !== userId) {
+      throw new ForbiddenException('Business not owned by user');
+    }
+
+    if (!files || files.length === 0) {
+      throw new BadRequestException('No files uploaded');
+    }
+
+    const results: Array<CaptureContract & { job_id?: string }> = [];
+
+    for (const file of files) {
+      if (file.size > this.MAX_FILE_SIZE) {
+        throw new PayloadTooLargeException(`File exceeds ${this.MAX_FILE_SIZE / 1024 / 1024} MB`);
+      }
+
+      if (!this.ALLOWED_TYPES.includes(file.mimetype)) {
+        throw new UnsupportedMediaTypeException(`Allowed: ${this.ALLOWED_TYPES.join(', ')}`);
+      }
+
+      const storageKey = await this.storageService.upload(
+        file.buffer,
+        file.mimetype,
+        body.business_id,
+        body.type as 'label' | 'meter_open' | 'meter_close' | 'token',
+      );
+
+      const capture = this.captureService.create(
+        body.business_id,
+        body.type as CaptureType,
+        storageKey,
+        req.idempotencyKey,
+      );
+
+      let jobId: string | undefined;
+      if (body.type === 'label') {
+        const job = await this.queueService.add('ocr', 'ocr-label', {
+          captureId: capture.capture_id,
+          storageKey,
+        });
+        jobId = job.id;
+      }
+
+      results.push({ ...toCaptureContract(capture), job_id: jobId });
+    }
+
+    return results;
   }
 
   /** M2: Pair meter readings and validate */

@@ -4,6 +4,7 @@
  */
 
 import { Injectable, BadRequestException } from '@nestjs/common';
+import { TrialService } from './trial.service';
 import type {
   Entitlement,
   EntitlementStatus,
@@ -13,6 +14,8 @@ import type {
 
 @Injectable()
 export class EntitlementService {
+  constructor(private readonly trialService: TrialService) {}
+
   private readonly entitlements = new Map<string, Entitlement>(); // ponytail: in-memory, DB nanti
   private readonly auditLogs = new Map<string, EntitlementStatusChange[]>();
 
@@ -50,9 +53,12 @@ export class EntitlementService {
     const now = new Date();
     const trialEnd = new Date(now.getTime() + this.TRIAL_DAYS * 24 * 60 * 60 * 1000);
 
+    // Start trial in TrialService (idempotent)
+    const trialState = this.trialService.startTrial(businessId);
+
     ent.status = 'trial';
-    ent.trial_started_at = now.toISOString();
-    ent.trial_ends_at = trialEnd.toISOString();
+    ent.trial_started_at = trialState.started_at!.toISOString();
+    ent.trial_ends_at = trialState.ends_at!.toISOString();
     ent.features = this.getFeaturesForStatus('trial');
     ent.updated_at = now.toISOString();
 
@@ -68,15 +74,15 @@ export class EntitlementService {
       return false;
     }
 
-    const now = Date.now();
-    const trialEnd = new Date(ent.trial_ends_at).getTime();
-
-    if (now > trialEnd) {
+    // Check trial state
+    const trialState = this.trialService.getState(businessId);
+    if (trialState.locked) {
       ent.status = 'locked';
       ent.features = this.getFeaturesForStatus('locked');
       ent.updated_at = new Date().toISOString();
 
       this.recordStatusChange(businessId, 'trial', 'locked', 'Trial expired', 'system');
+      this.trialService.lockTrial(businessId);
       return true;
     }
 

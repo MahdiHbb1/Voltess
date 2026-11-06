@@ -5,11 +5,15 @@
 
 import { Controller, Get, Post, Body, Request, Headers } from '@nestjs/common';
 import { EntitlementService } from './entitlement.service';
+import { TrialService } from './trial.service';
 import type { EntitlementStatusResponse, Entitlement } from '@voltra/contracts';
 
 @Controller('entitlement')
 export class EntitlementController {
-  constructor(private readonly entitlementService: EntitlementService) {}
+  constructor(
+    private readonly entitlementService: EntitlementService,
+    private readonly trialService: TrialService,
+  ) {}
 
   @Get('status')
   async getStatus(
@@ -21,11 +25,9 @@ export class EntitlementController {
     await this.entitlementService.checkAndTransitionExpiredTrial(businessId);
     const ent = await this.entitlementService.getOrCreateEntitlement(businessId);
 
-    let daysRemaining: number | null = null;
-    if (ent.status === 'trial' && ent.trial_ends_at) {
-      const msRemaining = new Date(ent.trial_ends_at).getTime() - Date.now();
-      daysRemaining = Math.max(0, Math.ceil(msRemaining / (24 * 60 * 60 * 1000)));
-    }
+    // Get trial state from TrialService
+    const trialState = this.trialService.getState(businessId);
+    const daysRemaining = trialState.days_remaining;
 
     return {
       status: ent.status,

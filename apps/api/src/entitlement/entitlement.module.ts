@@ -6,11 +6,12 @@
 import { Module } from '@nestjs/common';
 import { EntitlementController } from './entitlement.controller';
 import { EntitlementService } from './entitlement.service';
+import { TrialService } from './trial.service';
 import { AiEntitlementGuard } from './ai-entitlement.guard';
 
 @Module({
   controllers: [EntitlementController],
-  providers: [EntitlementService, AiEntitlementGuard],
-  exports: [EntitlementService, AiEntitlementGuard],
+  providers: [EntitlementService, TrialService, AiEntitlementGuard],
+  exports: [EntitlementService, TrialService, AiEntitlementGuard],
 })
 export class EntitlementModule {}
