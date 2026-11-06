@@ -19,6 +19,8 @@ import { QueueModule } from './queue/queue.module';
 import { DatabaseModule } from './database/database.module';
 import { NotificationModule } from './notifications/notification.module';
 import { SubscriptionModule } from './subscription/subscription.module';
+import { AdminModule } from './admin/admin.module';
+import { AdminAuditMiddleware } from './admin/admin-audit.middleware';
 import { RequestIdMiddleware } from './ai/request-id.middleware';
 import { IdempotencyMiddleware } from './capture/idempotency.middleware';
 import { AppController } from './app.controller';
@@ -40,6 +42,7 @@ import { AppController } from './app.controller';
     QueueModule,
     NotificationModule,
     SubscriptionModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [
@@ -58,5 +61,9 @@ export class AppModule implements NestModule {
     consumer
       .apply(IdempotencyMiddleware)
       .forRoutes(CaptureController);
+
+    consumer
+      .apply(AdminAuditMiddleware)
+      .forRoutes(AiController, CaptureController);
   }
 }
