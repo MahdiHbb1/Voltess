@@ -45,7 +45,7 @@ const estimateInput = {
 };
 
 describe('mock AI responses against C3/C2 schemas', () => {
-  const envelopeSchema = 'https://voltra.local/schemas/c3-ai-envelope.schema.json';
+  const envelopeSchema = 'https://voltess.local/schemas/c3-ai-envelope.schema.json';
 
   it('validates P1-P4 success envelopes', () => {
     const responses = [
@@ -68,7 +68,7 @@ describe('mock AI responses against C3/C2 schemas', () => {
 
     expect(() => validate(envelopeSchema, response)).not.toThrow();
     expect(() =>
-      validate('https://voltra.local/schemas/c2-estimate.schema.json', response),
+      validate('https://voltess.local/schemas/c2-estimate.schema.json', response),
     ).not.toThrow();
   });
 

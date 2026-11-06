@@ -146,7 +146,7 @@ Issue GitHub adalah sumber status. Tabel ini hanya indeks urutan kerja; `VOLT-xx
 
 ## Cara memakai board
 
-Buka [Voltra — Delivery](https://github.com/users/MahdiHbb1/projects/3).
+Buka [Voltess — Delivery](https://github.com/users/MahdiHbb1/projects/3).
 
 - **Status:** `Backlog → Ready → In Progress → In Review → Blocked → Done`.
   - **Backlog** = belum siap dikerjakan.

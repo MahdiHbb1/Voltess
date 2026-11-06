@@ -56,37 +56,37 @@ describe('C1-C6 fixtures', () => {
   const cases = [
     [
       'C1 template',
-      'https://voltra.local/schemas/c1-template.schema.json',
+      'https://voltess.local/schemas/c1-template.schema.json',
       join(fixturesDir, 'templates', 'laundry.json'),
     ],
     [
       'C2 estimate',
-      'https://voltra.local/schemas/c2-estimate.schema.json',
+      'https://voltess.local/schemas/c2-estimate.schema.json',
       join(fixturesDir, 'estimates', 'estimate-low-confidence.json'),
     ],
     [
       'C3 envelope success',
-      'https://voltra.local/schemas/c3-ai-envelope.schema.json',
+      'https://voltess.local/schemas/c3-ai-envelope.schema.json',
       join(fixturesDir, 'ai', 'ocr-meter.success.json'),
     ],
     [
       'C3 envelope low confidence',
-      'https://voltra.local/schemas/c3-ai-envelope.schema.json',
+      'https://voltess.local/schemas/c3-ai-envelope.schema.json',
       join(fixturesDir, 'ai', 'ocr-meter.low-confidence.json'),
     ],
     [
       'C4 mission event',
-      'https://voltra.local/schemas/c4-mission-event.schema.json',
+      'https://voltess.local/schemas/c4-mission-event.schema.json',
       join(fixturesDir, 'missions', 'mission-completed.json'),
     ],
     [
       'C5 entitlement',
-      'https://voltra.local/schemas/c5-entitlement.schema.json',
+      'https://voltess.local/schemas/c5-entitlement.schema.json',
       join(fixturesDir, 'entitlements', 'trial-entitlement.json'),
     ],
     [
       'C6 confidence',
-      'https://voltra.local/schemas/c6-confidence.schema.json',
+      'https://voltess.local/schemas/c6-confidence.schema.json',
       join(fixturesDir, 'confidence', 'low-confidence.json'),
     ],
   ] as const;
@@ -98,7 +98,7 @@ describe('C1-C6 fixtures', () => {
   }
 
   it('validates insufficient_data and provider_error fixtures', () => {
-    const schemaId = 'https://voltra.local/schemas/c3-error.schema.json';
+    const schemaId = 'https://voltess.local/schemas/c3-error.schema.json';
 
     expect(
       validate(schemaId, readJson(join(fixturesDir, 'ai', 'estimate.insufficient-data.json'))),
@@ -115,7 +115,7 @@ describe('C1-C6 fixtures', () => {
     delete fixture.template_id;
 
     expect(() =>
-      validate('https://voltra.local/schemas/c1-template.schema.json', fixture),
+      validate('https://voltess.local/schemas/c1-template.schema.json', fixture),
     ).toThrow();
   });
 });
