@@ -17,3 +17,21 @@ export interface Entitlement {
   features: EntitlementFeatures;
   updated_at: string;
 }
+
+/** Audit log perubahan status */
+export interface EntitlementStatusChange {
+  business_id: string;
+  from_status: EntitlementStatus | null;
+  to_status: EntitlementStatus;
+  reason: string;
+  changed_at: string;
+  changed_by: string;
+}
+
+/** GET /entitlement/status response */
+export interface EntitlementStatusResponse {
+  status: EntitlementStatus;
+  features: EntitlementFeatures;
+  trial_days_remaining: number | null;
+  can_upgrade: boolean;
+}
