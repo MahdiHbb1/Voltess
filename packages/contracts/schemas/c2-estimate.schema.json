@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://voltra.local/schemas/c2-estimate.schema.json",
+  "$id": "https://voltess.local/schemas/c2-estimate.schema.json",
   "title": "C2 Estimate Result",
   "type": "object",
   "required": [

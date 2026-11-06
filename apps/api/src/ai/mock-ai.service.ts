@@ -15,7 +15,7 @@ import type {
   RecommendResponse,
   SttExtractRequest,
   SttExtractResponse,
-} from '@voltra/contracts';
+} from '@voltess/contracts';
 import type { AiConfig, AiScenario } from './ai-config';
 import { AI_CONFIG, isAiScenario } from './ai-config';
 import { AiGatewayException } from './ai-gateway.exception';

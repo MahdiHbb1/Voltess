@@ -2,7 +2,7 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  transpilePackages: ['@voltra/contracts', '@voltra/energy-calc'],
+  transpilePackages: ['@voltess/contracts', '@voltess/energy-calc'],
 };
 
 export default nextConfig;

@@ -23,7 +23,7 @@ Aturan implementasi:
 - Animasi memakai CSS transform/opacity atau `requestAnimationFrame`; hindari layout thrashing.
 - Aset berupa SVG/WebP, bukan sprite sheet besar; total aset scene ≤5 MB.
 - Hormati `prefers-reduced-motion`; sediakan mode tanpa animasi.
-- Semua angka yang tampil berasal dari `@voltra/energy-calc`; renderer tidak menghitung kWh/Rp.
+- Semua angka yang tampil berasal dari `@voltess/energy-calc`; renderer tidak menghitung kWh/Rp.
 
 Escape hatch:
 

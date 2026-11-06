@@ -13,7 +13,7 @@ import type {
   GuestMergePayload,
   GuestMergeResult,
   SessionClaims,
-} from '@voltra/contracts';
+} from '@voltess/contracts';
 import type { OtpAdapter } from './adapters/otp.interface';
 import { OtpMockAdapter } from './adapters/otp-mock.adapter';
 

@@ -25,7 +25,7 @@ Implement live AI adapters (Gemini 3.5 Flash-Lite + AssemblyAI) menggantikan moc
 - OCR (P1-P3): 40% quota (200 calls/day) - core value
 - Explain (P8): 20% quota (100 calls/day)
 - STT (P4): 20% quota (100 calls/day) - fallback text input
-- Wati (P10): 20% quota (100 calls/day) - fallback FAQ
+- Terra (P10): 20% quota (100 calls/day) - fallback FAQ
 - Per-user cap: 150 calls/day total
 
 ### 4. Fallback Strategy
@@ -42,7 +42,7 @@ Implement live AI adapters (Gemini 3.5 Flash-Lite + AssemblyAI) menggantikan moc
 ### 6. P11-P13 Implementation
 - P11 Alert: Statistical anomaly detection (median ± MAD threshold)
 - P12 Token: Simple linear projection from daily average
-- P13 ROI: Wrapper around `@voltra/energy-calc` with presentation logic
+- P13 ROI: Wrapper around `@voltess/energy-calc` with presentation logic
 
 ## Task List
 
@@ -155,7 +155,7 @@ Implement live AI adapters (Gemini 3.5 Flash-Lite + AssemblyAI) menggantikan moc
   - Tool execution: fetch from DB (estimates, history, recommendations tables)
   - Return answer with sources (which tools were called)
   - Handle low confidence → suggest missions
-  - **Files:** `apps/api/src/ai/adapters/live/gemini-llm.adapter.ts`, `apps/api/src/ai/tools/wati-tools.service.ts`
+  - **Files:** `apps/api/src/ai/adapters/live/gemini-llm.adapter.ts`, `apps/api/src/ai/tools/terra-tools.service.ts`
 
 - [ ] **Task 4.3:** Wire P8, P10 pipelines to use live adapter
   - Update `p8-explain.ts` to use Gemini LLM adapter
@@ -164,7 +164,7 @@ Implement live AI adapters (Gemini 3.5 Flash-Lite + AssemblyAI) menggantikan moc
 
 ### Checkpoint 4: LLM Works
 - [ ] P8 Explain generates explanations without new numbers
-- [ ] P10 Wati answers questions with DB context
+- [ ] P10 Terra answers questions with DB context
 - [ ] Contract tests pass for P8, P10 live responses
 
 ---
@@ -186,7 +186,7 @@ Implement live AI adapters (Gemini 3.5 Flash-Lite + AssemblyAI) menggantikan moc
 
 - [ ] **Task 5.3:** Implement priority allocation logic
   - OCR: 200 calls/day (high priority)
-  - Explain/STT/Wati: 100 calls/day each (medium/low)
+  - Explain/STT/Terra: 100 calls/day each (medium/low)
   - Per-user cap: 150 calls/day total
   - **Files:** `apps/api/src/ai/adapters/live/rate-limiter.service.ts`
 
@@ -218,8 +218,8 @@ Implement live AI adapters (Gemini 3.5 Flash-Lite + AssemblyAI) menggantikan moc
   - Provide text input form data in response
   - **Files:** `apps/api/src/ai/pipelines/p4-stt-extract.ts`
 
-- [ ] **Task 6.2:** Implement Wati fallback service
-  - Return FAQ list when Wati quota exceeded
+- [ ] **Task 6.2:** Implement Terra fallback service
+  - Return FAQ list when Terra quota exceeded
   - Pre-defined common questions and answers
   - **Files:** `apps/api/src/ai/pipelines/p10-ask.ts`, `apps/api/src/ai/fallback/faq.data.ts`
 
@@ -235,7 +235,7 @@ Implement live AI adapters (Gemini 3.5 Flash-Lite + AssemblyAI) menggantikan moc
 
 ### Checkpoint 6: Fallbacks Work
 - [ ] STT fallback shows text input option
-- [ ] Wati fallback shows FAQ
+- [ ] Terra fallback shows FAQ
 - [ ] OCR fallback shows manual input
 - [ ] Explain fallback shows template
 
@@ -256,7 +256,7 @@ Implement live AI adapters (Gemini 3.5 Flash-Lite + AssemblyAI) menggantikan moc
   - **Files:** `apps/api/src/ai/pipelines/p12-token-prediction.ts`
 
 - [ ] **Task 7.3:** Implement ROI Calculator service (P13)
-  - Use `@voltra/energy-calc` for calculations
+  - Use `@voltess/energy-calc` for calculations
   - Compare old vs new appliance cost over time
   - Return payback period range (min/max)
   - **Files:** `apps/api/src/ai/pipelines/p13-roi-calculator.ts`
@@ -372,7 +372,7 @@ Implement live AI adapters (Gemini 3.5 Flash-Lite + AssemblyAI) menggantikan moc
    - Required for voice notes >10 seconds
    - Webhook endpoint: `POST /webhooks/assemblyai-callback`
 
-3. **P10 Wati tools implementation:** ✅
+3. **P10 Terra tools implementation:** ✅
    - Access: estimates, history, recommendations (all data)
    - Permission check: user can only query their own business_id
    - Tools: `getEstimate`, `getHistory`, `getRecommendations`, `getPrediction`

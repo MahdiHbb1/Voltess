@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://voltra.local/schemas/c4-mission-event.schema.json",
+  "$id": "https://voltess.local/schemas/c4-mission-event.schema.json",
   "title": "C4 Mission Event",
   "type": "object",
   "additionalProperties": false,

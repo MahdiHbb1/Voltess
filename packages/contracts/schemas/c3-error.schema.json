@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://voltra.local/schemas/c3-error.schema.json",
+  "$id": "https://voltess.local/schemas/c3-error.schema.json",
   "title": "C3 API Error",
   "type": "object",
   "additionalProperties": false,

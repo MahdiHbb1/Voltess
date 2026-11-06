@@ -10,21 +10,21 @@ Accepted — prinsip inti PRD (C2, P8, Bagian 8 dan 10). O17 dikunci 2026-11-06 
 
 ## Context
 
-Angka kWh/Rupiah muncul di simulasi game, estimasi, rekomendasi, laporan, verifikasi, dan Tanya Wati. Bila setiap modul menghitung sendiri atau LLM mengarang angka, hasil antar-layar tidak konsisten dan klaim penghematan tidak dapat diaudit. PRD menetapkan `energy-calc` sebagai satu-satunya sumber hitung.
+Angka kWh/Rupiah muncul di simulasi game, estimasi, rekomendasi, laporan, verifikasi, dan Tanya Terra. Bila setiap modul menghitung sendiri atau LLM mengarang angka, hasil antar-layar tidak konsisten dan klaim penghematan tidak dapat diaudit. PRD menetapkan `energy-calc` sebagai satu-satunya sumber hitung.
 
 ## Decision
 
 1. Semua perhitungan kWh, Rupiah, faktor beban, estimasi, cross-validation, verifikasi, dan ROI berada di `packages/energy-calc`.
-2. Game, backend, laporan, dan Wati memakai keluaran pustaka tersebut; tidak ada rumus duplikat.
+2. Game, backend, laporan, dan Terra memakai keluaran pustaka tersebut; tidak ada rumus duplikat.
 3. LLM hanya menyusun teks dari objek hasil yang sudah berisi angka.
 4. Validator memeriksa bahwa teks LLM tidak memuat angka baru; bila gagal, jawaban diblokir dan diganti template.
 5. Setiap keluaran menyertakan `engine_version` dan tingkat keyakinan.
-6. **O17:** implementasi adalah paket TypeScript `@voltra/energy-calc` di monorepo, bukan layanan terpisah. FE dan BE mengimpor paket yang sama. Tidak ada API hitung terpisah pada MVP.
+6. **O17:** implementasi adalah paket TypeScript `@voltess/energy-calc` di monorepo, bukan layanan terpisah. FE dan BE mengimpor paket yang sama. Tidak ada API hitung terpisah pada MVP.
 
 Konsekuensi teknis:
 
 - Paket harus bebas dari dependensi Node.js sehingga bisa berjalan di browser dan server.
-- Input/output memakai tipe C2 di `@voltra/contracts`; perubahan bentuk harus lewat versi kontrak.
+- Input/output memakai tipe C2 di `@voltess/contracts`; perubahan bentuk harus lewat versi kontrak.
 - Paket tidak boleh mengakses database, jaringan, atau jam sistem secara implisit; waktu dan tarif selalu menjadi input.
 
 ## Alternatives Considered

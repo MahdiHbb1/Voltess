@@ -1,5 +1,5 @@
 {
-  "name": "@voltra/web",
+  "name": "@voltess/web",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -9,8 +9,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@voltra/contracts": "workspace:*",
-    "@voltra/energy-calc": "workspace:*",
+    "@voltess/contracts": "workspace:*",
+    "@voltess/energy-calc": "workspace:*",
     "next": "16.4.5",
     "react": "19.3.1",
     "react-dom": "19.3.1"

@@ -11,7 +11,7 @@ Kontrak adalah kesepakatan antar-modul, bukan detail implementasi. FE, BE, game,
 | ID | Kontrak | Pemilik | Consumer | Bentuk | Status |
 |---|---|---|---|---|---|
 | **C1** | Template Schema | Dhifansa | FE, BE, AI | JSON berversi | RC v0.1.0 |
-| **C2** | `energy-calc` | Mahdi | Game, BE, laporan, Wati | Paket TypeScript | RC v0.1.0 |
+| **C2** | `energy-calc` | Mahdi | Game, BE, laporan, Terra | Paket TypeScript | RC v0.1.0 |
 | **C3** | AI Gateway API | Mahdi (host), Muchsin (adapter) | FE, game | OpenAPI 3.1 | RC v0.1.0 |
 | **C4** | Mission Event | Dhifansa (producer), Mahdi (storage) | BE, AI | JSON event | RC v0.1.0 |
 | **C5** | Entitlement | Mahdi | Game, AI | JSON + cek server | RC v0.1.0 |
@@ -32,7 +32,7 @@ Tipe TypeScript untuk semua kontrak ada di [`packages/contracts/src/`](../packag
 
 ### Aturan emas C2
 
-> Game tidak boleh memiliki rumus hitung sendiri. Angka kWh/Rp yang muncul di simulasi, estimasi, rekomendasi, laporan, dan Tanya Wati harus bersumber dari pustaka yang sama.
+> Game tidak boleh memiliki rumus hitung sendiri. Angka kWh/Rp yang muncul di simulasi, estimasi, rekomendasi, laporan, dan Tanya Terra harus bersumber dari pustaka yang sama.
 
 Konsekuensi:
 
@@ -155,7 +155,7 @@ Aturan:
 | POST | `/ai/estimate` | P5/P6 | Kios + jendela waktu | Estimasi per alat/kategori, `unexplained_kwh`, keyakinan | `estimate.insufficient-data.json` |
 | POST | `/ai/recommend` | P7 | Estimasi + konteks kios | Maks. 3 saran, rentang hemat, keyakinan | — |
 | POST | `/ai/explain` | P8 | Objek hasil | Teks tanpa angka baru | — |
-| POST | `/ai/ask` | P10 | Pertanyaan Wati | Jawaban, `sources`, keyakinan | — |
+| POST | `/ai/ask` | P10 | Pertanyaan Terra | Jawaban, `sources`, keyakinan | — |
 
 P9 (verifikasi dampak) adalah perhitungan internal `energy-calc`, bukan endpoint publik. Bentuk hasilnya ada di komponen `ImpactVerificationResult` pada OpenAPI. P11–P13 belum ditetapkan sebagai endpoint publik (O32).
 
@@ -251,7 +251,7 @@ Aturan:
 
 Status: `free | trial | plus | locked`.
 
-| Status | Kios/simulasi | M1 | M2–M6/AI | Tanya Wati data asli | Hadiah kosmetik |
+| Status | Kios/simulasi | M1 | M2–M6/AI | Tanya Terra data asli | Hadiah kosmetik |
 |---|---|---|---|---|---|
 | `free` | Ya | Ya | Tidak; data dapat disimpan dengan persetujuan | Tidak | Ya |
 | `trial` | Ya | Ya | Ya | Ya | Ya |
@@ -270,7 +270,7 @@ Bentuk data:
     "kios": true,
     "m1": true,
     "ai_analysis": true,
-    "wati_real_data": true,
+    "terra_real_data": true,
     "cosmetic_rewards": true
   },
   "updated_at": "2026-12-01T06:30:00+07:00"

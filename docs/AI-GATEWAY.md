@@ -23,7 +23,7 @@ Semua endpoint mendukung empat skenario:
 | Skenario | Hasil |
 |---|---|
 | `success` | Respons normal |
-| `low_confidence` | Keyakinan rendah; OCR/label meminta foto ulang; estimasi turun ke kategori; Wati tanpa sumber |
+| `low_confidence` | Keyakinan rendah; OCR/label meminta foto ulang; estimasi turun ke kategori; Terra tanpa sumber |
 | `insufficient_data` | HTTP 422, `INSUFFICIENT_DATA` |
 | `provider_error` | HTTP 502, `PROVIDER_ERROR` |
 
@@ -121,7 +121,7 @@ curl -i -X POST http://localhost:3001/ai/ocr-meter -H "x-ai-scenario: provider_e
 - Semua penghematan memakai rentang `min`/`max`; tidak ada angka penghematan pasti.
 - Teks P8 tidak memuat angka baru (`numbers_used: []` pada mock).
 - P10 dengan keyakinan rendah tidak mengembalikan sumber dan menyarankan misi data.
-- Semua angka kWh/Rp produksi nanti berasal dari `@voltra/energy-calc` (ADR-003).
+- Semua angka kWh/Rp produksi nanti berasal dari `@voltess/energy-calc` (ADR-003).
 
 ## Verifikasi
 

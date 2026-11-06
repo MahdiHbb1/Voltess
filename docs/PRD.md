@@ -1,12 +1,12 @@
-# Voltra --- Product Requirements Document (PRD) Terpadu
+# Voltess --- Product Requirements Document (PRD) Terpadu
 
 **Versi dokumen:** 0.3.1 --- Konsolidasi + audit kelengkapan\
 **Tanggal konsolidasi:** 5 November 2026\
 **Pemilik:** Tim d1306 (UNNES)\
 **Status:** Draft kerja untuk validasi dan implementasi\
-**Menggantikan sebagai dokumen kerja:** `voltra-prd-v0.2-index.md`,
-`voltra-prd-1-sistem-app.md`, `voltra-prd-2-gamifikasi.md`, dan
-`voltra-prd-3-ai-e2e.md`
+**Menggantikan sebagai dokumen kerja:** `voltess-prd-v0.2-index.md`,
+`voltess-prd-1-sistem-app.md`, `voltess-prd-2-gamifikasi.md`, dan
+`voltess-prd-3-ai-e2e.md`
 
 > **Catatan status:** Semua angka, harga, target, ambang, dan asumsi
 > yang belum diuji tetap merupakan hipotesis. Penanda `[X]` berarti
@@ -19,7 +19,7 @@
 
 ## 0. Cara menggunakan dokumen ini
 
-Dokumen ini menjadi satu sumber acuan untuk produk Voltra dari sisi
+Dokumen ini menjadi satu sumber acuan untuk produk Voltess dari sisi
 pengalaman pengguna, aplikasi, gamifikasi, AI, data, monetisasi, dan
 rencana rilis.
 
@@ -39,13 +39,13 @@ rencana rilis.
 
   Gamifikasi                         Kios Virtual, template UMKM,
                                      simulasi, misi, level, hadiah,
-                                     Wati di dalam game
+                                     Terra di dalam game
 
   AI dan analitik energi             OCR, STT, estimasi,
                                      cross-validation, keyakinan,
                                      rekomendasi, verifikasi,
                                      peringatan, prediksi token, ROI,
-                                     Tanya Wati
+                                     Tanya Terra
 
   Integrasi                          Kontrak template, pustaka hitung
                                      energi, AI Gateway, mission event,
@@ -90,7 +90,7 @@ rencana rilis.
 
 ### 1.1 Tujuan produk
 
-Voltra membantu pemilik UMKM menjawab dua pertanyaan:
+Voltess membantu pemilik UMKM menjawab dua pertanyaan:
 
 -   **Ke mana uang listrik usaha saya pergi?**
 -   **Apa yang harus saya ubah agar pemakaian listrik lebih efisien?**
@@ -99,7 +99,7 @@ Jawaban ditampilkan dalam bahasa yang dekat dengan pemilik usaha,
 terutama Rupiah dan biaya per satuan usaha (misalnya Rp/kg cucian atau
 Rp/porsi), disertai estimasi, dasar perhitungan, dan tingkat keyakinan.
 
-Voltra merupakan produk **software-first**. Pada rilis awal, sistem
+Voltess merupakan produk **software-first**. Pada rilis awal, sistem
 tidak mengukur konsumsi tiap alat secara langsung dan terus-menerus
 karena belum menggunakan sensor/AMI.
 
@@ -128,8 +128,8 @@ karena belum menggunakan sensor/AMI.
                                      nyata dikemas sebagai misi game.
 
   K5                                 AI/AX digunakan pada sistem
-                                     rekomendasi dan asisten Wati/Tanya
-                                     Wati.
+                                     rekomendasi dan asisten Terra/Tanya
+                                     Terra.
 
   K6                                 Personalisasi game memakai konsep
                                      *village builder*: village
@@ -149,7 +149,7 @@ Nama paket berbayar menggunakan istilah **Plus**, bukan Pro.
 
 ### 1.3 Batas klaim "real-time"
 
-Tanpa sensor/AMI, Voltra tidak boleh mengklaim dapat melacak konsumsi
+Tanpa sensor/AMI, Voltess tidak boleh mengklaim dapat melacak konsumsi
 setiap alat selama 24 jam.
 
   -----------------------------------------------------------------------
@@ -162,7 +162,7 @@ setiap alat selama 24 jam.
                           hingga menit,           
                           bergantung proses.      
 
-  Tanya alat paling boros Didukung jika data      "Tanya Wati: alat mana
+  Tanya alat paling boros Didukung jika data      "Tanya Terra: alat mana
                           tersedia; jawaban       yang diperkirakan
                           bersumber dan diberi    paling boros?"
                           label estimasi serta    
@@ -184,7 +184,7 @@ penggantian alat virtual dengan data alat asli. - Akun, profil usaha,
 persetujuan data, entitlement, trial, dan langganan. - Input foto meter,
 foto label alat, foto token, catatan suara, dan input manual. - OCR,
 STT/ekstraksi, estimasi, cross-validation, rekomendasi, penjelasan, dan
-Tanya Wati. - Misi, verifikasi, level, hadiah, laporan, dan
+Tanya Terra. - Misi, verifikasi, level, hadiah, laporan, dan
 notifikasi. - Admin, analitik produk, pemantauan biaya AI, serta kontrol
 privasi.
 
@@ -365,7 +365,7 @@ terpisah pada Fase 2.
 
 ### 4.1 Hubungan antarbagian produk
 
-Voltra terdiri dari tiga lapisan yang bekerja sebagai satu alur:
+Voltess terdiri dari tiga lapisan yang bekerja sebagai satu alur:
 
 1.  **Kios Virtual** memperkenalkan konsep biaya listrik per alat
     melalui simulasi.
@@ -464,14 +464,14 @@ Verifikasi hasil -> laporan Hari 30 -> pembaruan prioritas dan progres game
   D --- Hari 7    Membaca         Rekomendasi         Pemilik memahami
                   estimasi dan    berbasis            peluang penghematan
                   1--3 saran.     aturan/skor;        dan memilih
-                                  penjelasan Wati.    tindakan.
+                                  penjelasan Terra.    tindakan.
 
   E --- Hari      Menggunakan     P11--P13 dan        Pemantauan berbasis
   8--30           fitur Plus      layanan Plus.       input harian dan
                   selama trial:                       bukti hasil.
                   alert, prediksi                     
                   token, Tanya                        
-                  Wati, ROI,                          
+                  Terra, ROI,                          
                   laporan.                            
 
   F --- Hari 30   Membaca hasil   Verifikasi          Hasil "terbukti",
@@ -504,7 +504,7 @@ dan statusnya ditampilkan ke klien.
 Pengguna memiliki satu desa mini yang merepresentasikan satu kios/ruko
 usaha, dengan gaya *village builder* 2D (tampak isometrik atau samping).
 Bangunan di desa adalah alat-alat listrik usaha. Warga/penghuninya
-direpresentasikan oleh maskot Wati.
+direpresentasikan oleh maskot Terra.
 
   ---------------------------------------------------------------------
   Elemen game                        Arti di dunia nyata
@@ -877,7 +877,7 @@ WhatsApp opt-in agar tidak bergantung sepenuhnya pada push notification.
 
 ``` text
 â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ KLIEN: PWA / APK VIA CAPACITOR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚ Shell & Auth â”‚ Kios Virtual â”‚ Capture â”‚ Laporan â”‚ Wati     â”‚
+â”‚ Shell & Auth â”‚ Kios Virtual â”‚ Capture â”‚ Laporan â”‚ Terra     â”‚
 â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
                              â”‚ HTTPS: REST + WebSocket/polling
 â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â–¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
@@ -1100,7 +1100,7 @@ status proses, kegagalan, dan mekanisme coba ulang secara jelas.
                                                ditebus; menunggu
                                                anggaran/mitra.
 
-  FR-G8       Wati sebagai         S           Angka hanya berasal dari C2;
+  FR-G8       Terra sebagai         S           Angka hanya berasal dari C2;
               pemandu/penjelas.                label Simulasi/Estimasi
                                                ditampilkan.
 
@@ -1205,7 +1205,7 @@ status proses, kegagalan, dan mekanisme coba ulang secara jelas.
                                                         dengan batas
                                                         pengingat game.
 
-  FR-4.5            Tanya Wati di     S                 Mendukung
+  FR-4.5            Tanya Terra di     S                 Mendukung
                     aplikasi.                           suara/teks melalui
                                                         UI mikrofon dan
                                                         input teks;
@@ -1310,7 +1310,7 @@ sensor/AMI tersedia.
                                periode setelah                   
                                tindakan                          
 
-  P10       Tanya Wati         Pertanyaan dan  Jawaban dengan    LLM + tool
+  P10       Tanya Terra         Pertanyaan dan  Jawaban dengan    LLM + tool
                                data pengguna   sumber            terbatas
 
   P11       Peringatan         Pembacaan       Notifikasi        Aturan
@@ -1505,7 +1505,7 @@ Contoh format rekomendasi:
                           menghitung rentang      terlihat.
                           balik modal.            
 
-  P10 --- Tanya Wati      Tool use terbatas untuk Tidak boleh mengklaim
+  P10 --- Tanya Terra      Tool use terbatas untuk Tidak boleh mengklaim
                           mengambil estimasi,     data real-time tanpa
                           riwayat penggunaan,     sensor.
                           rekomendasi, dan        
@@ -1559,7 +1559,7 @@ dan AI.
 
 **Aturan emas C2:** game tidak boleh memiliki rumus hitung sendiri.
 Angka kWh/Rupiah yang muncul di simulasi, estimasi, rekomendasi,
-laporan, dan Tanya Wati harus bersumber dari pustaka yang sama.
+laporan, dan Tanya terra harus bersumber dari pustaka yang sama.
 
 ### 9.2 Katalog endpoint AI
 
@@ -1595,7 +1595,7 @@ laporan, dan Tanya Wati harus bersumber dari pustaka yang sama.
   `POST /ai/explain`       P8         Objek hasil                    Teks penjelasan
                                       estimasi/rekomendasi/laporan   tanpa angka baru
 
-  `POST /ai/ask`           P10        Pertanyaan Wati                Jawaban, sumber
+  `POST /ai/ask`           P10        Pertanyaan Terra                Jawaban, sumber
                                                                      data, keyakinan
   ---------------------------------------------------------------------------------------
 
@@ -1704,7 +1704,7 @@ Pengguna dapat mengedit hasil. - Istilah yang tidak dikenali masuk
 `display_level`: - `appliance`: keyakinan cukup untuk menampilkan
 estimasi per alat. - `category`: keyakinan rendah; tampilkan kategori.
 
-### 9.7 Contoh kontrak P10 --- Tanya Wati
+### 9.7 Contoh kontrak P10 --- Tanya Terra
 
 ``` json
 {
@@ -1804,9 +1804,9 @@ setelah itu data dihapus permanen sesuai kebijakan.
 
 ------------------------------------------------------------------------
 
-## 10. Wati --- asisten di dalam game dan aplikasi
+## 10. Terra --- asisten di dalam game dan aplikasi
 
-### 10.1 Peran Wati
+### 10.1 Peran Terra
 
   -----------------------------------------------------------------------
   Mode                    Fungsi                  Mesin
@@ -1826,28 +1826,28 @@ setelah itu data dihapus permanen sesuai kebijakan.
                           bila data ambigu,       
                           misalnya untuk M4.      
 
-  Tanya Wati              Menjawab pertanyaan     P10 `/ai/ask`; tersedia
+  Tanya Terra              Menjawab pertanyaan     P10 `/ai/ask`; tersedia
                           suara/teks berdasarkan  pada trial/Plus untuk
                           data usaha pengguna.    data asli.
   -----------------------------------------------------------------------
 
-### 10.2 Hak akses Wati
+### 10.2 Hak akses Terra
 
 -   Paket Gratis: hanya menjawab tentang simulasi dan cara bermain.
 -   Trial/Plus: dapat menjawab berdasarkan data asli yang tersedia dan
     entitlement yang sah.
--   Setelah trial tanpa Plus: Tanya Wati atas data asli terkunci.
+-   Setelah trial tanpa Plus: Tanya Terra atas data asli terkunci.
 -   Jawaban numerik wajib menyertakan label **Simulasi** atau
     **Estimasi**, keyakinan, dan sumber.
 -   "Belum cukup data" adalah jawaban yang valid.
--   Wati tidak boleh menyarankan tindakan berbahaya atau cara mengakali
+-   Terra tidak boleh menyarankan tindakan berbahaya atau cara mengakali
     meter/misi.
 -   Ekspresi maskot mengikuti status data (hemat/normal/lonjakan), bukan
     keputusan LLM.
 
 ### 10.3 Tool use dan keamanan
 
-Tool yang boleh digunakan Wati dibatasi pada: - `get_estimate` -
+Tool yang boleh digunakan Terra dibatasi pada: - `get_estimate` -
 `get_usage` - `get_recommendations` - `get_token_forecast`
 
 Ketentuan: - LLM tidak boleh menulis SQL bebas. - Semua tool dibatasi
@@ -1887,7 +1887,7 @@ dan diganti template.
                         berkelanjutan,        (hipotesis).
                         peringatan, prediksi  
                         token, ROI, Tanya     
-                        Wati, laporan.        
+                        Terra, laporan.        
 
   **Plus+ (roadmap)**   Sensor/AMI dan        `[X]`
                         pemantauan per alat   
@@ -1929,7 +1929,7 @@ merupakan hipotesis retensi, belum menjadi paket final.
 
   Hadiah nyata            Tidak Ya                       Ya Tidak
 
-  Tanya Wati              Tidak Ya                       Ya Tidak
+  Tanya Terra              Tidak Ya                       Ya Tidak
   atas data asli                                            
   -----------------------------------------------------------------------
 
@@ -2046,7 +2046,7 @@ memuat konten judi atau gacha berbayar.
 -   Eksperimen hanya boleh menyasar alat non-kritis dan harus mengikuti
     panduan.
 -   Setiap rekomendasi memuat catatan keselamatan.
--   Wati harus menolak permintaan yang mendorong manipulasi meter, cara
+-   Terra harus menolak permintaan yang mendorong manipulasi meter, cara
     mengakali misi, atau tindakan berbahaya.
 -   Tidak ada tindakan otomatis; pemilik memutuskan.
 
@@ -2098,7 +2098,7 @@ memuat konten judi atau gacha berbayar.
   P8 penjelas             Pelanggaran angka baru. 0%; pelanggaran
                                                   otomatis diblokir.
 
-  P10 Tanya Wati          Jawaban bersumber dan   100% memiliki `sources`
+  P10 Tanya Terra          Jawaban bersumber dan   100% memiliki `sources`
                           jujur saat data kurang. atau menyatakan "belum
                                                   cukup data".
 
@@ -2171,7 +2171,7 @@ admin harus memperlihatkan akurasi berjalan.
                                      penjelas.              pelanggaran
                                                             angka baru.
 
-  T5             Maret--April 2027   P10 Wati, P11--P13     Hasil evaluasi
+  T5             Maret--April 2027   P10 Terra, P11--P13     Hasil evaluasi
                                      Plus, kalibrasi sensor pilot.
                                      pilot.                 
   ------------------------------------------------------------------------
@@ -2293,7 +2293,7 @@ pengguna.
 ### 15.1 Alasan trial 30 hari
 
 Trial 30 hari dirancang untuk mencakup satu siklus tagihan sehingga
-Voltra dapat membandingkan hasil terhadap baseline. Trial dimulai saat
+Voltess dapat membandingkan hasil terhadap baseline. Trial dimulai saat
 data asli pertama kali terhubung, bukan ketika pengguna pertama kali
 membuka game.
 
@@ -2348,7 +2348,7 @@ April 2027, dan Demo Day Mei 2027.
   2 --- Pilot  Mar--Apr     Langganan Plus Hadiah nyata Sensor pembanding
   berbayar     2027         dan            dan uji      di 2--3 usaha;
                             pembayaran.    varian       alert, token, ROI,
-                                           retensi.     Tanya Wati.
+                                           retensi.     Tanya Terra.
 
   3 ---        Setelah Mei  Multi-kios     Template     Sensor/AMI dan
   Lanjutan     2027         setelah fase   tambahan.    sponsor.
@@ -2688,7 +2688,7 @@ serta keputusan platform.
 ## 18. Glosarium
 
   ---------------------------------------------------------------------
-  Istilah                            Arti dalam Voltra
+  Istilah                            Arti dalam Voltess
   ---------------------------------- ----------------------------------
   Kios Virtual                       Game simulasi yang
                                      merepresentasikan usaha pengguna
@@ -2769,7 +2769,7 @@ serta keputusan platform.
 -   PRD aplikasi menambahkan arsitektur, API, model data, strategi AI
     mock ke live, dan opsi platform mobile.
 -   PRD gamifikasi menambahkan skema template, mesin misi, aturan level,
-    anti-curang, dan peran Wati.
+    anti-curang, dan peran Terra.
 -   PRD AI menambahkan pipeline per langkah, skema JSON, ambang
     keyakinan, rencana evaluasi, dan contoh hitung.
 
@@ -2807,6 +2807,6 @@ Dokumen terpadu ini:
 -   Mempertahankan nilai `[X]`, harga, target, dan ambang yang belum
     diuji sebagai hipotesis.
 
-**Prinsip akhir:** Voltra harus terasa sebagai satu produk yang utuh
+**Prinsip akhir:** Voltess harus terasa sebagai satu produk yang utuh
 bagi pengguna, meskipun secara teknis dibangun dari modul aplikasi,
 game, dan AI yang memiliki tanggung jawab berbeda.

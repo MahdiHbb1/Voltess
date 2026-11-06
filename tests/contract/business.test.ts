@@ -6,7 +6,7 @@
 import { describe, it, expect } from 'vitest';
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
-import type { BusinessProfilePayload, BusinessProfile } from '@voltra/contracts';
+import type { BusinessProfilePayload, BusinessProfile } from '@voltess/contracts';
 
 const ajv = new Ajv({ strict: true, allErrors: true });
 addFormats(ajv);

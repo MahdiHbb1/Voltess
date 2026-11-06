@@ -7,7 +7,7 @@
 
 import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common';
 import { EntitlementService } from './entitlement.service';
-import type { ApiErrorBody } from '@voltra/contracts';
+import type { ApiErrorBody } from '@voltess/contracts';
 
 @Injectable()
 export class AiEntitlementGuard implements CanActivate {

@@ -16,7 +16,7 @@ Sumber tanggal: PRD v0.3.1 Bagian 16. Tanggal bersifat indikatif dan bergantung 
 |---|---|---|---|---|
 | **0 — Validasi** | Nov 2026–Jan 2027 | Kerangka aplikasi, auth, AI mock | Prototipe Kios Virtual 1 template | ≥50 foto meter, ≥50 voice note, uji OCR/STT, katalog 3 template |
 | **1 — MVP** | Jan–Feb 2027 | Trial, laporan, notifikasi, admin dasar | 3 template, M1–M4, level | Estimasi + cross-validation v0, rekomendasi v0, AI live bertahap |
-| **2 — Pilot berbayar** | Mar–Apr 2027 | Plus dan pembayaran | Hadiah nyata, uji retensi | Sensor pembanding 2–3 usaha, alert, token, ROI, Tanya Wati |
+| **2 — Pilot berbayar** | Mar–Apr 2027 | Plus dan pembayaran | Hadiah nyata, uji retensi | Sensor pembanding 2–3 usaha, alert, token, ROI, Tanya Terra |
 | **3 — Lanjutan** | Setelah Mei 2027 | Multi-kios | Template tambahan | Sensor/AMI, sponsor |
 
 ## Sprint
@@ -66,7 +66,7 @@ Aturan eksekusi:
 - [ ] Alur tamu → trial → Laporan Pertama → saran → Laporan Hasil berjalan end-to-end.
 - [ ] OCR meter ≥90% pada 50 foto; STT/ekstraksi ≥85% pada 50 pesan.
 - [ ] Tidak ada angka baru dari LLM (validator 0 pelanggaran).
-- [ ] Semua jawaban Tanya Wati punya `sources` atau menyatakan "belum cukup data".
+- [ ] Semua jawaban Tanya Terra punya `sources` atau menyatakan "belum cukup data".
 - [ ] Entitlement diperiksa server; data dibatasi `business_id`.
 - [ ] Pengguna dapat melihat dan menghapus akun/data.
 - [ ] E2E regression lulus di 5 perangkat Android umum.
@@ -80,6 +80,6 @@ Aturan eksekusi:
 
 ## Scope guard MVP
 
-**Masuk:** 3 template + Kustom, satu kios per pengguna, Kios Virtual, M1–M4, trial 30 hari, Laporan Hari 7/Hari 30, Plus, Tanya Wati, admin dasar, privasi.
+**Masuk:** 3 template + Kustom, satu kios per pengguna, Kios Virtual, M1–M4, trial 30 hari, Laporan Hari 7/Hari 30, Plus, Tanya Terra, admin dasar, privasi.
 
 **Tidak masuk rilis awal:** sensor/IoT/AMI real-time, multi-kios, PPOB, integrasi Gmail, modul air/gas, akun karyawan penuh, sponsor/kohort aktif.

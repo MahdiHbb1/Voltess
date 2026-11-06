@@ -8,7 +8,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { BusinessModule } from '../../apps/api/src/business/business.module';
-import type { BusinessProfilePayload, BusinessProfile } from '@voltra/contracts';
+import type { BusinessProfilePayload, BusinessProfile } from '@voltess/contracts';
 import { ELECTRICITY_RATES } from '../../apps/api/src/business/electricity-rates.config';
 
 describe('Business Integration', () => {

@@ -8,7 +8,7 @@
 
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import type { Request, Response, NextFunction } from 'express';
-import type { ApiErrorBody } from '@voltra/contracts';
+import type { ApiErrorBody } from '@voltess/contracts';
 
 interface RateLimitEntry {
   count: number;

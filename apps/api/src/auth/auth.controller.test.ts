@@ -7,7 +7,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import type { OtpRequestPayload } from '@voltra/contracts';
+import type { OtpRequestPayload } from '@voltess/contracts';
 
 describe('AuthController', () => {
   let controller: AuthController;

@@ -1,6 +1,6 @@
 # energy-calc
 
-`@voltra/energy-calc` adalah satu-satunya tempat rumus kWh dan Rupiah (ADR-003, aturan emas C2). FE, API, laporan, game, dan Wati wajib memakai paket ini; tidak boleh ada rumus duplikat di modul lain.
+`@voltess/energy-calc` adalah satu-satunya tempat rumus kWh dan Rupiah (ADR-003, aturan emas C2). FE, API, laporan, game, dan Terra wajib memakai paket ini; tidak boleh ada rumus duplikat di modul lain.
 
 **Versi mesin:** `0.1.0` (`ENGINE_VERSION`). Setiap hasil C2 membawa nilai ini.
 
@@ -26,7 +26,7 @@ import {
   roundRp,
   assessConfidence,
   estimate,
-} from '@voltra/energy-calc';
+} from '@voltess/energy-calc';
 ```
 
 | Fungsi | Kegunaan |

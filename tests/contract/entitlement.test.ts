@@ -10,7 +10,7 @@ import type {
   Entitlement,
   EntitlementStatusChange,
   EntitlementStatusResponse,
-} from '@voltra/contracts';
+} from '@voltess/contracts';
 
 describe('C5: Entitlement state matrix', () => {
   describe('Feature matrix by status', () => {
@@ -21,7 +21,7 @@ describe('C5: Entitlement state matrix', () => {
             kios: true,
             m1: true,
             ai_analysis: false,
-            wati_real_data: false,
+            terra_real_data: false,
             cosmetic_rewards: true,
           };
         case 'trial':
@@ -29,7 +29,7 @@ describe('C5: Entitlement state matrix', () => {
             kios: true,
             m1: true,
             ai_analysis: true,
-            wati_real_data: true,
+            terra_real_data: true,
             cosmetic_rewards: true,
           };
         case 'plus':
@@ -37,7 +37,7 @@ describe('C5: Entitlement state matrix', () => {
             kios: true,
             m1: true,
             ai_analysis: true,
-            wati_real_data: true,
+            terra_real_data: true,
             cosmetic_rewards: true,
           };
         case 'locked':
@@ -45,7 +45,7 @@ describe('C5: Entitlement state matrix', () => {
             kios: true,
             m1: true,
             ai_analysis: false,
-            wati_real_data: false,
+            terra_real_data: false,
             cosmetic_rewards: true,
           };
       }
@@ -65,7 +65,7 @@ describe('C5: Entitlement state matrix', () => {
       expect(features.kios).toBe(true);
       expect(features.m1).toBe(true);
       expect(features.ai_analysis).toBe(true);
-      expect(features.wati_real_data).toBe(true);
+      expect(features.terra_real_data).toBe(true);
     });
 
     it('plus: all features unlocked', () => {
@@ -73,7 +73,7 @@ describe('C5: Entitlement state matrix', () => {
       expect(features.kios).toBe(true);
       expect(features.m1).toBe(true);
       expect(features.ai_analysis).toBe(true);
-      expect(features.wati_real_data).toBe(true);
+      expect(features.terra_real_data).toBe(true);
     });
 
     it('locked: game + simulasi, AI locked', () => {

@@ -5,7 +5,7 @@ import type {
   VerificationStatus,
   MissionPayload,
   Confidence,
-} from '@voltra/contracts';
+} from '@voltess/contracts';
 
 /** Mission event entity - DB model */
 export interface MissionEventEntity {

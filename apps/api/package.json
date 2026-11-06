@@ -1,5 +1,5 @@
 {
-  "name": "@voltra/api",
+  "name": "@voltess/api",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -9,11 +9,14 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "@nestjs/common": "12.3.3",
     "@nestjs/core": "12.3.3",
     "@nestjs/platform-express": "12.3.3",
-    "@voltra/contracts": "workspace:*",
-    "@voltra/energy-calc": "workspace:*",
+    "@supabase/supabase-js": "^2.119.0",
+    "@voltess/contracts": "workspace:*",
+    "@voltess/energy-calc": "workspace:*",
+    "assemblyai": "^4.42.0",
     "reflect-metadata": "0.2.2",
     "rxjs": "7.8.2"
   },

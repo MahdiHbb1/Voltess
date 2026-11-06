@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
-import type { ErrorCode } from '@voltra/contracts';
+import type { ErrorCode } from '@voltess/contracts';
 
 /** Error yang selalu dipetakan ke bentuk C3 oleh AiExceptionFilter. */
 export class AiGatewayException extends HttpException {

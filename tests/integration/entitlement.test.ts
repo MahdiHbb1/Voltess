@@ -8,7 +8,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { EntitlementModule } from '../../apps/api/src/entitlement/entitlement.module';
-import type { EntitlementStatusResponse, Entitlement } from '@voltra/contracts';
+import type { EntitlementStatusResponse, Entitlement } from '@voltess/contracts';
 
 describe('Entitlement Integration', () => {
   let app: INestApplication;

@@ -5,7 +5,7 @@
 
 import { Controller, Get, Post, Patch, Body, Param, Request } from '@nestjs/common';
 import { BusinessService } from './business.service';
-import type { BusinessProfilePayload, BusinessProfile } from '@voltra/contracts';
+import type { BusinessProfilePayload, BusinessProfile } from '@voltess/contracts';
 
 @Controller('business')
 export class BusinessController {

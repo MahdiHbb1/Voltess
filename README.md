@@ -1,6 +1,6 @@
-# Voltra
+# Voltess
 
-Voltra membantu pemilik UMKM menjawab dua pertanyaan:
+Voltess membantu pemilik UMKM menjawab dua pertanyaan:
 
 1. **Ke mana uang listrik usaha saya pergi?**
 2. **Apa yang harus saya ubah agar pemakaian listrik lebih efisien?**
@@ -57,8 +57,8 @@ Stack ini **sudah dikunci untuk S1**. Keputusan O1/O4/O17 ada di ADR-001/003/004
 ## Tracking
 
 - **Project board:** <https://github.com/users/MahdiHbb1/projects/3> — 53 issue, field Owner/Workstream/Sprint/Priority/QA Gate/Estimate
-- **Issues:** <https://github.com/MahdiHbb1/voltra/issues>
-- **Milestones:** <https://github.com/MahdiHbb1/voltra/milestones>
+- **Issues:** <https://github.com/MahdiHbb1/Voltess/issues>
+- **Milestones:** <https://github.com/MahdiHbb1/Voltess/milestones>
 
 ## Tim
 
@@ -73,10 +73,10 @@ Detail ownership ada di [`docs/TEAM.md`](docs/TEAM.md).
 
 ## Prinsip yang tidak boleh dilanggar
 
-- **Satu sumber hitung.** Semua kWh/Rupiah berasal dari paket `energy-calc`; game, backend, laporan, dan Wati tidak boleh punya rumus sendiri.
+- **Satu sumber hitung.** Semua kWh/Rupiah berasal dari paket `energy-calc`; game, backend, laporan, dan Terra tidak boleh punya rumus sendiri.
 - **LLM tidak membuat angka.** LLM hanya menjelaskan angka yang sudah dihitung. Validator memblokir angka baru.
 - **Keyakinan eksplisit.** Setiap estimasi membawa Tinggi/Sedang/Rendah; data kurang ditampilkan sebagai "belum cukup data".
-- **Tidak ada klaim real-time.** Tanpa sensor/AMI, Voltra menganalisis setelah input masuk, bukan memantau tiap alat 24 jam.
+- **Tidak ada klaim real-time.** Tanpa sensor/AMI, Voltess menganalisis setelah input masuk, bukan memantau tiap alat 24 jam.
 - **Selisih tidak dibagi paksa.** Energi yang belum terjelaskan ditampilkan apa adanya.
 - **Manusia memutuskan.** Rekomendasi tidak dijalankan otomatis; pemilik usaha menyetujui, menolak, atau menunda.
 - **Mock berlabel "Contoh".** Mock tidak boleh menampilkan penghematan pasti dan tidak boleh dipakai di pilot/produksi.
