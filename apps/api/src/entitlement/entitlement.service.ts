@@ -101,6 +101,9 @@ export class EntitlementService {
     ent.features = this.getFeaturesForStatus('plus');
     ent.updated_at = new Date().toISOString();
 
+    // Clear trial state on plus upgrade
+    this.trialService.clearTrial(businessId);
+
     this.recordStatusChange(businessId, fromStatus, 'plus', reason, 'system');
 
     return ent;

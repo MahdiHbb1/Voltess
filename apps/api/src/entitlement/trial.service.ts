@@ -118,6 +118,11 @@ export class TrialService {
     return new Date();
   }
 
+  /** Clear trial state (on plus upgrade) */
+  clearTrial(businessId: string): void {
+    this.trials.delete(businessId);
+  }
+
   /** Clear all - for tests */
   clearAll(): void {
     this.trials.clear();
