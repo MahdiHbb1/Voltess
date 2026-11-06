@@ -16,8 +16,18 @@ app.use(express.json({ limit: '10mb' })); // Support base64 images
 app.use('/api/ai', aiRoutes);
 
 // Health check
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+app.get('/health', async (req, res) => {
+  const db = require('./services/db');
+  try {
+    const { error } = await db.from('users').select('count', { count: 'exact', head: true });
+    res.json({ 
+      status: 'ok', 
+      db: error ? 'error' : 'connected',
+      timestamp: new Date().toISOString() 
+    });
+  } catch (e) {
+    res.json({ status: 'ok', db: 'error', timestamp: new Date().toISOString() });
+  }
 });
 
 // 404

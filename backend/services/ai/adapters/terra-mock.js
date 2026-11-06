@@ -1,5 +1,5 @@
-// Wati chatbot fallback - P10 rule-based FAQ
-// ponytail: integrate real Wati API when chatbot use grows beyond FAQ patterns
+// Terra chatbot fallback - P10 rule-based FAQ
+// ponytail: integrate real Terra API when chatbot use grows beyond FAQ patterns
 
 const faqs = {
   // Keuangan
