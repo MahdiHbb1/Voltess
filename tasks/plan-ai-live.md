@@ -35,8 +35,9 @@ Implement live AI adapters (Gemini 3.5 Flash-Lite + AssemblyAI) menggantikan moc
 
 ### 5. AssemblyAI Integration
 - Use async mode (upload → poll status → get transcript)
-- Webhook callback for real-time updates (optional Phase 6)
+- Webhook callback for real-time updates (implement now for long voice notes)
 - Track audio duration, not request count
+- Support voice notes >10 seconds without timeout
 
 ### 6. P11-P13 Implementation
 - P11 Alert: Statistical anomaly detection (median ± MAD threshold)
@@ -109,12 +110,15 @@ Implement live AI adapters (Gemini 3.5 Flash-Lite + AssemblyAI) menggantikan moc
 
 ### Phase 3: AssemblyAI STT Adapter (P4)
 
-- [ ] **Task 3.1:** Implement AssemblyAI STT adapter
+- [ ] **Task 3.1:** Implement AssemblyAI STT adapter with webhook
   - Create `AssemblyAiSttAdapter` class
   - Implement `transcribeAudio(audioFile)` async method
-  - Upload audio → poll status → return transcript
-  - Map response to C3 schema (P4)
-  - **Files:** `apps/api/src/ai/adapters/live/assemblyai-stt.adapter.ts`
+  - Upload audio with webhook URL
+  - Create webhook endpoint `POST /webhooks/assemblyai-callback`
+  - Store job status in Supabase (pending/completed/failed)
+  - Return job_id immediately, client polls for completion
+  - Map completed response to C3 schema (P4)
+  - **Files:** `apps/api/src/ai/adapters/live/assemblyai-stt.adapter.ts`, `apps/api/src/webhooks/assemblyai.controller.ts`
 
 - [ ] **Task 3.2:** Implement STT extraction logic (P4)
   - Parse transcript for appliance names, hours, volumes
@@ -144,12 +148,14 @@ Implement live AI adapters (Gemini 3.5 Flash-Lite + AssemblyAI) menggantikan moc
   - Validate no new numbers in output (numbers_used: [])
   - **Files:** `apps/api/src/ai/adapters/live/gemini-llm.adapter.ts`
 
-- [ ] **Task 4.2:** Implement Gemini LLM Ask adapter (P10)
+- [ ] **Task 4.2:** Implement Gemini LLM Ask adapter (P10) with tools
   - Implement `ask(businessId, question, conversationId?)` method
-  - Tool use: fetch estimasi, riwayat, rekomendasi from DB
-  - Return answer with sources
+  - Define tools: `getEstimate`, `getHistory`, `getRecommendations`, `getPrediction`
+  - Permission check: user can only query their own business_id
+  - Tool execution: fetch from DB (estimates, history, recommendations tables)
+  - Return answer with sources (which tools were called)
   - Handle low confidence → suggest missions
-  - **Files:** `apps/api/src/ai/adapters/live/gemini-llm.adapter.ts`
+  - **Files:** `apps/api/src/ai/adapters/live/gemini-llm.adapter.ts`, `apps/api/src/ai/tools/wati-tools.service.ts`
 
 - [ ] **Task 4.3:** Wire P8, P10 pipelines to use live adapter
   - Update `p8-explain.ts` to use Gemini LLM adapter
@@ -198,7 +204,14 @@ Implement live AI adapters (Gemini 3.5 Flash-Lite + AssemblyAI) menggantikan moc
 
 ---
 
-### Phase 6: Fallback Logic
+### Phase 6: Fallback Logic & Frontend Contract
+
+- [ ] **Task 6.0:** Define fallback contract with Dhifansa
+  - Create `packages/contracts/src/fallback.ts` types
+  - Type: `{ fallbackAvailable: boolean, fallbackData: { type, ...}, userMessage }`
+  - Document fallback UI requirements
+  - Coordinate with Dhifansa on implementation timeline
+  - **Files:** `packages/contracts/src/fallback.ts`, `docs/FALLBACK-CONTRACT.md`
 
 - [ ] **Task 6.1:** Implement STT fallback service
   - Return `fallbackAvailable: true` when STT quota exceeded
@@ -316,9 +329,11 @@ Implement live AI adapters (Gemini 3.5 Flash-Lite + AssemblyAI) menggantikan moc
 
 - [ ] **Task 9.3:** Create monitoring dashboard
   - Track daily usage per pipeline
-  - Alert at 80% quota (400/500 RPD Gemini)
-  - Alert at 80% AssemblyAI usage (148/185 hours)
-  - **Files:** `apps/api/src/monitoring/usage-tracker.service.ts`
+  - Alert at 85% quota (425/500 RPD Gemini)
+  - Alert at 85% AssemblyAI usage (157/185 hours)
+  - Usage graph with 85% threshold line visualization
+  - Dashboard only (no email/Slack alerts)
+  - **Files:** `apps/api/src/monitoring/usage-tracker.service.ts`, `apps/web/src/app/admin/usage-dashboard.tsx`
 
 - [ ] **Task 9.4:** Load test with 1-3 simulated users
   - Simulate typical usage pattern
@@ -345,32 +360,32 @@ Implement live AI adapters (Gemini 3.5 Flash-Lite + AssemblyAI) menggantikan moc
 | Vercel function timeout (10s) | Medium | Medium | AssemblyAI async mode (webhook), increase timeout to 30s if needed |
 | User confusion with fallback UI | Medium | Low | Clear messaging, test with real users, iterate on copy |
 
-## Open Questions
+## Decisions (Resolved)
 
-1. **Supabase KV schema?**
-   - Key format: `rate_limit:{userId}:{pipeline}:{date}`
-   - Value: `{ count: number, resetAt: string }`
-   - **Decision needed:** Confirm schema before Task 5.1
+1. **Supabase KV schema:** ✅
+   - Key format: `rl:{date}:{userId}:{pipeline}` (efficient sorting by date)
+   - Value: `{ count: number, resetAt: ISO8601, firstUsedAt: ISO8601 }`
+   - Index pattern allows fast cleanup of expired keys
 
-2. **AssemblyAI webhook setup?**
-   - For async transcription completion
-   - Required for long audio (>10s)?
-   - **Decision needed:** Implement in Phase 3 or defer to Phase 10?
+2. **AssemblyAI webhook setup:** ✅
+   - Implement in Phase 3 (now, not deferred)
+   - Required for voice notes >10 seconds
+   - Webhook endpoint: `POST /webhooks/assemblyai-callback`
 
-3. **P10 Wati tools implementation?**
-   - Which DB tables to query (estimasi, riwayat, rekomendasi)?
-   - Permission check (user can only see their own data)?
-   - **Decision needed:** Define tool signatures before Task 4.2
+3. **P10 Wati tools implementation:** ✅
+   - Access: estimates, history, recommendations (all data)
+   - Permission check: user can only query their own business_id
+   - Tools: `getEstimate`, `getHistory`, `getRecommendations`, `getPrediction`
 
-4. **Frontend integration?**
-   - Who handles fallback UI (Dhifansa scope)?
-   - API contract for fallback data (`fallbackAvailable`, `fallbackData`)?
-   - **Decision needed:** Coordinate with Dhifansa before Phase 6
+4. **Frontend integration:** ✅
+   - Coordinate with Dhifansa for fallback UI
+   - API contract: `{ fallbackAvailable: boolean, fallbackData: { type, ...}, userMessage }`
+   - Create shared types in `packages/contracts/src/fallback.ts`
 
-5. **Cost alerting threshold?**
-   - Alert at 80%, 90%, or 95% usage?
-   - Who receives alerts (email, Slack)?
-   - **Decision needed:** Set up alerting before Task 9.3
+5. **Cost alerting threshold:** ✅
+   - Alert at 85% quota usage (425/500 Gemini, 157/185 AssemblyAI)
+   - Dashboard only (no email/Slack for now)
+   - Usage graph with threshold line visualization
 
 ## Success Metrics
 

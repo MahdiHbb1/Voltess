@@ -15,6 +15,8 @@ export interface AiConfig {
   mode: AiMode;
   defaultScenario: AiScenario;
   allowScenarioOverride: boolean;
+  geminiApiKey?: string;
+  assemblyaiApiKey?: string;
 }
 
 export function isAiScenario(value: string): value is AiScenario {
@@ -53,9 +55,37 @@ export function resolveAiConfig(env: NodeJS.ProcessEnv = process.env): AiConfig 
     );
   }
 
+  // Validate API keys when live mode is enabled
+  const geminiApiKey = env.GEMINI_API_KEY;
+  const assemblyaiApiKey = env.ASSEMBLYAI_API_KEY;
+
+  if (mode === 'live') {
+    const missingKeys: string[] = [];
+    
+    if (!geminiApiKey || geminiApiKey.trim() === '') {
+      missingKeys.push('GEMINI_API_KEY');
+    }
+    
+    if (!assemblyaiApiKey || assemblyaiApiKey.trim() === '') {
+      missingKeys.push('ASSEMBLYAI_API_KEY');
+    }
+
+    if (missingKeys.length > 0) {
+      throw new Error(
+        `AI_MODE=live membutuhkan API keys. Keys yang hilang: ${missingKeys.join(', ')}.\n` +
+        `Dapatkan keys dari:\n` +
+        `  - Gemini: https://aistudio.google.com/app/apikey\n` +
+        `  - AssemblyAI: https://www.assemblyai.com/dashboard\n` +
+        `Tambahkan ke .env atau environment variables.`
+      );
+    }
+  }
+
   return {
     mode,
     defaultScenario,
     allowScenarioOverride: mode === 'mock' && !isProtectedEnvironment,
+    geminiApiKey,
+    assemblyaiApiKey,
   };
 }

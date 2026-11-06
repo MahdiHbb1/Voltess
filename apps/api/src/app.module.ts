@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { AiController } from './ai/ai.controller';
 import { AiModule } from './ai/ai.module';
 import { AuthController } from './auth/auth.controller';
+import { PrivacyController } from './auth/privacy.controller';
 import { AuthModule } from './auth/auth.module';
 import { BusinessController } from './business/business.controller';
 import { BusinessModule } from './business/business.module';
@@ -25,7 +26,7 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
     consumer
       .apply(RequestIdMiddleware)
-      .forRoutes(AiController, AuthController, BusinessController, CaptureController, EntitlementController, AppController);
+      .forRoutes(AiController, AuthController, PrivacyController, BusinessController, CaptureController, EntitlementController, AppController);
     
     consumer
       .apply(IdempotencyMiddleware)
