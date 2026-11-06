@@ -6,7 +6,7 @@ Membangun Voltess dari Fase 0 sampai MVP internal: PWA mobile untuk Kios Virtual
 
 **Target:** MVP internal akhir Februari 2027, pilot Maret–April 2027, Demo Day Mei 2027.
 
-**Board:** <https://github.com/users/MahdiHbb1/projects/3> · **Issues:** <https://github.com/MahdiHbb1/voltra/issues> · **Milestones:** <https://github.com/MahdiHbb1/voltra/milestones>
+**Board:** <https://github.com/users/MahdiHbb1/projects/3> · **Issues:** <https://github.com/MahdiHbb1/voltess/issues> · **Milestones:** <https://github.com/MahdiHbb1/voltess/milestones>
 
 ## Strategi delivery
 
@@ -36,22 +36,22 @@ Issue GitHub adalah sumber status. Tabel ini hanya indeks urutan kerja; `VOLT-xx
 
 | ID | Issue | Owner | Prioritas | Est. |
 |---|---|---|---|---|
-| VOLT-01 | [#1 Wawancara 30 UMKM + sintesis](https://github.com/MahdiHbb1/voltra/issues/1) | Tim | P1 | 8 |
-| VOLT-02 | [#2 Dataset D-OCR/D-STT + label evaluasi](https://github.com/MahdiHbb1/voltra/issues/2) | Yusri | P0 | 8 |
+| VOLT-01 | [#1 Wawancara 30 UMKM + sintesis](https://github.com/MahdiHbb1/voltess/issues/1) | Tim | P1 | 8 |
+| VOLT-02 | [#2 Dataset D-OCR/D-STT + label evaluasi](https://github.com/MahdiHbb1/voltess/issues/2) | Yusri | P0 | 8 |
 
 ### S1 — Fondasi & Kontrak (9–22 Nov 2026) · 24 hari
 
 | ID | Issue | Owner | Prioritas | Est. |
 |---|---|---|---|---|
-| VOLT-03 | [#3 Fondasi monorepo, workspace, CI](https://github.com/MahdiHbb1/voltra/issues/3) | Mahdi | P0 | 3 |
-| VOLT-04 | [#4 Bekukan C1–C6 v0 + OpenAPI](https://github.com/MahdiHbb1/voltra/issues/4) | Mahdi | P0 | 3 |
-| VOLT-05 | [#5 Spike O1/O4/O17](https://github.com/MahdiHbb1/voltra/issues/5) | Mahdi | P0 | 1 |
-| VOLT-06 | [#6 Shell FE, design token, PWA](https://github.com/MahdiHbb1/voltra/issues/6) | Dhifansa | P0 | 3 |
-| VOLT-07 | [#7 Prototipe Kios Virtual 1 template](https://github.com/MahdiHbb1/voltra/issues/7) | Dhifansa | P0 | 4 |
-| VOLT-08 | [#8 AI Gateway mock + fixture gagal](https://github.com/MahdiHbb1/voltra/issues/8) | Mahdi | P0 | 3 |
-| VOLT-09 | [#9 Fondasi QA + Playwright + smoke CI](https://github.com/MahdiHbb1/voltra/issues/9) | Yusri | P0 | 2 |
+| VOLT-03 | [#3 Fondasi monorepo, workspace, CI](https://github.com/MahdiHbb1/voltess/issues/3) | Mahdi | P0 | 3 |
+| VOLT-04 | [#4 Bekukan C1–C6 v0 + OpenAPI](https://github.com/MahdiHbb1/voltess/issues/4) | Mahdi | P0 | 3 |
+| VOLT-05 | [#5 Spike O1/O4/O17](https://github.com/MahdiHbb1/voltess/issues/5) | Mahdi | P0 | 1 |
+| VOLT-06 | [#6 Shell FE, design token, PWA](https://github.com/MahdiHbb1/voltess/issues/6) | Dhifansa | P0 | 3 |
+| VOLT-07 | [#7 Prototipe Kios Virtual 1 template](https://github.com/MahdiHbb1/voltess/issues/7) | Dhifansa | P0 | 4 |
+| VOLT-08 | [#8 AI Gateway mock + fixture gagal](https://github.com/MahdiHbb1/voltess/issues/8) | Mahdi | P0 | 3 |
+| VOLT-09 | [#9 Fondasi QA + Playwright + smoke CI](https://github.com/MahdiHbb1/voltess/issues/9) | Yusri | P0 | 2 |
 | VOLT-10 | [#10 Inventaris placeholder AI + matriks live T0–T5](https://github.com/MahdiHbb1/voltess/issues/10) | Mahdi | P1 | 2 |
-| VOLT-11 | [#11 Katalog template v0 + verifikasi sumber](https://github.com/MahdiHbb1/voltra/issues/11) | Dhifansa | P1 | 3 |
+| VOLT-11 | [#11 Katalog template v0 + verifikasi sumber](https://github.com/MahdiHbb1/voltess/issues/11) | Dhifansa | P1 | 3 |
 
 **Checkpoint S1:** kontrak beku, CI hijau, FE dan BE dapat bekerja paralel dari mock.
 
@@ -59,16 +59,16 @@ Issue GitHub adalah sumber status. Tabel ini hanya indeks urutan kerja; `VOLT-xx
 
 | ID | Issue | Owner | Prioritas | Est. |
 |---|---|---|---|---|
-| VOLT-12 | [#12 Contract test C1–C6 di CI](https://github.com/MahdiHbb1/voltra/issues/12) | Yusri | P0 | 2 |
-| VOLT-13 | [#13 FE mode tamu + klaim akun](https://github.com/MahdiHbb1/voltra/issues/13) | Dhifansa | P0 | 3 |
-| VOLT-14 | [#14 BE auth OTP + merge tamu + consent](https://github.com/MahdiHbb1/voltra/issues/14) | Mahdi | P0 | 4 |
-| VOLT-15 | [#15 BE profil usaha + tarif + tipe pembayaran](https://github.com/MahdiHbb1/voltra/issues/15) | Mahdi | P0 | 3 |
-| VOLT-16 | [#16 BE entitlement + guard server](https://github.com/MahdiHbb1/voltra/issues/16) | Mahdi | P0 | 3 |
-| VOLT-17 | [#17 Integrasi shell game + personalisasi](https://github.com/MahdiHbb1/voltra/issues/17) | Dhifansa | P1 | 3 |
-| VOLT-18 | [#18 FE M1 foto label + koreksi](https://github.com/MahdiHbb1/voltra/issues/18) | Dhifansa | P0 | 3 |
-| VOLT-19 | [#19 BE M1 capture label + OCR mock](https://github.com/MahdiHbb1/voltra/issues/19) | Mahdi | P0 | 3 |
-| VOLT-20 | [#20 QA E2E auth/klaim/entitlement](https://github.com/MahdiHbb1/voltra/issues/20) | Yusri | P1 | 2 |
-| VOLT-21 | [#21 energy-calc core P5 + golden test](https://github.com/MahdiHbb1/voltra/issues/21) | Mahdi | P0 | 5 |
+| VOLT-12 | [#12 Contract test C1–C6 di CI](https://github.com/MahdiHbb1/voltess/issues/12) | Yusri | P0 | 2 |
+| VOLT-13 | [#13 FE mode tamu + klaim akun](https://github.com/MahdiHbb1/voltess/issues/13) | Dhifansa | P0 | 3 |
+| VOLT-14 | [#14 BE auth OTP + merge tamu + consent](https://github.com/MahdiHbb1/voltess/issues/14) | Mahdi | P0 | 4 |
+| VOLT-15 | [#15 BE profil usaha + tarif + tipe pembayaran](https://github.com/MahdiHbb1/voltess/issues/15) | Mahdi | P0 | 3 |
+| VOLT-16 | [#16 BE entitlement + guard server](https://github.com/MahdiHbb1/voltess/issues/16) | Mahdi | P0 | 3 |
+| VOLT-17 | [#17 Integrasi shell game + personalisasi](https://github.com/MahdiHbb1/voltess/issues/17) | Dhifansa | P1 | 3 |
+| VOLT-18 | [#18 FE M1 foto label + koreksi](https://github.com/MahdiHbb1/voltess/issues/18) | Dhifansa | P0 | 3 |
+| VOLT-19 | [#19 BE M1 capture label + OCR mock](https://github.com/MahdiHbb1/voltess/issues/19) | Mahdi | P0 | 3 |
+| VOLT-20 | [#20 QA E2E auth/klaim/entitlement](https://github.com/MahdiHbb1/voltess/issues/20) | Yusri | P1 | 2 |
+| VOLT-21 | [#21 energy-calc core P5 + golden test](https://github.com/MahdiHbb1/voltess/issues/21) | Mahdi | P0 | 5 |
 
 **Checkpoint S2:** pengguna tamu dapat mengklaim progres; entitlement tidak bisa dibypass dari FE; mesin hitung P5 lulus golden test.
 
@@ -76,13 +76,13 @@ Issue GitHub adalah sumber status. Tabel ini hanya indeks urutan kerja; `VOLT-xx
 
 | ID | Issue | Owner | Prioritas | Est. |
 |---|---|---|---|---|
-| VOLT-22 | [#22 BE capture upload + storage + status job](https://github.com/MahdiHbb1/voltra/issues/22) | Mahdi | P0 | 4 |
-| VOLT-23 | [#23 FE kamera/unggah + fallback manual](https://github.com/MahdiHbb1/voltra/issues/23) | Dhifansa | P0 | 4 |
-| VOLT-24 | [#24 FE antrean offline + retry](https://github.com/MahdiHbb1/voltra/issues/24) | Dhifansa | P0 | 3 |
-| VOLT-25 | [#25 FE konfirmasi/koreksi + label evaluasi](https://github.com/MahdiHbb1/voltra/issues/25) | Dhifansa | P0 | 3 |
-| VOLT-26 | [#26 BE M2 meter + anti-curang](https://github.com/MahdiHbb1/voltra/issues/26) | Mahdi | P0 | 4 |
+| VOLT-22 | [#22 BE capture upload + storage + status job](https://github.com/MahdiHbb1/voltess/issues/22) | Mahdi | P0 | 4 |
+| VOLT-23 | [#23 FE kamera/unggah + fallback manual](https://github.com/MahdiHbb1/voltess/issues/23) | Dhifansa | P0 | 4 |
+| VOLT-24 | [#24 FE antrean offline + retry](https://github.com/MahdiHbb1/voltess/issues/24) | Dhifansa | P0 | 3 |
+| VOLT-25 | [#25 FE konfirmasi/koreksi + label evaluasi](https://github.com/MahdiHbb1/voltess/issues/25) | Dhifansa | P0 | 3 |
+| VOLT-26 | [#26 BE M2 meter + anti-curang](https://github.com/MahdiHbb1/voltess/issues/26) | Mahdi | P0 | 4 |
 | VOLT-27 | [#27 Estimate v0 + rekomendasi v0](https://github.com/MahdiHbb1/voltess/issues/27) | Mahdi | P0 | 5 |
-| VOLT-28 | [#28 QA capture E2E + matriks 5 perangkat](https://github.com/MahdiHbb1/voltra/issues/28) | Yusri | P0 | 3 |
+| VOLT-28 | [#28 QA capture E2E + matriks 5 perangkat](https://github.com/MahdiHbb1/voltess/issues/28) | Yusri | P0 | 3 |
 
 **Checkpoint S3:** foto/suara masuk antrean, diproses, dikonfirmasi, dan menjadi data berlabel; estimate v0 tersedia untuk laporan.
 
@@ -90,20 +90,20 @@ Issue GitHub adalah sumber status. Tabel ini hanya indeks urutan kerja; `VOLT-xx
 
 | ID | Issue | Owner | Prioritas | Est. |
 |---|---|---|---|---|
-| VOLT-29 | [#29 BE trial engine 30 hari + reminder H-25](https://github.com/MahdiHbb1/voltra/issues/29) | Mahdi | P0 | 3 |
-| VOLT-30 | [#30 FE Laporan Pertama Hari 7 + share PDF/gambar](https://github.com/MahdiHbb1/voltra/issues/30) | Dhifansa | P0 | 4 |
-| VOLT-31 | [#31 BE notifikasi opt-in + batas harian](https://github.com/MahdiHbb1/voltra/issues/31) | Mahdi | P1 | 2 |
+| VOLT-29 | [#29 BE trial engine 30 hari + reminder H-25](https://github.com/MahdiHbb1/voltess/issues/29) | Mahdi | P0 | 3 |
+| VOLT-30 | [#30 FE Laporan Pertama Hari 7 + share PDF/gambar](https://github.com/MahdiHbb1/voltess/issues/30) | Dhifansa | P0 | 4 |
+| VOLT-31 | [#31 BE notifikasi opt-in + batas harian](https://github.com/MahdiHbb1/voltess/issues/31) | Mahdi | P1 | 2 |
 | VOLT-32 | [#32 AI OCR live P1–P3 + gate kualitas](https://github.com/MahdiHbb1/voltess/issues/32) | Mahdi | P0 | 5 |
-| VOLT-33 | [#33 QA E2E trial + Laporan Pertama](https://github.com/MahdiHbb1/voltra/issues/33) | Yusri | P0 | 3 |
+| VOLT-33 | [#33 QA E2E trial + Laporan Pertama](https://github.com/MahdiHbb1/voltess/issues/33) | Yusri | P0 | 3 |
 
 ### S5 — OCR/STT Live & Admin (4–17 Jan 2027) · 16 hari
 
 | ID | Issue | Owner | Prioritas | Est. |
 |---|---|---|---|---|
 | VOLT-34 | [#34 AI STT live P4 + ekstraksi + konfirmasi](https://github.com/MahdiHbb1/voltess/issues/34) | Mahdi | P0 | 4 |
-| VOLT-35 | [#35 BE admin API v0 (funnel, akurasi, biaya)](https://github.com/MahdiHbb1/voltra/issues/35) | Mahdi | P1 | 3 |
-| VOLT-36 | [#36 FE admin UI v0](https://github.com/MahdiHbb1/voltra/issues/36) | Dhifansa | P1 | 3 |
-| VOLT-37 | [#37 QA harness evaluasi akurasi OCR/STT](https://github.com/MahdiHbb1/voltra/issues/37) | Yusri | P0 | 3 |
+| VOLT-35 | [#35 BE admin API v0 (funnel, akurasi, biaya)](https://github.com/MahdiHbb1/voltess/issues/35) | Mahdi | P1 | 3 |
+| VOLT-36 | [#36 FE admin UI v0](https://github.com/MahdiHbb1/voltess/issues/36) | Dhifansa | P1 | 3 |
+| VOLT-37 | [#37 QA harness evaluasi akurasi OCR/STT](https://github.com/MahdiHbb1/voltess/issues/37) | Yusri | P0 | 3 |
 | VOLT-38 | [#38 AI cost guardrails + kuota + cache + `ai_usage`](https://github.com/MahdiHbb1/voltess/issues/38) | Mahdi | P1 | 3 |
 
 **Checkpoint S5:** gerbang OCR ≥90% dan STT ≥85% terukur pada dataset awal.
@@ -112,13 +112,13 @@ Issue GitHub adalah sumber status. Tabel ini hanya indeks urutan kerja; `VOLT-xx
 
 | ID | Issue | Owner | Prioritas | Est. |
 |---|---|---|---|---|
-| VOLT-39 | [#39 Cross-validation P6 + tampilan keyakinan](https://github.com/MahdiHbb1/voltra/issues/39) | Mahdi | P0 | 4 |
+| VOLT-39 | [#39 Cross-validation P6 + tampilan keyakinan](https://github.com/MahdiHbb1/voltess/issues/39) | Mahdi | P0 | 4 |
 | VOLT-40 | [#40 Rekomendasi v1 + keputusan + cooldown](https://github.com/MahdiHbb1/voltess/issues/40) | Mahdi | P0 | 3 |
-| VOLT-41 | [#41 FE rekomendasi + decision tracking](https://github.com/MahdiHbb1/voltra/issues/41) | Dhifansa | P0 | 3 |
-| VOLT-42 | [#42 FE Laporan Hasil Hari 30 + pisah tarif/volume](https://github.com/MahdiHbb1/voltra/issues/42) | Dhifansa | P0 | 4 |
-| VOLT-43 | [#43 BE privasi + lihat/hapus akun dan data](https://github.com/MahdiHbb1/voltra/issues/43) | Mahdi | P0 | 3 |
+| VOLT-41 | [#41 FE rekomendasi + decision tracking](https://github.com/MahdiHbb1/voltess/issues/41) | Dhifansa | P0 | 3 |
+| VOLT-42 | [#42 FE Laporan Hasil Hari 30 + pisah tarif/volume](https://github.com/MahdiHbb1/voltess/issues/42) | Dhifansa | P0 | 4 |
+| VOLT-43 | [#43 BE privasi + lihat/hapus akun dan data](https://github.com/MahdiHbb1/voltess/issues/43) | Mahdi | P0 | 3 |
 | VOLT-44 | [#44 AI P8 explainer validator tanpa angka baru](https://github.com/MahdiHbb1/voltess/issues/44) | Mahdi | P0 | 3 |
-| VOLT-45 | [#45 QA kalkulasi golden + keyakinan + privasi](https://github.com/MahdiHbb1/voltra/issues/45) | Yusri | P0 | 3 |
+| VOLT-45 | [#45 QA kalkulasi golden + keyakinan + privasi](https://github.com/MahdiHbb1/voltess/issues/45) | Yusri | P0 | 3 |
 
 **Checkpoint S6:** estimasi, rekomendasi, laporan, dan hapus data berjalan end-to-end; tidak ada angka baru dari LLM.
 
@@ -126,10 +126,10 @@ Issue GitHub adalah sumber status. Tabel ini hanya indeks urutan kerja; `VOLT-xx
 
 | ID | Issue | Owner | Prioritas | Est. |
 |---|---|---|---|---|
-| VOLT-46 | [#46 BE Plus subscription + payment provider](https://github.com/MahdiHbb1/voltra/issues/46) | Mahdi | P0 | 5 |
-| VOLT-47 | [#47 FE paywall/upgrade + locked states](https://github.com/MahdiHbb1/voltra/issues/47) | Dhifansa | P0 | 3 |
-| VOLT-48 | [#48 Hardening keamanan + akses data](https://github.com/MahdiHbb1/voltra/issues/48) | Mahdi | P0 | 3 |
-| VOLT-49 | [#49 QA regression penuh + MVP release gate](https://github.com/MahdiHbb1/voltra/issues/49) | Yusri | P0 | 4 |
+| VOLT-46 | [#46 BE Plus subscription + payment provider](https://github.com/MahdiHbb1/voltess/issues/46) | Mahdi | P0 | 5 |
+| VOLT-47 | [#47 FE paywall/upgrade + locked states](https://github.com/MahdiHbb1/voltess/issues/47) | Dhifansa | P0 | 3 |
+| VOLT-48 | [#48 Hardening keamanan + akses data](https://github.com/MahdiHbb1/voltess/issues/48) | Mahdi | P0 | 3 |
+| VOLT-49 | [#49 QA regression penuh + MVP release gate](https://github.com/MahdiHbb1/voltess/issues/49) | Yusri | P0 | 4 |
 
 **Checkpoint MVP:** seluruh gate di `docs/ROADMAP.md` lulus; demo internal siap.
 
@@ -139,8 +139,8 @@ Issue GitHub adalah sumber status. Tabel ini hanya indeks urutan kerja; `VOLT-xx
 |---|---|---|---|---|
 | VOLT-50 | [#50 AI P10 Tanya Terra + sources + tool terbatas](https://github.com/MahdiHbb1/voltess/issues/50) | Mahdi | P1 | 5 |
 | VOLT-51 | [#51 AI P11–P13 alert, prediksi token, ROI](https://github.com/MahdiHbb1/voltess/issues/51) | Mahdi | P1 | 5 |
-| VOLT-52 | [#52 Sensor pembanding 2–3 usaha + kalibrasi ambang](https://github.com/MahdiHbb1/voltra/issues/52) | Mahdi | P1 | 4 |
-| VOLT-53 | [#53 QA lapangan + kualitas data + anti-curang](https://github.com/MahdiHbb1/voltra/issues/53) | Yusri | P0 | 5 |
+| VOLT-52 | [#52 Sensor pembanding 2–3 usaha + kalibrasi ambang](https://github.com/MahdiHbb1/voltess/issues/52) | Mahdi | P1 | 4 |
+| VOLT-53 | [#53 QA lapangan + kualitas data + anti-curang](https://github.com/MahdiHbb1/voltess/issues/53) | Yusri | P0 | 5 |
 
 **Total estimasi seluruh fase: 187 hari kerja fokus** (bukan durasi kalender; beberapa orang bekerja paralel).
 
