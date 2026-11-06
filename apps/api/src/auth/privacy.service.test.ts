@@ -14,20 +14,20 @@ describe('PrivacyService', () => {
       const categories = service.getDataCategories('user_1', 'biz_1');
 
       expect(categories).toHaveLength(6);
-      expect(categories[0].category).toBe('Account');
-      expect(categories[1].category).toBe('Business Profile');
-      expect(categories[2].category).toBe('Captures');
-      expect(categories[3].category).toBe('Mission Events');
-      expect(categories[4].category).toBe('Entitlement');
-      expect(categories[5].category).toBe('Usage Analytics');
+      expect(categories[0]?.category).toBe('Account');
+      expect(categories[1]?.category).toBe('Business Profile');
+      expect(categories[2]?.category).toBe('Captures');
+      expect(categories[3]?.category).toBe('Mission Events');
+      expect(categories[4]?.category).toBe('Entitlement');
+      expect(categories[5]?.category).toBe('Usage Analytics');
     });
 
     it('includes retention days for each category', () => {
       const categories = service.getDataCategories('user_1', 'biz_1');
 
-      expect(categories[0].retention_days).toBeNull(); // Account - retained until deletion
-      expect(categories[2].retention_days).toBe(365); // Captures - 1 year
-      expect(categories[5].retention_days).toBe(90); // Analytics - 90 days
+      expect(categories[0]?.retention_days).toBeNull(); // Account - retained until deletion
+      expect(categories[2]?.retention_days).toBe(365); // Captures - 1 year
+      expect(categories[5]?.retention_days).toBe(90); // Analytics - 90 days
     });
   });
 

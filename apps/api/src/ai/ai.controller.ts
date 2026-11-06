@@ -7,7 +7,11 @@ import {
   Inject,
   Post,
   Req,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { GeminiOcrAdapter } from './adapters/live/gemini-ocr.adapter';
 import type {
   AskRequest,
   AskResponse,
@@ -27,15 +31,23 @@ import type { AiConfig } from './ai-config';
 import { AI_CONFIG } from './ai-config';
 import { AiGatewayException } from './ai-gateway.exception';
 import { MockAiService } from './mock-ai.service';
+import { AdapterFactory } from './adapters/adapter-factory';
 
 interface RequestWithId {
   requestId?: string;
+}
+
+interface MulterFile {
+  buffer: Buffer;
+  originalname: string;
+  mimetype: string;
 }
 
 @Controller('ai')
 export class AiController {
   constructor(
     private readonly ai: MockAiService,
+    private readonly adapterFactory: AdapterFactory,
     @Inject(AI_CONFIG) private readonly config: AiConfig,
   ) {}
 
@@ -67,32 +79,146 @@ export class AiController {
 
   @Post('ocr-meter')
   @HttpCode(HttpStatus.OK)
-  ocrMeter(
+  @UseInterceptors(FileInterceptor('file'))
+  async ocrMeter(
     @Req() request: RequestWithId,
+    @UploadedFile() file: MulterFile | undefined,
+    @Body('meter_type') meterType: string | undefined,
     @Headers('x-ai-scenario') scenario?: string,
-  ): OcrMeterResponse {
-    this.assertMockMode();
-    return this.ai.ocrMeter(this.requestId(request), scenario);
+  ): Promise<OcrMeterResponse> {
+    const requestId = this.requestId(request);
+
+    // Validate inputs
+    if (!file) {
+      throw new AiGatewayException(
+        HttpStatus.BAD_REQUEST,
+        'VALIDATION_ERROR',
+        'File foto meter wajib diupload.',
+      );
+    }
+
+    if (!meterType || (meterType !== 'prabayar' && meterType !== 'pascabayar')) {
+      throw new AiGatewayException(
+        HttpStatus.BAD_REQUEST,
+        'VALIDATION_ERROR',
+        'meter_type wajib diisi: prabayar atau pascabayar.',
+      );
+    }
+
+    // Use mock or live adapter
+    if (this.adapterFactory.isMockMode()) {
+      return this.ai.ocrMeter(requestId, scenario);
+    }
+
+    // Live mode: use Gemini OCR adapter
+    const adapter = this.adapterFactory.getOcrAdapter();
+    if ('ocrMeter' in adapter && typeof adapter.ocrMeter === 'function') {
+      const result = await (adapter as GeminiOcrAdapter).ocrMeter(file.buffer, meterType as 'prabayar' | 'pascabayar');
+      
+      return {
+        request_id: requestId,
+        engine_version: 'gemini-ocr-meter-1.0.0',
+        mode: 'live',
+        confidence: result.confidence,
+        warnings: result.warnings,
+        kwh: result.kwh,
+        unit: result.unit,
+        digits_confidence: result.digits_confidence,
+        needs_retake: result.needs_retake,
+        bbox: result.bbox,
+      };
+    }
+
+    throw new Error('OCR adapter tidak tersedia');
   }
 
   @Post('ocr-label')
   @HttpCode(HttpStatus.OK)
-  ocrLabel(
+  @UseInterceptors(FileInterceptor('file'))
+  async ocrLabel(
     @Req() request: RequestWithId,
+    @UploadedFile() file: MulterFile | undefined,
+    @Body('appliance_hint') applianceHint: string | undefined,
     @Headers('x-ai-scenario') scenario?: string,
-  ): OcrLabelResponse {
-    this.assertMockMode();
-    return this.ai.ocrLabel(this.requestId(request), scenario);
+  ): Promise<OcrLabelResponse> {
+    const requestId = this.requestId(request);
+
+    if (!file) {
+      throw new AiGatewayException(
+        HttpStatus.BAD_REQUEST,
+        'VALIDATION_ERROR',
+        'File foto label wajib diupload.',
+      );
+    }
+
+    // Use mock or live adapter
+    if (this.adapterFactory.isMockMode()) {
+      return this.ai.ocrLabel(requestId, scenario);
+    }
+
+    // Live mode: use Gemini OCR adapter
+    const adapter = this.adapterFactory.getOcrAdapter();
+    if ('ocrLabel' in adapter && typeof adapter.ocrLabel === 'function') {
+      const result = await (adapter as GeminiOcrAdapter).ocrLabel(file.buffer, applianceHint);
+      
+      return {
+        request_id: requestId,
+        engine_version: 'gemini-ocr-label-1.0.0',
+        mode: 'live',
+        confidence: result.confidence,
+        warnings: result.warnings,
+        name: result.name,
+        power_w: result.power_w,
+        needs_retake: result.needs_retake,
+      };
+    }
+
+    throw new Error('OCR adapter tidak tersedia');
   }
 
   @Post('ocr-token')
   @HttpCode(HttpStatus.OK)
-  ocrToken(
+  @UseInterceptors(FileInterceptor('file'))
+  async ocrToken(
     @Req() request: RequestWithId,
+    @UploadedFile() file: MulterFile | undefined,
     @Headers('x-ai-scenario') scenario?: string,
-  ): OcrTokenResponse {
-    this.assertMockMode();
-    return this.ai.ocrToken(this.requestId(request), scenario);
+  ): Promise<OcrTokenResponse> {
+    const requestId = this.requestId(request);
+
+    if (!file) {
+      throw new AiGatewayException(
+        HttpStatus.BAD_REQUEST,
+        'VALIDATION_ERROR',
+        'File foto token wajib diupload.',
+      );
+    }
+
+    // Use mock or live adapter
+    if (this.adapterFactory.isMockMode()) {
+      return this.ai.ocrToken(requestId, scenario);
+    }
+
+    // Live mode: use Gemini OCR adapter
+    const adapter = this.adapterFactory.getOcrAdapter();
+    if ('ocrToken' in adapter && typeof adapter.ocrToken === 'function') {
+      const result = await (adapter as GeminiOcrAdapter).ocrToken(file.buffer);
+      
+      return {
+        request_id: requestId,
+        engine_version: 'gemini-ocr-token-1.0.0',
+        mode: 'live',
+        confidence: result.confidence,
+        warnings: result.warnings,
+        date: result.date,
+        amount_rp: result.amount_rp,
+        kwh: result.kwh,
+        remaining_kwh: result.remaining_kwh,
+        needs_retake: result.needs_retake,
+      };
+    }
+
+    throw new Error('OCR adapter tidak tersedia');
   }
 
   @Post('stt-extract')
