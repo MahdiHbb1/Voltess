@@ -96,6 +96,7 @@ export interface RecommendRequest {
   estimate: EstimateResult;
   template_id: string;
   unit_label: string;
+  language?: 'id' | 'en';
 }
 
 export interface RecommendResponse extends AiEnvelope {
@@ -106,6 +107,7 @@ export interface ExplainRequest {
   business_id: string;
   kind: 'estimate' | 'recommendation' | 'report';
   result: Record<string, unknown>;
+  language?: 'id' | 'en';
 }
 
 export interface ExplainResponse extends AiEnvelope {
@@ -118,6 +120,7 @@ export interface AskRequest {
   business_id: string;
   question: string;
   conversation_id?: string;
+  language?: 'id' | 'en';
 }
 
 export type AskSourceType =

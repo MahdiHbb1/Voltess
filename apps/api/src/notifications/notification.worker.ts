@@ -4,21 +4,30 @@ import { NotificationPayload, NotificationType, DEFAULT_DAILY_CAP } from './noti
 
 @Injectable()
 export class NotificationWorker {
-  private worker: Worker;
+  private worker?: Worker;
+  private enabled: boolean;
   private dailyCount = new Map<string, number>(); // ponytail: in-memory, use Redis when scaled
 
   constructor() {
     const redisHost = process.env.REDIS_HOST || 'localhost';
     const redisPort = Number(process.env.REDIS_PORT || 6379);
+    const redisUrl = process.env.REDIS_URL;
 
-    this.worker = new Worker(
-      'notifications',
-      async (job) => {
-        const payload = job.data as NotificationPayload;
-        await this.processNotification(payload);
-      },
-      { connection: { host: redisHost, port: redisPort } },
-    );
+    // Skip Redis if REDIS_URL is empty or 'disabled'
+    this.enabled = redisUrl !== '' && redisUrl !== 'disabled' && redisUrl !== undefined;
+
+    if (this.enabled) {
+      this.worker = new Worker(
+        'notifications',
+        async (job) => {
+          const payload = job.data as NotificationPayload;
+          await this.processNotification(payload);
+        },
+        { connection: { host: redisHost, port: redisPort } },
+      );
+    } else {
+      console.log('[NotificationWorker] Redis disabled, worker not started');
+    }
   }
 
   private async processNotification(payload: NotificationPayload): Promise<void> {

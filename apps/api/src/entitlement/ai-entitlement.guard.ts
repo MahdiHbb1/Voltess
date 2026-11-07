@@ -5,13 +5,13 @@
  * Mengembalikan 403 Forbidden bila status tidak mengizinkan ai_analysis.
  */
 
-import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext, ForbiddenException, Inject } from '@nestjs/common';
 import { EntitlementService } from './entitlement.service';
 import type { ApiErrorBody } from '@voltess/contracts';
 
 @Injectable()
 export class AiEntitlementGuard implements CanActivate {
-  constructor(private readonly entitlementService: EntitlementService) {}
+  constructor(@Inject(EntitlementService) private readonly entitlementService: EntitlementService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();

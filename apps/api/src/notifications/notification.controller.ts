@@ -1,10 +1,10 @@
-import { Controller, Post, Get, Body, Req } from '@nestjs/common';
+import { Controller, Post, Get, Body, Req, Inject } from '@nestjs/common';
 import { NotificationQueue } from './notification.queue';
 import { NotificationType } from './notification.types';
 
 @Controller('notifications')
 export class NotificationController {
-  constructor(private readonly queue: NotificationQueue) {}
+  constructor(@Inject(NotificationQueue) private readonly queue: NotificationQueue) {}
 
   @Post('send')
   async send(

@@ -13,6 +13,7 @@ import {
   UseInterceptors,
   PayloadTooLargeException,
   UnsupportedMediaTypeException,
+  Inject,
 } from '@nestjs/common';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import type { Request } from 'express';
@@ -44,12 +45,12 @@ export class CaptureController {
   private readonly ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 
   constructor(
-    private readonly captureService: CaptureService,
-    private readonly businessService: BusinessService,
-    private readonly missionService: MissionService,
-    private readonly storageService: StorageService,
-    private readonly queueService: QueueService,
-    private readonly meterValidation: MeterValidationService,
+    @Inject(CaptureService) private readonly captureService: CaptureService,
+    @Inject(BusinessService) private readonly businessService: BusinessService,
+    @Inject(MissionService) private readonly missionService: MissionService,
+    @Inject(StorageService) private readonly storageService: StorageService,
+    @Inject(QueueService) private readonly queueService: QueueService,
+    @Inject(MeterValidationService) private readonly meterValidation: MeterValidationService,
   ) {}
 
   /** P2.1: Create capture + upload file + queue OCR */

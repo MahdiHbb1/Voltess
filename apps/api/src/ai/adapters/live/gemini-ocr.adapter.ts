@@ -27,22 +27,29 @@ export class GeminiOcrAdapter {
    */
   async ocrMeter(
     imageBuffer: Buffer,
-    meterType: 'prabayar' | 'pascabayar'
+    meterType: 'prabayar' | 'pascabayar',
+    mimeType = 'image/jpeg'
   ): Promise<OcrMeterResult> {
-    const model = this.client.getGenerativeModel({ model: this.model });
+    const model = this.client.getGenerativeModel({
+      model: this.model,
+      generationConfig: { temperature: 0, responseMimeType: 'application/json' },
+    });
 
     const prompt = `Ekstrak angka kWh dari foto meteran listrik ${meterType}.
 
 Instruksi:
-- Cari angka pada display meter (biasanya 5-7 digit)
+- Cari angka pada display utama meter (biasanya 4-7 digit)
 - Untuk meter analog: baca jarum dari kiri ke kanan
-- Untuk meter digital: baca angka di layar LCD/LED
-- Abaikan angka lain (nomor pelanggan, tarif, dll)
+- Untuk meter digital: baca angka persis seperti yang terlihat di layar LCD/LED
+- JANGAN menggeser, menambah, atau menghilangkan titik desimal. Titik hanya
+  ditulis jika benar-benar terlihat di display.
+- Abaikan nomor pelanggan, barcode, nomor seri, tarif, dan tulisan lain
+- Jika display tidak terbaca, isi "kwh": null dan "needs_retake": true
 - Unit selalu kWh
 
 Format respons JSON:
 {
-  "kwh": <angka desimal>,
+  "kwh": <angka desimal atau null>,
   "confidence": <0.0-1.0>,
   "digits_confidence": [<confidence per digit>],
   "needs_retake": <true jika foto tidak jelas>,
@@ -56,7 +63,7 @@ Contoh: { "kwh": 12345.6, "confidence": 0.95, "digits_confidence": [0.99, 0.97, 
         {
           inlineData: {
             data: imageBuffer.toString('base64'),
-            mimeType: 'image/jpeg',
+            mimeType,
           },
         },
       ];
@@ -72,24 +79,29 @@ Contoh: { "kwh": 12345.6, "confidence": 0.95, "digits_confidence": [0.99, 0.97, 
       }
 
       const parsed = JSON.parse(jsonMatch[0]) as {
-        kwh: number;
+        kwh: number | null;
         confidence: number;
-        digits_confidence: number[];
-        needs_retake: boolean;
-        bbox: [number, number, number, number];
+        digits_confidence?: number[];
+        needs_retake?: boolean;
+        bbox?: [number, number, number, number];
       };
+
+      if (typeof parsed.kwh !== 'number' || !Number.isFinite(parsed.kwh)) {
+        throw new Error('Angka kWh tidak terbaca dari foto. Coba foto ulang dengan pencahayaan lebih baik.');
+      }
 
       // Map confidence to C3 schema levels
       const confidenceLevel = this.mapConfidence(parsed.confidence);
+      const needsRetake = parsed.needs_retake ?? confidenceLevel === 'low';
 
       return {
         kwh: parsed.kwh,
         unit: 'kWh',
         confidence: confidenceLevel,
-        digits_confidence: parsed.digits_confidence,
-        needs_retake: parsed.needs_retake,
-        bbox: parsed.bbox,
-        warnings: parsed.needs_retake ? ['foto_tidak_jelas'] : [],
+        digits_confidence: parsed.digits_confidence ?? [parsed.confidence],
+        needs_retake: needsRetake,
+        ...(parsed.bbox ? { bbox: parsed.bbox } : {}),
+        warnings: needsRetake ? ['foto_tidak_jelas'] : [],
       };
     } catch (error) {
       throw this.mapError(error, 'ocr-meter');
@@ -105,9 +117,13 @@ Contoh: { "kwh": 12345.6, "confidence": 0.95, "digits_confidence": [0.99, 0.97, 
    */
   async ocrLabel(
     imageBuffer: Buffer,
-    applianceHint?: string
+    applianceHint?: string,
+    mimeType = 'image/jpeg'
   ): Promise<OcrLabelResult> {
-    const model = this.client.getGenerativeModel({ model: this.model });
+    const model = this.client.getGenerativeModel({
+      model: this.model,
+      generationConfig: { temperature: 0, responseMimeType: 'application/json' },
+    });
 
     const hintText = applianceHint ? `\nHint: alat ini mungkin ${applianceHint}` : '';
     const prompt = `Ekstrak informasi dari label alat elektronik.${hintText}
@@ -132,7 +148,7 @@ Contoh: { "name": "AC Split 1 PK", "power_w": 900, "confidence": 0.92 }`;
         {
           inlineData: {
             data: imageBuffer.toString('base64'),
-            mimeType: 'image/jpeg',
+            mimeType,
           },
         },
       ];
@@ -171,8 +187,11 @@ Contoh: { "name": "AC Split 1 PK", "power_w": 900, "confidence": 0.92 }`;
    * @param imageBuffer - Image file buffer (screenshot or receipt)
    * @returns OCR result with token data
    */
-  async ocrToken(imageBuffer: Buffer): Promise<OcrTokenResult> {
-    const model = this.client.getGenerativeModel({ model: this.model });
+  async ocrToken(imageBuffer: Buffer, mimeType = 'image/jpeg'): Promise<OcrTokenResult> {
+    const model = this.client.getGenerativeModel({
+      model: this.model,
+      generationConfig: { temperature: 0, responseMimeType: 'application/json' },
+    });
 
     const prompt = `Ekstrak data token listrik PLN dari foto struk/layar.
 
@@ -198,7 +217,7 @@ Contoh: { "date": "2026-11-06", "amount_rp": 100000, "kwh": 50.5, "remaining_kwh
         {
           inlineData: {
             data: imageBuffer.toString('base64'),
-            mimeType: 'image/jpeg',
+            mimeType,
           },
         },
       ];
@@ -282,7 +301,7 @@ export interface OcrMeterResult {
   confidence: 'high' | 'medium' | 'low';
   digits_confidence: number[];
   needs_retake: boolean;
-  bbox: [number, number, number, number];
+  bbox?: [number, number, number, number];
   warnings: string[];
 }
 

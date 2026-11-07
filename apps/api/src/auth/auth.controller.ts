@@ -3,7 +3,7 @@
  * Owner: Mahdi, Sprint: S2
  */
 
-import { Controller, Post, Body, Request, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, Request, UseGuards, Inject } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import type {
   OtpRequestPayload,
@@ -16,7 +16,7 @@ import type {
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(@Inject(AuthService) private readonly authService: AuthService) {}
 
   @Post('otp-request')
   async requestOtp(@Body() payload: OtpRequestPayload): Promise<OtpRequestResult> {

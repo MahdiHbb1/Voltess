@@ -23,7 +23,7 @@ export class AuthService {
 
   constructor(
     @Inject(OtpMockAdapter) private readonly otpAdapter: OtpAdapter,
-    private readonly jwtService: JwtService,
+    @Inject(JwtService) private readonly jwtService: JwtService,
   ) {}
 
   async requestOtp(payload: OtpRequestPayload): Promise<OtpRequestResult> {

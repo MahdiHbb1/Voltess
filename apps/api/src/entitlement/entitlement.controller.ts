@@ -3,7 +3,7 @@
  * Owner: Mahdi, Sprint: S2
  */
 
-import { Controller, Get, Post, Body, Request, Headers } from '@nestjs/common';
+import { Controller, Get, Post, Body, Request, Headers, Inject } from '@nestjs/common';
 import { EntitlementService } from './entitlement.service';
 import { TrialService } from './trial.service';
 import type { EntitlementStatusResponse, Entitlement } from '@voltess/contracts';
@@ -11,8 +11,8 @@ import type { EntitlementStatusResponse, Entitlement } from '@voltess/contracts'
 @Controller('entitlement')
 export class EntitlementController {
   constructor(
-    private readonly entitlementService: EntitlementService,
-    private readonly trialService: TrialService,
+    @Inject(EntitlementService) private readonly entitlementService: EntitlementService,
+    @Inject(TrialService) private readonly trialService: TrialService,
   ) {}
 
   @Get('status')

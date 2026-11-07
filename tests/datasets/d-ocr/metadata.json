@@ -1,6 +1,75 @@
 {
   "version": "1.0.0",
   "created": "2026-11-06",
-  "total": 0,
-  "images": []
+  "updated": "2026-11-07",
+  "datasetTotal": 63,
+  "labeled": 4,
+  "verified": 2,
+  "ambiguous": 2,
+  "images": [
+    {
+      "id": "meter-064",
+      "filename": "images(64).jpg",
+      "groundTruth": {
+        "kwhValue": 45844,
+        "unit": "kWh"
+      },
+      "metadata": {
+        "source": "dataset-import",
+        "meterType": "digital",
+        "captureDate": "2026-11-06",
+        "lighting": "good",
+        "angle": "front",
+        "notes": "Display jelas; diverifikasi manual lewat crop 3x."
+      }
+    },
+    {
+      "id": "meter-065",
+      "filename": "images(65).jpeg",
+      "groundTruth": {
+        "kwhValue": null,
+        "unit": "kWh"
+      },
+      "metadata": {
+        "source": "dataset-import",
+        "meterType": "digital",
+        "captureDate": "2026-11-06",
+        "lighting": "good",
+        "angle": "front",
+        "notes": "Dikecualikan dari evaluasi: posisi titik desimal tidak dapat dipastikan (203.7 vs 20.37). Catatan awal 2077 juga salah baca."
+      }
+    },
+    {
+      "id": "meter-dery-2-2",
+      "filename": "meteran-listrik-dery-ridwansah-2-2.jpg",
+      "groundTruth": {
+        "kwhValue": 5969,
+        "unit": "kWh"
+      },
+      "metadata": {
+        "source": "dataset-import",
+        "meterType": "digital",
+        "captureDate": "2026-11-06",
+        "lighting": "good",
+        "angle": "front",
+        "notes": "Display jelas; diverifikasi manual lewat crop 3x."
+      }
+    },
+    {
+      "id": "meter-066",
+      "filename": "images(66).jpg",
+      "groundTruth": {
+        "kwhValue": null,
+        "unit": "kWh"
+      },
+      "metadata": {
+        "source": "dataset-import",
+        "meterType": "digital",
+        "captureDate": "2026-11-06",
+        "lighting": "glare",
+        "angle": "tilted",
+        "notes": "Dikecualikan dari evaluasi: glare dan rotasi membuat digit tidak dapat dipastikan."
+      }
+    }
+  ]
 }

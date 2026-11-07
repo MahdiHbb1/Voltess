@@ -17,6 +17,7 @@ export interface AiConfig {
   allowScenarioOverride: boolean;
   geminiApiKey?: string;
   assemblyaiApiKey?: string;
+  groqApiKey?: string;
 }
 
 export function isAiScenario(value: string): value is AiScenario {
@@ -55,27 +56,38 @@ export function resolveAiConfig(env: NodeJS.ProcessEnv = process.env): AiConfig 
     );
   }
 
-  // Validate API keys when live mode is enabled
+  // Validate API keys when a live provider is enabled.
+  // - hybrid: OCR uses Gemini; other pipelines stay on the mock fallback.
+  // - live: every pipeline must have a live provider configured.
   const geminiApiKey = env.GEMINI_API_KEY;
   const assemblyaiApiKey = env.ASSEMBLYAI_API_KEY;
+  const groqApiKey = env.GROQ_API_KEY;
+  const needsGemini = mode === 'live' || mode === 'hybrid';
+  const needsAssemblyAi = mode === 'live';
+  const needsGroq = mode === 'live';
 
-  if (mode === 'live') {
+  if (needsGemini || needsAssemblyAi || needsGroq) {
     const missingKeys: string[] = [];
-    
-    if (!geminiApiKey || geminiApiKey.trim() === '') {
+
+    if (needsGemini && (!geminiApiKey || geminiApiKey.trim() === '')) {
       missingKeys.push('GEMINI_API_KEY');
     }
-    
-    if (!assemblyaiApiKey || assemblyaiApiKey.trim() === '') {
+
+    if (needsAssemblyAi && (!assemblyaiApiKey || assemblyaiApiKey.trim() === '')) {
       missingKeys.push('ASSEMBLYAI_API_KEY');
+    }
+
+    if (needsGroq && (!groqApiKey || groqApiKey.trim() === '')) {
+      missingKeys.push('GROQ_API_KEY');
     }
 
     if (missingKeys.length > 0) {
       throw new Error(
-        `AI_MODE=live membutuhkan API keys. Keys yang hilang: ${missingKeys.join(', ')}.\n` +
+        `AI_MODE=${mode} membutuhkan API keys. Keys yang hilang: ${missingKeys.join(', ')}.\n` +
         `Dapatkan keys dari:\n` +
         `  - Gemini: https://aistudio.google.com/app/apikey\n` +
         `  - AssemblyAI: https://www.assemblyai.com/dashboard\n` +
+        `  - Groq: https://console.groq.com/keys\n` +
         `Tambahkan ke .env atau environment variables.`
       );
     }
@@ -84,8 +96,10 @@ export function resolveAiConfig(env: NodeJS.ProcessEnv = process.env): AiConfig 
   return {
     mode,
     defaultScenario,
-    allowScenarioOverride: mode === 'mock' && !isProtectedEnvironment,
+    // Hybrid keeps mock-backed pipelines controllable for contract tests.
+    allowScenarioOverride: mode !== 'live' && !isProtectedEnvironment,
     geminiApiKey,
     assemblyaiApiKey,
+    groqApiKey,
   };
 }

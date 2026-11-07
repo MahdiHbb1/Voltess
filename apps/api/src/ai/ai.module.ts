@@ -1,24 +1,24 @@
 import { Module } from '@nestjs/common';
-import { APP_FILTER } from '@nestjs/core';
+import type { AiConfig } from './ai-config';
 import { AI_CONFIG, resolveAiConfig } from './ai-config';
 import { AiController } from './ai.controller';
-import { AiExceptionFilter } from './ai-exception.filter';
 import { MockAiService } from './mock-ai.service';
 import { AdapterFactory } from './adapters/adapter-factory';
 
 @Module({
   controllers: [AiController],
   providers: [
-    MockAiService,
+    {
+      provide: MockAiService,
+      useFactory: (config: AiConfig) => new MockAiService(config),
+      inject: [AI_CONFIG],
+    },
     AdapterFactory,
     {
       provide: AI_CONFIG,
       useFactory: () => resolveAiConfig(),
     },
-    {
-      provide: APP_FILTER,
-      useClass: AiExceptionFilter,
-    },
   ],
+  exports: [MockAiService, AI_CONFIG, AdapterFactory],
 })
 export class AiModule {}

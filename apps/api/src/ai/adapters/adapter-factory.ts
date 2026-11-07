@@ -1,44 +1,65 @@
 import { Injectable, Inject } from '@nestjs/common';
 import type { AiConfig } from '../ai-config';
 import { AI_CONFIG } from '../ai-config';
-import { MockAiService } from '../mock-ai.service';
 import { GeminiOcrAdapter } from './live/gemini-ocr.adapter';
+import { AssemblyAiSttAdapter } from './live/assemblyai-stt.adapter';
+import { GroqLlmAdapter } from './live/groq-llm.adapter';
 
 /**
  * Adapter factory for AI Gateway.
- * 
- * Selects appropriate adapter based on AI_MODE:
- * - mock: Returns MockAiService
- * - live: Returns live adapters (Gemini, AssemblyAI)
- * - hybrid: Mix of mock and live (not implemented yet)
+ *
+ * Selects the live OCR/STT/LLM adapters when AI_MODE is hybrid/live and keys
+ * are configured. Non-OCR pipelines fall back to MockAiService in hybrid mode.
  */
 @Injectable()
 export class AdapterFactory {
-  private geminiOcrAdapter?: GeminiOcrAdapter;
+  private readonly geminiOcrAdapter?: GeminiOcrAdapter;
+  private readonly assemblyAiSttAdapter?: AssemblyAiSttAdapter;
+  private readonly groqLlmAdapter?: GroqLlmAdapter;
 
-  constructor(
-    @Inject(AI_CONFIG) private readonly config: AiConfig,
-    private readonly mockAi: MockAiService,
-  ) {
-    // Initialize live adapters if in live mode
-    if (this.config.mode === 'live') {
+  constructor(@Inject(AI_CONFIG) private readonly config: AiConfig) {
+    // Live OCR is available in hybrid and live modes. In mock mode the
+    // gateway always returns deterministic mock responses.
+    if (this.config.mode !== 'mock' && this.config.geminiApiKey) {
       this.geminiOcrAdapter = new GeminiOcrAdapter(this.config);
+    }
+
+    // Live STT and LLM are available in live mode only; hybrid keeps them on mock.
+    if (this.config.mode === 'live') {
+      if (this.config.assemblyaiApiKey) {
+        this.assemblyAiSttAdapter = new AssemblyAiSttAdapter(this.config);
+      }
+      if (this.config.groqApiKey) {
+        this.groqLlmAdapter = new GroqLlmAdapter(this.config);
+      }
     }
   }
 
   /**
-   * Get OCR adapter (P1, P2, P3) based on mode.
+   * Returns the live OCR adapter, or undefined when OCR runs in mock mode.
    */
-  getOcrAdapter(): GeminiOcrAdapter | MockAiService {
-    if (this.config.mode === 'live') {
-      if (!this.geminiOcrAdapter) {
-        throw new Error('Gemini OCR adapter tidak tersedia. Periksa konfigurasi.');
-      }
-      return this.geminiOcrAdapter;
-    }
+  getLiveOcrAdapter(): GeminiOcrAdapter | undefined {
+    return this.geminiOcrAdapter;
+  }
 
-    // Default to mock
-    return this.mockAi;
+  getLiveSttAdapter(): AssemblyAiSttAdapter | undefined {
+    return this.assemblyAiSttAdapter;
+  }
+
+  getLiveLlmAdapter(): GroqLlmAdapter | undefined {
+    return this.groqLlmAdapter;
+  }
+
+  hasLiveOcr(): boolean {
+    return this.geminiOcrAdapter !== undefined;
+  }
+
+  hasLiveStt(): boolean {
+    return this.assemblyAiSttAdapter !== undefined;
+  }
+
+  hasLiveLlm(): boolean {
+    return this.groqLlmAdapter !== undefined;
   }
 
   /**

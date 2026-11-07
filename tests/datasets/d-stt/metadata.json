@@ -1,6 +1,28 @@
 {
   "version": "1.0.0",
-  "created": "2026-11-06",
-  "total": 0,
-  "audio": []
+  "description": "Synthetic Indonesian voice notes for STT E2E tests (edge-tts id-ID-GadisNeural)",
+  "samples": [
+    {
+      "filename": "sample-ac-8jam.mp3",
+      "ground_truth_transcript": "AC nyala 8 jam hari ini",
+      "expected_appliances": [
+        "AC"
+      ],
+      "expected_duration_hours": 8,
+      "language": "id",
+      "synthetic": true,
+      "voice": "id-ID-GadisNeural"
+    },
+    {
+      "filename": "sample-kulkas-24jam.mp3",
+      "ground_truth_transcript": "Kulkas pakai 24 jam terus",
+      "expected_appliances": [
+        "Kulkas"
+      ],
+      "expected_duration_hours": 24,
+      "language": "id",
+      "synthetic": true,
+      "voice": "id-ID-GadisNeural"
+    }
+  ]
 }

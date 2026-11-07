@@ -3,13 +3,13 @@
  * Owner: Mahdi, Sprint: S2
  */
 
-import { Controller, Get, Post, Patch, Body, Param, Request } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Body, Param, Request, Inject } from '@nestjs/common';
 import { BusinessService } from './business.service';
 import type { BusinessProfilePayload, BusinessProfile } from '@voltess/contracts';
 
 @Controller('business')
 export class BusinessController {
-  constructor(private readonly businessService: BusinessService) {}
+  constructor(@Inject(BusinessService) private readonly businessService: BusinessService) {}
 
   @Post('profile')
   async createProfile(

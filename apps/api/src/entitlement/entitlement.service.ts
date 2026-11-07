@@ -3,7 +3,7 @@
  * Owner: Mahdi, Sprint: S2
  */
 
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, Inject } from '@nestjs/common';
 import { TrialService } from './trial.service';
 import type {
   Entitlement,
@@ -14,7 +14,7 @@ import type {
 
 @Injectable()
 export class EntitlementService {
-  constructor(private readonly trialService: TrialService) {}
+  constructor(@Inject(TrialService) private readonly trialService: TrialService) {}
 
   private readonly entitlements = new Map<string, Entitlement>(); // ponytail: in-memory, DB nanti
   private readonly auditLogs = new Map<string, EntitlementStatusChange[]>();

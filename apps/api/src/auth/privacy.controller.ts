@@ -6,6 +6,7 @@ import {
   ForbiddenException,
   NotFoundException,
   BadRequestException,
+  Inject,
 } from '@nestjs/common';
 import type { Request } from 'express';
 import { PrivacyService } from './privacy.service';
@@ -24,13 +25,13 @@ interface AuthRequest extends Request {
 @Controller('privacy')
 export class PrivacyController {
   constructor(
-    private readonly privacyService: PrivacyService,
-    private readonly authService: AuthService,
-    private readonly businessService: BusinessService,
-    private readonly captureService: CaptureService,
-    private readonly missionService: MissionService,
-    private readonly entitlementService: EntitlementService,
-    private readonly storageService: StorageService,
+    @Inject(PrivacyService) private readonly privacyService: PrivacyService,
+    @Inject(AuthService) private readonly authService: AuthService,
+    @Inject(BusinessService) private readonly businessService: BusinessService,
+    @Inject(CaptureService) private readonly captureService: CaptureService,
+    @Inject(MissionService) private readonly missionService: MissionService,
+    @Inject(EntitlementService) private readonly entitlementService: EntitlementService,
+    @Inject(StorageService) private readonly storageService: StorageService,
   ) {}
 
   /** GET /privacy/data - list data categories */
