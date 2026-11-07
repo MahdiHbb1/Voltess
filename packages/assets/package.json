@@ -1,0 +1,10 @@
+{
+  "name": "@voltess/assets",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Shared assets: logo, maskot Terra, dan aset visual lainnya",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "files": ["mascot", "logo", "index.ts"],
+  "scripts": {}
+}

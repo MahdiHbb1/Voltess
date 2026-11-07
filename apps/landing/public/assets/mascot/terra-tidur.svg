@@ -1,0 +1,8 @@
+<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="400" fill="#F3E8FF"/>
+  <circle cx="200" cy="180" r="80" fill="#1A2945"/>
+  <path d="M 160 160 Q 170 155 180 160" stroke="#1A2945" stroke-width="3" fill="none"/>
+  <path d="M 220 160 Q 230 155 240 160" stroke="#1A2945" stroke-width="3" fill="none"/>
+  <text x="200" y="195" font-size="30" fill="#1A2945" text-anchor="middle">z z z</text>
+  <text x="200" y="350" font-family="Arial, sans-serif" font-size="24" fill="#1A2945" text-anchor="middle">Terra Tidur</text>
+</svg>

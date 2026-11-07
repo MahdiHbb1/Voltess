@@ -51,3 +51,12 @@ venv/
 # Uploads lokal / data pribadi
 uploads/
 tmp/
+
+# OS files
+desktop.ini
+*.py
+
+# Test datasets dengan gambar asli
+tests/datasets/**/*.jpg
+tests/datasets/**/*.png
+tests/datasets/**/*.jpeg

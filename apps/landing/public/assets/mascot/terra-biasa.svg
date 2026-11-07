@@ -1,0 +1,10 @@
+<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="400" fill="#E0F2FE"/>
+  <circle cx="200" cy="180" r="80" fill="#1A2945"/>
+  <circle cx="170" cy="160" r="15" fill="white"/>
+  <circle cx="230" cy="160" r="15" fill="white"/>
+  <circle cx="175" cy="165" r="8" fill="#1A2945"/>
+  <circle cx="235" cy="165" r="8" fill="#1A2945"/>
+  <path d="M 160 210 Q 200 230 240 210" stroke="#1A2945" stroke-width="4" fill="none"/>
+  <text x="200" y="350" font-family="Arial, sans-serif" font-size="24" fill="#1A2945" text-anchor="middle">Terra Biasa</text>
+</svg>
