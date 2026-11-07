@@ -22,15 +22,17 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <a href="#" className="flex items-center gap-2">
+          <a href="#" className="flex items-center gap-3">
             <img
               src={LOGO_PATHS.logo}
               alt="Logo Voltess"
-              className="h-10 w-10"
+              className="h-14 w-14"
             />
-            <span className="text-xl font-extrabold text-brand-dark tracking-tight">
-              VOLTESS
-            </span>
+            <img
+              src={LOGO_PATHS.wordmark}
+              alt="Voltess"
+              className="h-8"
+            />
           </a>
           
           {/* Desktop Nav */}
