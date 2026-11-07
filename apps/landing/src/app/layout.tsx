@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   keywords: 'voltess, hemat listrik, UMKM, laundry, warung, hemat energi, biaya listrik',
   authors: [{ name: 'Tim d1306 UNNES' }],
   icons: {
-    icon: '/favicon.svg',
+    icon: '/voltess-icon.png',
   },
   openGraph: {
     title: 'Voltess - Ke Mana Uang Listrik Usaha Anda Pergi?',

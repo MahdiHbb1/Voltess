@@ -5,24 +5,22 @@
  * Dipakai oleh apps/landing dan apps/web.
  */
 
-// Maskot Terra (6 ekspresi)
-// TODO: Ganti dengan file PNG asli di packages/assets/mascot/
+// Maskot Terra (6 ekspresi PNG)
 export const MASCOT_PATHS = {
-  biasa: '/assets/mascot/terra-biasa.svg',
-  cemas: '/assets/mascot/terra-cemas.svg',
-  hallo: '/assets/mascot/terra-hallo.svg',
-  hore: '/assets/mascot/terra-hore.svg',
-  mikir: '/assets/mascot/terra-mikir.svg',
-  tidur: '/assets/mascot/terra-tidur.svg',
+  biasa: '/assets/mascot/terra-biasa.png',
+  cemas: '/assets/mascot/terra-cemas.png',
+  hallo: '/assets/mascot/terra-hallo.png',
+  hore: '/assets/mascot/terra-hore.png',
+  mikir: '/assets/mascot/terra-mikir.png',
+  tidur: '/assets/mascot/terra-tidur.png',
 } as const;
 
 export type MascotExpression = keyof typeof MASCOT_PATHS;
 
-// Logo Voltess
-// TODO: Ganti dengan file PNG asli di packages/assets/logo/
+// Logo Voltess (PNG)
 export const LOGO_PATHS = {
-  logo: '/assets/logo/voltess-logo.svg',
-  wordmark: '/assets/logo/voltess-wordmark.svg',
+  logo: '/assets/logo/voltess-logo.png',
+  wordmark: '/assets/logo/voltess-wordmarks.png',
 } as const;
 
 // Mapping ekspresi maskot untuk konteks landing page
