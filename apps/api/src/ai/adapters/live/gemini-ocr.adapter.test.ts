@@ -146,6 +146,7 @@ describe('GeminiOcrAdapter', () => {
       expect(result.name).toBe('AC Split 1 PK');
       expect(result.power_w).toBe(900);
       expect(result.confidence).toBe('high');
+      expect(result.needs_retake).toBe(false);
       expect(result.warnings).toEqual([]);
     });
 
@@ -189,6 +190,7 @@ describe('GeminiOcrAdapter', () => {
       const result = await adapter.ocrLabel(buffer);
 
       expect(result.confidence).toBe('low');
+      expect(result.needs_retake).toBe(true);
       expect(result.warnings).toContain('label_tidak_jelas');
     });
   });
@@ -217,6 +219,7 @@ describe('GeminiOcrAdapter', () => {
       expect(result.kwh).toBe(50.5);
       expect(result.remaining_kwh).toBe(75.2);
       expect(result.confidence).toBe('high');
+      expect(result.needs_retake).toBe(false);
     });
 
     it('handles missing remaining_kwh', async () => {
@@ -239,6 +242,7 @@ describe('GeminiOcrAdapter', () => {
 
       expect(result.remaining_kwh).toBeNull();
       expect(result.confidence).toBe('high');
+      expect(result.needs_retake).toBe(false);
     });
 
     it('warns on unclear receipt', async () => {
@@ -260,6 +264,7 @@ describe('GeminiOcrAdapter', () => {
       const result = await adapter.ocrToken(buffer);
 
       expect(result.confidence).toBe('medium');
+      expect(result.needs_retake).toBe(true);
       expect(result.warnings).toContain('struk_tidak_jelas');
     });
   });

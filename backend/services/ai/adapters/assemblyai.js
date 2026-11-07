@@ -7,6 +7,23 @@ const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
 
 // P6: Voice note → Text
 async function transcribe(payload) {
+  // SSRF protection: validate audioUrl
+  if (payload.audioUrl) {
+    try {
+      const url = new URL(payload.audioUrl);
+      if (url.protocol !== 'https:') {
+        throw new Error('Hanya HTTPS yang diperbolehkan untuk audio URL');
+      }
+      if (url.hostname === 'localhost' || url.hostname.startsWith('127.') || 
+          url.hostname.startsWith('169.254.') || url.hostname.startsWith('10.') ||
+          url.hostname.startsWith('192.168.') || url.hostname.startsWith('172.')) {
+        throw new Error('URL audio tidak valid');
+      }
+    } catch (e) {
+      throw new Error('URL audio tidak valid: ' + e.message);
+    }
+  }
+
   const transcript = await client.transcripts.transcribe({
     audio: payload.audioUrl || payload.audioBase64,
     language_code: 'id', // Indonesian

@@ -715,7 +715,7 @@
 - [ ] Edge cases tested (negative savings, very long payback)
 - [ ] Response matches PRD P13 spec
 
-**Dependencies:** `@voltra/energy-calc` package exists
+**Dependencies:** `@voltess/energy-calc` package exists
 
 **Files:**
 - `apps/api/src/ai/pipelines/p13-roi-calculator.ts`

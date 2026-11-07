@@ -56,7 +56,7 @@ describe('C5: Entitlement state matrix', () => {
       expect(features.kios).toBe(true);
       expect(features.m1).toBe(true);
       expect(features.ai_analysis).toBe(false);
-      expect(features.wati_real_data).toBe(false);
+      expect(features.terra_real_data).toBe(false);
       expect(features.cosmetic_rewards).toBe(true);
     });
 
@@ -81,7 +81,7 @@ describe('C5: Entitlement state matrix', () => {
       expect(features.kios).toBe(true);
       expect(features.m1).toBe(true);
       expect(features.ai_analysis).toBe(false);
-      expect(features.wati_real_data).toBe(false);
+      expect(features.terra_real_data).toBe(false);
     });
   });
 
@@ -96,7 +96,7 @@ describe('C5: Entitlement state matrix', () => {
           kios: true,
           m1: true,
           ai_analysis: false,
-          wati_real_data: false,
+          terra_real_data: false,
           cosmetic_rewards: true,
         },
         updated_at: new Date().toISOString(),
@@ -118,7 +118,7 @@ describe('C5: Entitlement state matrix', () => {
           kios: true,
           m1: true,
           ai_analysis: true,
-          wati_real_data: true,
+          terra_real_data: true,
           cosmetic_rewards: true,
         },
         updated_at: now.toISOString(),
@@ -166,7 +166,7 @@ describe('C5: Entitlement state matrix', () => {
           kios: true,
           m1: true,
           ai_analysis: true,
-          wati_real_data: true,
+          terra_real_data: true,
           cosmetic_rewards: true,
         },
         trial_days_remaining: 25,
@@ -183,7 +183,7 @@ describe('C5: Entitlement state matrix', () => {
           kios: true,
           m1: true,
           ai_analysis: false,
-          wati_real_data: false,
+          terra_real_data: false,
           cosmetic_rewards: true,
         },
         trial_days_remaining: null,

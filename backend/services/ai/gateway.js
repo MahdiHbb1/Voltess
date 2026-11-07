@@ -1,18 +1,22 @@
 // AI Gateway - Priority-based routing
-// P1-P3: OCR → Gemini Vision
-// P4-P5: Text → Gemini Text
+// P1-P3: OCR → Google Vision + Groq
+// P4-P5: LLM → Groq
 // P6-P8: STT → AssemblyAI
 
-const gemini = require('./adapters/gemini-mock'); // ponytail: switch to ./gemini when key works
+require('dotenv').config();
+
+const vision = require('./adapters/vision-groq');
+const groq = require('./adapters/groq');
 const assemblyai = require('./adapters/assemblyai');
 const tts = require('./adapters/tts-mock');
 const terra = require('./adapters/terra-mock');
 const { logUsage } = require('../usage-tracker');
 const { checkQuota } = require('../rate-limiter');
 
-// Rate limits (per day) - ponytail: deprecated, use DB quotas via rate-limiter.js
+// Rate limits (per day)
 const limits = {
-  gemini: { max: null, used: 0, note: 'Free tier rate-limited by API' },
+  groq: { max: 14400, used: 0, resetAt: null, note: 'Groq 14.4K RPD' },
+  vision: { max: 1000, used: 0, resetAt: null, note: 'Vision 1K/month' },
   assemblyai: { max: 185 * 3600, used: 0, resetAt: null }
 };
 
@@ -25,13 +29,6 @@ function resetIfNeeded(service) {
 }
 
 function checkLimit(service, cost = 1) {
-  // Gemini: free tier, let API handle rate limits (will return 429)
-  if (service === 'gemini') {
-    limits.gemini.used += cost;
-    return;
-  }
-  
-  // AssemblyAI: track 185 hours total
   resetIfNeeded(service);
   if (limits[service].used + cost > limits[service].max) {
     throw new Error(`${service} daily limit exceeded`);
@@ -44,16 +41,21 @@ async function route(priority, payload, userId = null) {
   let result, error;
   
   try {
-    await checkQuota(userId, priority);
+    // Skip DB quota check for test (ponytail: enable when Supabase ready)
+    // await checkQuota(userId, priority);
     
-    // P1-P5: Gemini, P6-P8: AssemblyAI, P9: TTS, P10: Terra
+    // P1-P5: Vision+Groq, P6-P8: AssemblyAI, P9: TTS, P10: Terra
     if (priority <= 5) {
-      checkLimit('gemini');
-      if (priority === 1) result = await gemini.ocr(payload);
-      else if (priority === 2) result = await gemini.tagNote(payload);
-      else if (priority === 3) result = await gemini.summarizeBook(payload);
-      else if (priority === 4) result = await gemini.explain(payload);
-      else if (priority === 5) result = await gemini.ask(payload);
+      if (priority <= 3) {
+        checkLimit('vision');
+        if (priority === 1) result = await vision.ocr(payload);
+        else if (priority === 2) result = await vision.tagNote(payload);
+        else if (priority === 3) result = await vision.summarizeBook(payload);
+      } else {
+        checkLimit('groq');
+        if (priority === 4) result = await groq.explain(payload);
+        else if (priority === 5) result = await groq.ask(payload);
+      }
     } else if (priority <= 8) {
       const duration = payload.duration || 60;
       checkLimit('assemblyai', duration);
