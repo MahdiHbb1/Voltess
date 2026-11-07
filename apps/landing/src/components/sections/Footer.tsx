@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { PLACEHOLDERS } from '@/content/placeholders';
 import { LOGO_PATHS } from '@voltess/assets';

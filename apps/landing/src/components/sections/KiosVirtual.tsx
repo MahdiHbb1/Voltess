@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { KIOS_VIRTUAL } from '@/content/landing';
 import { Section, Chip } from '../ui';

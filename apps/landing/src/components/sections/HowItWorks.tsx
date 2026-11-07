@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { HOW_IT_WORKS } from '@/content/landing';
 import { Section } from '../ui';

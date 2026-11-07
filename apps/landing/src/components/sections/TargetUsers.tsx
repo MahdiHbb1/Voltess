@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { TARGET_USERS } from '@/content/landing';
 import { Section, Card, Chip } from '../ui';

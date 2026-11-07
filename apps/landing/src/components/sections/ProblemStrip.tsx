@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { PROBLEM_STRIP } from '@/content/landing';
 

@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { PRIVACY } from '@/content/landing';
 import { Section, Card } from '../ui';

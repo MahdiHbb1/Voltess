@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { PROBLEMS } from '@/content/landing';
 import { Card, Section } from '../ui';

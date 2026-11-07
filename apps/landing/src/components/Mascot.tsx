@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { MASCOT_PATHS, type MascotExpression } from '@voltess/assets';
 

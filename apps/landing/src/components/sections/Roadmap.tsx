@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { ROADMAP } from '@/content/landing';
 import { Section, Chip } from '../ui';

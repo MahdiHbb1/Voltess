@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { AI_ENGINE } from '@/content/landing';
 import { Section, Chip, Card } from '../ui';

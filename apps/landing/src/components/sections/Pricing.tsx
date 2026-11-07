@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { PRICING } from '@/content/landing';
 import { Section, Card, Chip, Button } from '../ui';

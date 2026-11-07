@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { HERO } from '@/content/landing';
 import { Button, Badge, Chip } from '../ui';
