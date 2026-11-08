@@ -7,10 +7,6 @@ import { Label } from '../ui';
 export function Product() {
   return (
     <section id="product" className="section-padding bg-white relative overflow-hidden">
-      {/* Decorative Terra in background */}
-      <div className="absolute top-20 right-10 opacity-20 hidden lg:block animate-float">
-        <MascotWithContext context="results" width={280} height={280} />
-      </div>
       
       <div className="container-width relative z-10">
         {/* Single phone showcase with description beside */}
