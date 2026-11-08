@@ -13,7 +13,7 @@ export function Problems() {
           {PROBLEMS.title}
         </h2>
         <div className="flex justify-center">
-          <MascotWithContext context="problem" className="w-32 h-32" />
+          <MascotWithContext context="problem" width={128} height={128} />
         </div>
       </div>
       

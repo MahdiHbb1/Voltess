@@ -1,37 +1,40 @@
 import type { Metadata } from 'next';
+import { GeistSans } from 'geist/font/sans';
+import { I18nProvider } from '@/i18n';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Voltess - Ke Mana Uang Listrik Usaha Anda Pergi?',
-  description: 'Voltess membantu pemilik UMKM melihat biaya listrik per alat dalam Rupiah dan memberi saran hemat yang jelas. Mulai dari game simulasi gratis, tanpa sensor, tanpa ribet.',
-  keywords: 'voltess, hemat listrik, UMKM, laundry, warung, hemat energi, biaya listrik',
-  authors: [{ name: 'Tim d1306 UNNES' }],
-  icons: {
-    icon: '/voltess-icon.png',
-  },
+  title: 'Voltess - Smart Energy Management untuk Usaha Mikro',
+  description: 'Solusi IoT + AI untuk monitoring listrik real-time, prediksi biaya, dan pencegahan pemborosan energi. Hemat hingga 20% biaya listrik bulanan.',
+  keywords: 'IoT, smart energy, hemat listrik, usaha mikro, UMKM, monitoring energi, AI prediksi',
+  authors: [{ name: 'Voltess Team' }],
   openGraph: {
-    title: 'Voltess - Ke Mana Uang Listrik Usaha Anda Pergi?',
-    description: 'AI energy copilot untuk UMKM Indonesia. Hemat listrik dengan percaya diri.',
     type: 'website',
     locale: 'id_ID',
+    url: 'https://voltess.id',
+    title: 'Voltess - Smart Energy Management untuk Usaha Mikro',
+    description: 'Hemat hingga 20% biaya listrik dengan monitoring real-time dan AI prediksi.',
     siteName: 'Voltess',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Voltess - Ke Mana Uang Listrik Usaha Anda Pergi?',
-    description: 'AI energy copilot untuk UMKM Indonesia. Hemat listrik dengan percaya diri.',
+    title: 'Voltess - Smart Energy Management untuk Usaha Mikro',
+    description: 'Hemat hingga 20% biaya listrik dengan monitoring real-time dan AI prediksi.',
   },
-  robots: 'index, follow',
 };
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
-    <html lang="id">
-      <body>{children}</body>
+    <html lang="id" className={GeistSans.variable}>
+      <body className="antialiased">
+        <I18nProvider>
+          {children}
+        </I18nProvider>
+      </body>
     </html>
   );
 }

@@ -1,54 +1,47 @@
 'use client';
 
-import React from 'react';
-import { HOW_IT_WORKS } from '@/content/landing';
-import { Section } from '../ui';
+import { useTranslation } from '@/i18n';
 
 export function HowItWorks() {
+  const { t } = useTranslation();
+  
   return (
-    <Section id="cara-kerja" className="bg-gradient-to-br from-blue-50 to-white">
-      <div className="text-center mb-16">
-        <h2 className="heading-lg text-brand-dark mb-4">
-          {HOW_IT_WORKS.title}
-        </h2>
-        <p className="body-lg text-gray-600 max-w-3xl mx-auto">
-          {HOW_IT_WORKS.subtitle}
-        </p>
-      </div>
-      
-      <div className="max-w-4xl mx-auto">
-        <div className="relative">
-          {/* Connecting Line */}
-          <div
-            className="hidden md:block absolute top-16 left-16 right-16 h-0.5 bg-gradient-to-r from-brand-blue via-brand-sky to-brand-green"
-            aria-hidden="true"
-          />
-          
-          <div className="grid md:grid-cols-4 gap-8">
-            {HOW_IT_WORKS.steps.map((step, i) => (
-              <div key={i} className="relative">
-                {/* Number Circle */}
-                <div className="flex justify-center mb-6">
-                  <div className="relative z-10 w-16 h-16 rounded-full bg-gradient-to-br from-brand-blue to-brand-sky flex items-center justify-center shadow-lg">
-                    <span className="text-2xl font-extrabold text-white">
-                      {step.number}
-                    </span>
-                  </div>
-                </div>
-                
-                <div className="text-center space-y-3">
-                  <h3 className="heading-sm text-brand-dark">
-                    {step.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    {step.description}
-                  </p>
-                </div>
+    <section id="how-it-works" className="section-padding bg-white">
+      <div className="container-width">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold text-navy-900 mb-4">
+            {t.howItWorks.title}
+          </h2>
+        </div>
+        
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+          {t.howItWorks.steps.map((step, i) => (
+            <div key={i} className="relative">
+              {/* Step number */}
+              <div className="w-12 h-12 rounded-full bg-navy-900 text-white flex items-center justify-center text-xl font-bold mb-4">
+                {i + 1}
               </div>
-            ))}
-          </div>
+              
+              {/* Content */}
+              <h3 className="text-xl font-bold text-navy-900 mb-3">
+                {step.title}
+              </h3>
+              <p className="text-navy-700 leading-relaxed">
+                {step.description}
+              </p>
+              
+              {/* Arrow connector (not on last item) */}
+              {i < t.howItWorks.steps.length - 1 && (
+                <div className="hidden lg:block absolute top-6 -right-4 text-navy-200">
+                  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                  </svg>
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </div>
-    </Section>
+    </section>
   );
 }

@@ -1,40 +1,33 @@
-import React from 'react';
+'use client';
+
 import { Navbar } from '@/components/sections/Navbar';
 import { Hero } from '@/components/sections/Hero';
-import { ProblemStrip } from '@/components/sections/ProblemStrip';
-import { Problems } from '@/components/sections/Problems';
+import { Problem } from '@/components/sections/Problem';
 import { HowItWorks } from '@/components/sections/HowItWorks';
-import { KiosVirtual } from '@/components/sections/KiosVirtual';
+import { Product } from '@/components/sections/Product';
+import { VirtualKiosk } from '@/components/sections/VirtualKiosk';
 import { AIEngine } from '@/components/sections/AIEngine';
-import { FeaturesPlus } from '@/components/sections/FeaturesPlus';
 import { TargetUsers } from '@/components/sections/TargetUsers';
 import { Pricing } from '@/components/sections/Pricing';
-import { Privacy } from '@/components/sections/Privacy';
-import { Roadmap } from '@/components/sections/Roadmap';
-import { FAQSection } from '@/components/sections/FAQ';
-import { CTAWaitlist } from '@/components/sections/CTAWaitlist';
+import { FAQ } from '@/components/sections/FAQ';
 import { Footer } from '@/components/sections/Footer';
 
-export default function LandingPage() {
+export default function Home() {
   return (
-    <div className="min-h-screen">
+    <main className="min-h-screen">
       <Navbar />
-      <main>
+      <div className="pt-16">
         <Hero />
-        <ProblemStrip />
-        <Problems />
+        <Problem />
         <HowItWorks />
-        <KiosVirtual />
+        <Product />
+        <VirtualKiosk />
         <AIEngine />
-        <FeaturesPlus />
         <TargetUsers />
         <Pricing />
-        <Privacy />
-        <Roadmap />
-        <FAQSection />
-        <CTAWaitlist />
-      </main>
-      <Footer />
-    </div>
+        <FAQ />
+        <Footer />
+      </div>
+    </main>
   );
 }

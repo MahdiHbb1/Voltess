@@ -1,91 +1,94 @@
 'use client';
 
-import React from 'react';
-import { PRICING } from '@/content/landing';
-import { Section, Card, Chip, Button } from '../ui';
+import { useTranslation } from '@/i18n';
+import { Card } from '../ui';
 
 export function Pricing() {
+  const { t } = useTranslation();
+  
   return (
-    <Section id="harga" className="bg-gradient-to-br from-slate-50 to-blue-50">
-      <div className="text-center mb-12">
-        <h2 className="heading-lg text-brand-dark mb-4">
-          {PRICING.title}
-        </h2>
-        <p className="body-lg text-gray-600 max-w-2xl mx-auto mb-2">
-          {PRICING.subtitle}
-        </p>
-        <Chip variant="example" className="text-xs">
-          ⚠️ {PRICING.subtitle}
-        </Chip>
-      </div>
-      
-      <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-8">
-        {PRICING.plans.map((plan, i) => (
-          <Card
-            key={i}
-            hover
-            className={plan.highlight ? 'ring-2 ring-brand-blue relative' : ''}
-          >
-            {plan.highlight && (
-              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                <Chip variant="confidence" className="text-xs">
-                  Paling Populer
-                </Chip>
-              </div>
-            )}
-            
-            <div className="space-y-4">
-              <div>
-                <h3 className="text-xl font-bold text-brand-dark mb-2">
-                  {plan.name}
-                </h3>
-                <div className="flex items-baseline gap-1">
-                  <span className="text-3xl font-extrabold text-brand-blue">
-                    {plan.price}
-                  </span>
-                  <span className="text-gray-600 text-sm">
-                    {plan.period}
-                  </span>
+    <section id="pricing" className="section-padding bg-white">
+      <div className="container-width">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold text-navy-900 mb-4">
+            {t.pricing.title}
+          </h2>
+          <p className="text-lg text-navy-700">
+            {t.pricing.subtitle}
+          </p>
+        </div>
+        
+        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto mb-12">
+          {t.pricing.plans.map((plan, i) => (
+            <div
+              key={i}
+              className={`rounded-2xl p-8 ${
+                plan.highlight
+                  ? 'bg-navy-900 text-white shadow-2xl scale-105'
+                  : 'bg-white border-2 border-navy-100'
+              }`}
+            >
+              <div className="space-y-6">
+                <div>
+                  <h3 className={`text-2xl font-bold mb-2 ${plan.highlight ? 'text-white' : 'text-navy-900'}`}>
+                    {plan.name}
+                  </h3>
+                  <div className="flex items-baseline gap-2">
+                    <span className={`text-4xl font-bold ${plan.highlight ? 'text-white' : 'text-navy-900'}`}>
+                      {plan.price}
+                    </span>
+                    <span className={plan.highlight ? 'text-navy-100' : 'text-navy-700'}>
+                      {plan.period}
+                    </span>
+                  </div>
+                  {plan.note && (
+                    <div className="mt-2 text-sm">
+                      <span className={`inline-block px-2 py-1 rounded ${plan.highlight ? 'bg-white/20 text-white' : 'bg-navy-50 text-navy-700'}`}>
+                        {t.pricing.labelEstimate}
+                      </span>
+                    </div>
+                  )}
                 </div>
-                {plan.note && (
-                  <Chip variant="example" className="text-xs mt-2">
-                    {plan.note}
-                  </Chip>
-                )}
+                
+                <ul className="space-y-3">
+                  {plan.features.map((feature, j) => (
+                    <li key={j} className="flex items-start gap-3 text-sm">
+                      <svg
+                        className={`w-5 h-5 flex-shrink-0 mt-0.5 ${plan.highlight ? 'text-accent' : 'text-navy-900'}`}
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                      <span className={plan.highlight ? 'text-navy-100' : 'text-navy-700'}>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+                
+                <button
+                  className={`w-full py-3 px-6 rounded-lg font-semibold transition-all ${
+                    plan.highlight
+                      ? 'bg-accent text-navy-900 hover:bg-accent/90'
+                      : 'bg-navy-900 text-white hover:bg-navy-800'
+                  }`}
+                  onClick={() => window.location.href = '#cta'}
+                >
+                  {plan.highlight ? t.nav.cta : 'Learn More'}
+                </button>
               </div>
-              
-              <ul className="space-y-3">
-                {plan.features.map((feature, j) => (
-                  <li key={j} className="flex items-start gap-2">
-                    <span className="flex-shrink-0 w-5 h-5 rounded-full bg-green-100 text-green-700 flex items-center justify-center text-xs font-bold">
-                      ✓
-                    </span>
-                    <span className="text-sm text-gray-700">
-                      {feature}
-                    </span>
-                  </li>
-                ))}
-              </ul>
             </div>
-          </Card>
-        ))}
+          ))}
+        </div>
+        
+        <div className="max-w-3xl mx-auto space-y-3 text-center text-sm text-navy-600">
+          <p>{t.pricing.disclaimer}</p>
+          <p className="italic">{t.pricing.footnote}</p>
+        </div>
       </div>
-      
-      {/* Disclaimers */}
-      <div className="max-w-3xl mx-auto space-y-4">
-        <p className="text-center text-base font-medium text-gray-700 bg-white rounded-2xl p-6 border border-gray-100">
-          {PRICING.disclaimer}
-        </p>
-        <p className="text-center text-sm text-gray-600 italic">
-          {PRICING.footnote}
-        </p>
-      </div>
-      
-      <div className="text-center mt-8">
-        <Button onClick={() => window.location.href = '#waitlist'}>
-          Gabung Daftar Tunggu
-        </Button>
-      </div>
-    </Section>
+    </section>
   );
 }

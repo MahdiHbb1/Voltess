@@ -1,76 +1,116 @@
 'use client';
 
-import React from 'react';
-import { HERO } from '@/content/landing';
-import { Button, Badge, Chip } from '../ui';
+import { useTranslation } from '@/i18n';
+import { Button, Badge } from '../ui';
 import { MascotWithContext } from '../Mascot';
 import { PhoneMockup } from '../PhoneMockup';
 
 export function Hero() {
+  const { t } = useTranslation();
+  
   return (
-    <section className="relative pt-24 pb-16 md:pt-32 md:pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
-      {/* Background Decoration */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-sky-50 to-white -z-10" />
-      <div
-        className="absolute top-0 right-0 w-96 h-96 bg-brand-sky/20 rounded-full blur-3xl -z-10"
-        aria-hidden="true"
-      />
-      <div
-        className="absolute bottom-0 left-0 w-96 h-96 bg-brand-blue/10 rounded-full blur-3xl -z-10"
-        aria-hidden="true"
-      />
+    <section className="relative bg-white overflow-visible border-b border-navy-100">
+      {/* Background Image Layer */}
+      <div className="absolute inset-0">
+        {/* Background image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: 'url(/images/hero-bg.jpg)',
+          }}
+        />
+        
+        {/* Gradient overlay for better text readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-white/70 via-white/50 to-white/30" />
+        
+        {/* Organic blur at bottom - smooth gradient */}
+        <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-white via-white/95 to-transparent" />
+      </div>
       
-      <div className="max-w-7xl mx-auto">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left: Text Content */}
+      <div className="container-width relative z-10">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center py-20 md:py-28">
+          {/* Left: Content - bold text with shadows */}
           <div className="space-y-6 animate-fade-in">
-            <Badge>{HERO.badge}</Badge>
+            <Badge variant="accent" className="!bg-navy-900 !text-white !border-navy-900 animate-slide-in-left shadow-xl">
+              {t.hero.badge}
+            </Badge>
             
-            <h1 className="heading-xl text-brand-dark">
-              {HERO.title}
+            <h1 
+              className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-navy-900 leading-tight"
+              style={{
+                textShadow: '2px 2px 8px rgba(255, 255, 255, 0.9), -1px -1px 4px rgba(255, 255, 255, 0.8)'
+              }}
+            >
+              {t.hero.title}
             </h1>
             
-            <p className="body-lg text-gray-600 max-w-2xl">
-              {HERO.subtitle}
+            <p 
+              className="text-lg md:text-xl text-navy-800 leading-relaxed font-bold max-w-xl"
+              style={{
+                textShadow: '1px 1px 6px rgba(255, 255, 255, 0.9), -1px -1px 3px rgba(255, 255, 255, 0.8)'
+              }}
+            >
+              {t.hero.subtitle}
             </p>
             
             {/* CTAs */}
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-col sm:flex-row gap-4 pt-2">
               <Button
                 size="lg"
-                onClick={() => window.location.href = '#waitlist'}
+                onClick={() => window.location.href = '#product'}
+                className="shadow-xl hover:shadow-2xl transition-all hover:-translate-y-0.5 !bg-navy-900"
               >
-                {HERO.ctaPrimary}
+                {t.hero.ctaPrimary}
               </Button>
               <Button
                 size="lg"
-                variant="outline"
-                onClick={() => window.location.href = '#cara-kerja'}
+                variant="secondary"
+                onClick={() => window.location.href = '#how-it-works'}
+                className="hover:-translate-y-0.5 transition-all shadow-lg !bg-white !border-2 !border-navy-900"
               >
-                {HERO.ctaSecondary}
+                {t.hero.ctaSecondary}
               </Button>
             </div>
             
-            {/* Trust Signals */}
-            <div className="flex flex-wrap gap-3 pt-4">
-              {HERO.trustSignals.map((signal, i) => (
-                <Chip key={i} className="text-xs">
-                  {signal}
-                </Chip>
+            {/* Trust signals - clean with text shadow */}
+            <div className="pt-6 space-y-3">
+              {t.hero.trustSignals.map((signal, i) => (
+                <div 
+                  key={i} 
+                  className="flex items-start gap-3 animate-fade-in"
+                  style={{ animationDelay: `${i * 0.1}s` }}
+                >
+                  <svg className="w-6 h-6 text-accent flex-shrink-0 mt-0.5 drop-shadow-lg" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <span 
+                    className="text-base text-navy-900 font-bold"
+                    style={{
+                      textShadow: '1px 1px 4px rgba(255, 255, 255, 0.9), -1px -1px 2px rgba(255, 255, 255, 0.8)'
+                    }}
+                  >
+                    {signal}
+                  </span>
+                </div>
               ))}
             </div>
           </div>
           
-          {/* Right: Visual */}
-          <div className="relative lg:pl-8">
-            {/* Phone Mockup */}
-            <div className="relative z-10 animate-slide-up">
-              <PhoneMockup screen="beranda" />
+          {/* Right: Product visual with BIG Terra */}
+          <div className="relative animate-slide-in-right">
+            <div className="relative max-w-[420px] mx-auto lg:ml-auto">
+              {/* Phone with real image support */}
+              <PhoneMockup variant="dashboard" imagePath="/screenshots/dashboard-home.png" />
+              
+              {/* Terra - BIGGER and more prominent */}
+              <div className="absolute -bottom-10 -right-2 md:-bottom-16 md:-right-6 animate-float z-20 drop-shadow-2xl">
+                <MascotWithContext context="hero" width={230} height={230} />
+              </div>
             </div>
             
-            {/* Mascot */}
-            <div className="absolute -top-8 -right-8 lg:-right-16 w-32 h-32 lg:w-40 lg:h-40 z-20">
-              <MascotWithContext context="hero" />
+            {/* Additional Terra - top left for balance */}
+            <div className="hidden lg:block absolute -top-6 -left-4 animate-float drop-shadow-xl" style={{ animationDelay: '1s' }}>
+              <MascotWithContext context="hero" width={140} height={140} />
             </div>
           </div>
         </div>

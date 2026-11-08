@@ -1,42 +1,37 @@
 'use client';
 
-import React, { useState } from 'react';
-import { FAQ } from '@/content/landing';
-import { Section } from '../ui';
-import { MascotWithContext } from '../Mascot';
+import { useState } from 'react';
+import { useTranslation } from '@/i18n';
 
-export function FAQSection() {
+export function FAQ() {
+  const { t } = useTranslation();
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   
   return (
-    <Section id="faq">
-      <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="heading-lg text-brand-dark mb-6">
-            {FAQ.title}
+    <section id="faq" className="section-padding bg-white">
+      <div className="container-width">
+        <div className="text-center mb-16">
+          <h2 className="heading-xl">
+            {t.faq.title}
           </h2>
-          <div className="flex justify-center">
-            <MascotWithContext context="faq" className="w-32 h-32" />
-          </div>
         </div>
         
-        <div className="space-y-4">
-          {FAQ.items.map((item, i) => (
+        <div className="max-w-3xl mx-auto space-y-4">
+          {t.faq.items.map((item, i) => (
             <div
               key={i}
-              className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+              className="border border-navy-100 rounded-lg overflow-hidden"
             >
               <button
-                className="w-full px-6 py-4 text-left flex items-center justify-between gap-4"
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                aria-expanded={openIndex === i}
+                className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-navy-50 transition-colors"
               >
-                <span className="font-semibold text-brand-dark pr-4">
+                <span className="font-semibold text-navy-900 pr-4">
                   {item.question}
                 </span>
                 <svg
-                  className={`flex-shrink-0 w-5 h-5 text-brand-blue transition-transform ${
-                    openIndex === i ? 'transform rotate-180' : ''
+                  className={`w-5 h-5 text-navy-700 flex-shrink-0 transition-transform ${
+                    openIndex === i ? 'rotate-180' : ''
                   }`}
                   fill="none"
                   stroke="currentColor"
@@ -52,16 +47,14 @@ export function FAQSection() {
               </button>
               
               {openIndex === i && (
-                <div className="px-6 pb-4">
-                  <p className="text-gray-600 leading-relaxed">
-                    {item.answer}
-                  </p>
+                <div className="px-6 pb-4 body-base text-navy-700">
+                  {item.answer}
                 </div>
               )}
             </div>
           ))}
         </div>
       </div>
-    </Section>
+    </section>
   );
 }

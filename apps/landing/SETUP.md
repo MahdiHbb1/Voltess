@@ -1,43 +1,73 @@
-# Voltess Landing Page
+# 🚀 Setup Landing Page - Langkah Terakhir
 
-Company profile landing page untuk Voltess - AI energy copilot untuk UMKM Indonesia.
+Landing page sudah 95% jadi! Tinggal tambahkan gambar Terra & logo.
 
-Built with Next.js 16 + TypeScript + Tailwind CSS.
+## ✅ Yang Sudah Selesai
 
-Lihat [`apps/landing/README.md`](apps/landing/README.md) untuk dokumentasi lengkap.
+- 15 sections lengkap (Hero → Footer)
+- i18n Indonesia + English
+- Build sukses (34 files)
+- Dev server running di http://localhost:3002
 
-## Development
+## 📋 Yang Perlu Anda Lakukan
 
-```bash
-pnpm --filter landing dev
+### 1. Tambahkan Gambar Terra (6 ekspresi)
+
+Copy file PNG Terra ke folder ini:
+```
+packages/assets/public/mascot/
 ```
 
-## Struktur
+Nama file harus persis seperti ini:
+- `terra-biasa.png` - Ekspresi normal
+- `terra-cemas.png` - Ekspresi khawatir
+- `terra-hallo.png` - Melambaikan tangan ← Anda sudah kirim ini!
+- `terra-hore.png` - Senang/celebrate
+- `terra-mikir.png` - Berpikir
+- `terra-tidur.png` - Tidur/relax
 
-- `apps/landing/` - Landing page (Next.js, port 3002)
-- `apps/web/` - Main PWA app (Next.js, port 3000)
-- `apps/api/` - Backend API (NestJS, port 3001)
-- `packages/assets/` - Shared assets (logo, maskot Terra)
-- `packages/contracts/` - API contracts
-- `packages/energy-calc/` - Energy calculation engine
+**Tips:** Gambar kedua yang Anda kirim (Terra melambaikan) → save sebagai `terra-hallo.png`
 
-## TODO Sebelum Deploy
+### 2. Tambahkan Logo Voltess
 
-1. **Ganti aset placeholder:**
-   - Copy 6 file PNG maskot Terra ke `packages/assets/mascot/`
-   - Copy logo Voltess ke `packages/assets/logo/`
-   - Lihat `packages/assets/README.md`
+Copy logo ke:
+```
+packages/assets/public/logo/
+```
 
-2. **Isi placeholder konten:**
-   - Nama & peran tim
-   - Kontak (email, WhatsApp, social media)
-   - Link kebijakan privasi
-   - Lihat `apps/landing/src/content/placeholders.ts`
+Nama file:
+- `voltess-logo.png` - Logo icon saja
+- `voltess-wordmark.png` - Logo + text "Voltess"
 
-3. **Integrasikan form daftar tunggu:**
-   - Backend endpoint atau Google Sheets/Typeform
-   - Edit `apps/landing/src/components/sections/CTAWaitlist.tsx`
+**Kalau belum punya:** Pakai placeholder dulu, ganti nanti.
 
-4. **Add favicon & OG image:**
-   - `apps/landing/public/favicon.ico`
-   - `apps/landing/public/og-image.png` (1200×630px)
+### 3. Copy Assets ke Landing
+
+Setelah file ada di packages/assets/, copy juga ke landing:
+```bash
+# Di terminal
+cp -r packages/assets/public/* apps/landing/public/assets/
+```
+
+### 4. Test
+
+```bash
+# Refresh browser
+http://localhost:3002
+```
+
+Seharusnya Terra muncul di Hero dan sections lain!
+
+## 🎯 Shortcut Kalau Mau Cepat
+
+Kalau gambar belum ada, landing page tetap bisa jalan (gambar broken aja). Nanti tinggal isi folder `packages/assets/public/` kapan-kapan.
+
+## 📝 Catatan
+
+- Form "Gabung Daftar Tunggu" sekarang cuma mock (tidak kirim data)
+- Nanti kalau mau aktif, perlu backend endpoint atau pakai Google Forms
+- Konten i18n (teks ID/EN) bisa diubah di `apps/landing/src/i18n/locales/`
+
+---
+
+**Pertanyaan?** Tanya aja! 🙂

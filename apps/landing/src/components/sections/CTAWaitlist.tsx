@@ -1,43 +1,45 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Section, Button, Chip } from '../ui';
+import { useState } from 'react';
+import { useTranslation } from '@/i18n';
+import { Button, Label } from '../ui';
 import { MascotWithContext } from '../Mascot';
 
+const BUSINESS_TYPES = [
+  'Laundry',
+  'Restaurant / Food stall',
+  'Bakery / Catering',
+  'Water / Ice depot',
+  'Café / Beverages',
+  'Custom',
+];
+
 export function CTAWaitlist() {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     businessName: '',
     businessType: '',
     whatsapp: '',
   });
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   
-  const businessTypes = [
-    'Laundry',
-    'Rumah makan / Warung',
-    'Toko roti / Katering',
-    'Depot air / Es',
-    'Kafe / Minuman',
-    'Lainnya',
-  ];
-  
-  const validateForm = () => {
+  const validate = () => {
     const newErrors: Record<string, string> = {};
     
     if (!formData.businessName.trim()) {
-      newErrors.businessName = 'Nama usaha wajib diisi';
+      newErrors.businessName = t.cta.form.businessNameRequired;
     }
     
     if (!formData.businessType) {
-      newErrors.businessType = 'Pilih jenis usaha';
+      newErrors.businessType = t.cta.form.businessTypeRequired;
     }
     
     if (!formData.whatsapp.trim()) {
-      newErrors.whatsapp = 'Nomor WhatsApp wajib diisi';
-    } else if (!/^(\+62|62|0)[0-9]{9,12}$/.test(formData.whatsapp.replace(/\s/g, ''))) {
-      newErrors.whatsapp = 'Format nomor WhatsApp tidak valid (contoh: 08123456789)';
+      newErrors.whatsapp = t.cta.form.whatsappRequired;
+    } else if (!/^0\d{9,12}$/.test(formData.whatsapp.trim())) {
+      newErrors.whatsapp = t.cta.form.whatsappInvalid;
     }
     
     setErrors(newErrors);
@@ -47,159 +49,161 @@ export function CTAWaitlist() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!validateForm()) return;
+    if (!validate()) return;
     
-    setIsLoading(true);
+    setIsSubmitting(true);
     
-    // TODO: sambungkan ke backend
-    // Simulasi API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1500));
     
-    setIsLoading(false);
-    setIsSubmitted(true);
+    setIsSubmitting(false);
+    setIsSuccess(true);
   };
   
-  if (isSubmitted) {
+  const resetForm = () => {
+    setFormData({ businessName: '', businessType: '', whatsapp: '' });
+    setErrors({});
+    setIsSuccess(false);
+  };
+  
+  if (isSuccess) {
     return (
-      <Section id="waitlist" dark>
-        <div className="max-w-2xl mx-auto text-center space-y-8">
-          <div className="flex justify-center">
-            <MascotWithContext context="cta" className="w-40 h-40" />
-          </div>
-          <div>
-            <h2 className="heading-lg mb-4">Terima kasih! 🎉</h2>
-            <p className="body-lg text-gray-300">
-              Kami akan menghubungi Anda di nomor WhatsApp yang didaftarkan.
+      <section id="cta" className="section-padding bg-navy-900 text-white">
+        <div className="container-width">
+          <div className="max-w-2xl mx-auto text-center space-y-8">
+            <div className="mx-auto">
+              <MascotWithContext context="cta" width={128} height={128} />
+            </div>
+            
+            <h2 className="text-3xl md:text-4xl font-bold text-white">
+              {t.cta.success.title}
+            </h2>
+            
+            <p className="text-lg text-navy-100">
+              {t.cta.success.message}
             </p>
+            
+            <Button variant="secondary" onClick={resetForm}>
+              {t.cta.success.actionLabel}
+            </Button>
           </div>
-          <Button
-            variant="outline"
-            onClick={() => setIsSubmitted(false)}
-            className="!text-white !border-white hover:!bg-white hover:!text-brand-dark"
-          >
-            Daftar Lagi
-          </Button>
         </div>
-      </Section>
+      </section>
     );
   }
   
   return (
-    <Section id="waitlist" dark>
-      <div className="max-w-2xl mx-auto">
-        <div className="text-center mb-12">
-          <div className="flex justify-center mb-6">
-            <MascotWithContext context="cta" className="w-32 h-32" />
-          </div>
-          <h2 className="heading-lg mb-4">
-            Siap hemat listrik dengan percaya diri?
-          </h2>
-          <p className="body-lg text-gray-300 mb-4">
-            Gabung daftar tunggu sekarang. Kami akan menghubungi Anda saat Voltess siap diluncurkan.
-          </p>
-          <Chip className="bg-white/10 text-white border-white/20">
-            ⏱️ Gratis trial 30 hari untuk pendaftar awal
-          </Chip>
-        </div>
-        
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white rounded-3xl p-8 space-y-6"
-        >
-          {/* Nama Usaha */}
-          <div>
-            <label
-              htmlFor="businessName"
-              className="block text-sm font-semibold text-brand-dark mb-2"
-            >
-              Nama Usaha <span className="text-red-500">*</span>
-            </label>
-            <input
-              id="businessName"
-              type="text"
-              value={formData.businessName}
-              onChange={(e) =>
-                setFormData({ ...formData, businessName: e.target.value })
-              }
-              placeholder="Contoh: Laundry Berkah"
-              className={`w-full px-4 py-3 rounded-xl border ${
-                errors.businessName ? 'border-red-500' : 'border-gray-200'
-              } focus:outline-none focus:ring-2 focus:ring-brand-blue`}
-            />
-            {errors.businessName && (
-              <p className="text-sm text-red-500 mt-1">{errors.businessName}</p>
-            )}
-          </div>
-          
-          {/* Jenis Usaha */}
-          <div>
-            <label
-              htmlFor="businessType"
-              className="block text-sm font-semibold text-brand-dark mb-2"
-            >
-              Jenis Usaha <span className="text-red-500">*</span>
-            </label>
-            <select
-              id="businessType"
-              value={formData.businessType}
-              onChange={(e) =>
-                setFormData({ ...formData, businessType: e.target.value })
-              }
-              className={`w-full px-4 py-3 rounded-xl border ${
-                errors.businessType ? 'border-red-500' : 'border-gray-200'
-              } focus:outline-none focus:ring-2 focus:ring-brand-blue`}
-            >
-              <option value="">Pilih jenis usaha</option>
-              {businessTypes.map((type) => (
-                <option key={type} value={type}>
-                  {type}
-                </option>
-              ))}
-            </select>
-            {errors.businessType && (
-              <p className="text-sm text-red-500 mt-1">{errors.businessType}</p>
-            )}
-          </div>
-          
-          {/* WhatsApp */}
-          <div>
-            <label
-              htmlFor="whatsapp"
-              className="block text-sm font-semibold text-brand-dark mb-2"
-            >
-              Nomor WhatsApp <span className="text-red-500">*</span>
-            </label>
-            <input
-              id="whatsapp"
-              type="tel"
-              value={formData.whatsapp}
-              onChange={(e) =>
-                setFormData({ ...formData, whatsapp: e.target.value })
-              }
-              placeholder="08123456789"
-              className={`w-full px-4 py-3 rounded-xl border ${
-                errors.whatsapp ? 'border-red-500' : 'border-gray-200'
-              } focus:outline-none focus:ring-2 focus:ring-brand-blue`}
-            />
-            {errors.whatsapp && (
-              <p className="text-sm text-red-500 mt-1">{errors.whatsapp}</p>
-            )}
-          </div>
-          
-          <Button
-            type="submit"
-            size="lg"
-            className="w-full"
-            disabled={isLoading}
-          >
-            {isLoading ? 'Mengirim...' : 'Gabung Daftar Tunggu'}
-          </Button>
-          
-          <p className="text-xs text-center text-gray-600">
-            Dengan mendaftar, Anda setuju data akan digunakan untuk menghubungi Anda terkait peluncuran Voltess.
-          </p>
-        </form>
+    <section id="cta" className="section-padding bg-navy-900 text-white relative overflow-hidden">
+      {/* Decorative Terra - bottom right corner */}
+      <div className="absolute bottom-0 right-8 opacity-20 hidden lg:block">
+        <MascotWithContext context="cta" width={200} height={200} />
       </div>
-    </Section>
+      
+      <div className="container-width relative z-10">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              {t.cta.title}
+            </h2>
+            
+            <p className="text-lg text-navy-100">
+              {t.cta.subtitle}
+            </p>
+            
+            <div className="inline-block mt-4">
+              <Label variant="accent" className="!text-base">
+                {t.cta.benefit}
+              </Label>
+            </div>
+          </div>
+          
+          {/* Form */}
+          <div className="bg-white rounded-2xl p-8 md:p-10 text-navy-900 shadow-xl">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Business Name */}
+              <div>
+                <label htmlFor="businessName" className="block font-semibold mb-2">
+                  {t.cta.form.businessName}
+                </label>
+                <input
+                  type="text"
+                  id="businessName"
+                  value={formData.businessName}
+                  onChange={(e) => setFormData({ ...formData, businessName: e.target.value })}
+                  placeholder={t.cta.form.businessNamePlaceholder}
+                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent ${
+                    errors.businessName ? 'border-red-500' : 'border-navy-200'
+                  }`}
+                />
+                {errors.businessName && (
+                  <p className="text-red-500 text-sm mt-1">{errors.businessName}</p>
+                )}
+              </div>
+              
+              {/* Business Type */}
+              <div>
+                <label htmlFor="businessType" className="block font-semibold mb-2">
+                  {t.cta.form.businessType}
+                </label>
+                <select
+                  id="businessType"
+                  value={formData.businessType}
+                  onChange={(e) => setFormData({ ...formData, businessType: e.target.value })}
+                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent ${
+                    errors.businessType ? 'border-red-500' : 'border-navy-200'
+                  }`}
+                >
+                  <option value="">{t.cta.form.businessTypePlaceholder}</option>
+                  {BUSINESS_TYPES.map((type) => (
+                    <option key={type} value={type}>
+                      {type}
+                    </option>
+                  ))}
+                </select>
+                {errors.businessType && (
+                  <p className="text-red-500 text-sm mt-1">{errors.businessType}</p>
+                )}
+              </div>
+              
+              {/* WhatsApp */}
+              <div>
+                <label htmlFor="whatsapp" className="block font-semibold mb-2">
+                  {t.cta.form.whatsapp}
+                </label>
+                <input
+                  type="tel"
+                  id="whatsapp"
+                  value={formData.whatsapp}
+                  onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
+                  placeholder={t.cta.form.whatsappPlaceholder}
+                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent ${
+                    errors.whatsapp ? 'border-red-500' : 'border-navy-200'
+                  }`}
+                />
+                {errors.whatsapp && (
+                  <p className="text-red-500 text-sm mt-1">{errors.whatsapp}</p>
+                )}
+              </div>
+              
+              {/* Consent */}
+              <p className="text-sm text-navy-600">
+                {t.cta.form.consent}
+              </p>
+              
+              {/* Submit */}
+              <Button
+                type="submit"
+                variant="primary"
+                size="lg"
+                className="w-full"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? t.cta.form.submitting : t.cta.form.submit}
+              </Button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }

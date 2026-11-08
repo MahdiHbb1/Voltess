@@ -1,74 +1,53 @@
-'use client';
-
-import React from 'react';
-import { MASCOT_PATHS, type MascotExpression } from '@voltess/assets';
+import Image from 'next/image';
+import { MASCOT_PATHS, MASCOT_CONTEXT_MAP, type MascotExpression } from '@voltess/assets';
 
 interface MascotProps {
   expression?: MascotExpression;
-  className?: string;
   alt?: string;
-  animate?: boolean;
+  className?: string;
+  width?: number;
+  height?: number;
 }
 
-export function Mascot({
-  expression = 'biasa',
+export function Mascot({ 
+  expression = 'biasa', 
+  alt = 'Terra mascot', 
   className = '',
-  alt = 'Maskot Terra',
-  animate = true,
+  width = 200,
+  height = 200,
 }: MascotProps) {
   const imagePath = MASCOT_PATHS[expression];
   
   return (
-    <div
-      className={`relative ${animate ? 'animate-float' : ''} ${className}`}
-      style={{
-        animationDelay: '0.2s',
-      }}
-    >
-      <img
+    <div className={`relative ${className}`} style={{ width, height }}>
+      <Image
         src={imagePath}
-        alt={`${alt} - ${expression}`}
-        className="w-full h-full object-contain"
-        loading="lazy"
+        alt={alt}
+        fill
+        className="object-contain"
+        priority={expression === 'hallo'}
       />
     </div>
   );
 }
 
 interface MascotWithContextProps {
-  context: string;
+  context: keyof typeof MASCOT_CONTEXT_MAP;
   className?: string;
-  alt?: string;
-  animate?: boolean;
+  width?: number;
+  height?: number;
 }
 
-export function MascotWithContext({
-  context,
-  className = '',
-  alt = 'Maskot Terra',
-  animate = true,
-}: MascotWithContextProps) {
-  // Map context to expression
-  const expressionMap: Record<string, MascotExpression> = {
-    hero: 'hallo',
-    problem: 'cemas',
-    howItWorks: 'hallo',
-    aiEngine: 'mikir',
-    results: 'hore',
-    features: 'hore',
-    privacy: 'tidur',
-    faq: 'biasa',
-    cta: 'hallo',
-  };
-  
-  const expression = expressionMap[context] || 'biasa';
+export function MascotWithContext({ context, className, width, height }: MascotWithContextProps) {
+  const expression = MASCOT_CONTEXT_MAP[context] || MASCOT_CONTEXT_MAP.default;
   
   return (
-    <Mascot
+    <Mascot 
       expression={expression}
+      alt={`Terra - ${context}`}
       className={className}
-      alt={alt}
-      animate={animate}
+      width={width}
+      height={height}
     />
   );
 }

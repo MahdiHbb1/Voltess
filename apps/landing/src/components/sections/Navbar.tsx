@@ -1,37 +1,42 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { LOGO_PATHS } from '@voltess/assets';
+import { useTranslation } from '@/i18n';
 import { Button } from '../ui';
 
 export function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
+  const { t, locale, setLocale } = useTranslation();
+  const [isOpen, setIsOpen] = React.useState(false);
   
   const navItems = [
-    { label: 'Masalah', href: '#masalah' },
-    { label: 'Cara Kerja', href: '#cara-kerja' },
-    { label: 'Kios Virtual', href: '#kios-virtual' },
-    { label: 'Fitur', href: '#fitur' },
-    { label: 'Untuk Siapa', href: '#untuk-siapa' },
-    { label: 'Harga', href: '#harga' },
-    { label: 'FAQ', href: '#faq' },
+    { label: t.nav.problem, href: '#problem' },
+    { label: t.nav.howItWorks, href: '#how-it-works' },
+    { label: t.nav.product, href: '#product' },
+    { label: t.nav.pricing, href: '#pricing' },
+    { label: t.nav.faq, href: '#faq' },
   ];
   
+  const toggleLocale = () => {
+    setLocale(locale === 'en' ? 'id' : 'en');
+    setIsOpen(false);
+  };
+  
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-navy-100">
+      <div className="container-width">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <a href="#" className="flex items-center gap-3">
             <img
               src={LOGO_PATHS.logo}
-              alt="Logo Voltess"
-              className="h-14 w-14"
+              alt="Voltess"
+              className="h-10 w-10"
             />
             <img
               src={LOGO_PATHS.wordmark}
               alt="Voltess"
-              className="h-8"
+              className="h-7"
             />
           </a>
           
@@ -41,28 +46,32 @@ export function Navbar() {
               <a
                 key={item.href}
                 href={item.href}
-                className="text-sm font-medium text-gray-700 hover:text-brand-blue transition-colors"
+                className="text-sm font-medium text-navy-900 hover:text-navy-700 transition-colors"
               >
                 {item.label}
               </a>
             ))}
           </div>
           
-          {/* CTA Button */}
-          <div className="hidden lg:block">
-            <Button size="sm" onClick={() => window.location.href = '#waitlist'}>
-              Coba Gratis
-            </Button>
+          {/* Desktop Actions */}
+          <div className="hidden lg:flex items-center gap-4">
+            <button
+              onClick={toggleLocale}
+              className="text-sm font-medium text-navy-700 hover:text-navy-900 transition-colors"
+              aria-label={t.nav.langLabel}
+            >
+              {locale === 'en' ? 'ID' : 'EN'}
+            </button>
           </div>
           
           {/* Mobile Menu Button */}
           <button
-            className="lg:hidden p-2 rounded-lg hover:bg-gray-100"
+            className="lg:hidden p-2"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
           >
             <svg
-              className="w-6 h-6 text-brand-dark"
+              className="w-6 h-6 text-navy-900"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -89,27 +98,24 @@ export function Navbar() {
       
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="lg:hidden border-t border-gray-100 bg-white">
-          <div className="px-4 py-4 space-y-3">
+        <div className="lg:hidden border-t border-navy-100 bg-white">
+          <div className="container-width py-4 space-y-3">
             {navItems.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
-                className="block py-2 text-base font-medium text-gray-700 hover:text-brand-blue"
+                className="block py-2 text-base font-medium text-navy-900 hover:text-navy-700"
                 onClick={() => setIsOpen(false)}
               >
                 {item.label}
               </a>
             ))}
-            <Button
-              className="w-full"
-              onClick={() => {
-                setIsOpen(false);
-                window.location.href = '#waitlist';
-              }}
+            <button
+              onClick={toggleLocale}
+              className="block py-2 text-base font-medium text-navy-700 hover:text-navy-900"
             >
-              Coba Gratis
-            </Button>
+              {locale === 'en' ? 'Bahasa Indonesia' : 'English'}
+            </button>
           </div>
         </div>
       )}
