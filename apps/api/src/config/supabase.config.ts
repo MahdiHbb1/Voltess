@@ -1,3 +1,9 @@
+import { config } from 'dotenv';
+import { resolve } from 'path';
+
+// Load .env first
+config({ path: resolve(__dirname, '../../.env') });
+
 /** Supabase configuration */
 export const supabaseConfig = {
   url: process.env.SUPABASE_URL || '',

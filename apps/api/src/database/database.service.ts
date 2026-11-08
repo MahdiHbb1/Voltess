@@ -1,5 +1,10 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { supabaseConfig } from '../config/supabase.config';
+import { config } from 'dotenv';
+import { resolve } from 'path';
+
+// Ensure .env is loaded before reading config
+config({ path: resolve(__dirname, '../../.env') });
 
 /** Supabase database client */
 export class DatabaseService {

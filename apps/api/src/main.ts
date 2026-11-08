@@ -1,13 +1,25 @@
 import 'reflect-metadata';
+import { config } from 'dotenv';
+import { resolve } from 'path';
+import express from 'express';
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
 
+// Load .env file from apps/api directory
+config({ path: resolve(__dirname, '../.env') });
+
+// Debug: log env vars
+console.log('ENV loaded:', {
+  SUPABASE_URL: process.env.SUPABASE_URL ? 'SET' : 'MISSING',
+  SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY ? 'SET' : 'MISSING',
+  STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY ? 'SET' : 'MISSING',
+});
+
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule, {
-    bodyParser: true,
-    rawBody: false,
+    bodyParser: false, // Disable default body parser for raw body access
   });
 
   app.use(helmet({
@@ -20,6 +32,12 @@ async function bootstrap(): Promise<void> {
       },
     },
   }));
+
+  // Raw body for webhook verification
+  app.use('/webhook/stripe', express.raw({ type: 'application/json' }));
+  
+  // JSON parser for regular routes
+  app.use(express.json());
 
   app.enableCors();
   app.useGlobalPipes(new ValidationPipe({

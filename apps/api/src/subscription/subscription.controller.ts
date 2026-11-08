@@ -18,9 +18,13 @@ export class SubscriptionController {
   async cancel(@Req() req: any) {
     const userId = req.user?.id;
     if (!userId) throw new Error('Unauthorized');
-    // ponytail: fetch subscription from DB, use stripeSubscriptionId
-    const stripeSubId = 'sub_placeholder'; 
-    await this.subscriptionService.cancelSubscription(stripeSubId);
+    
+    const sub = await this.subscriptionService.getSubscription(userId);
+    if (!sub?.stripeSubscriptionId) {
+      throw new Error('No active subscription');
+    }
+    
+    await this.subscriptionService.cancelSubscription(sub.stripeSubscriptionId);
     return { success: true };
   }
 
@@ -28,7 +32,16 @@ export class SubscriptionController {
   async status(@Req() req: any) {
     const userId = req.user?.id;
     if (!userId) throw new Error('Unauthorized');
-    // ponytail: query DB for user subscription
-    return { tier: SubscriptionTier.Free, status: 'active' };
+    
+    const sub = await this.subscriptionService.getSubscription(userId);
+    if (!sub) {
+      return { tier: SubscriptionTier.Free, status: 'active' };
+    }
+    
+    return {
+      tier: sub.tier,
+      status: sub.status,
+      currentPeriodEnd: sub.currentPeriodEnd,
+    };
   }
 }
