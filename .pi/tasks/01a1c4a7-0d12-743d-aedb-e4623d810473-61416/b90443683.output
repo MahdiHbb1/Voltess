@@ -1,0 +1,132 @@
+
+> voltess@0.0.0 test /home/adm_ub24/projects/ud-impact/Voltess
+> pnpm build:packages && vitest run
+
+
+> voltess@0.0.0 build:packages /home/adm_ub24/projects/ud-impact/Voltess
+> pnpm --filter @voltess/contracts build && pnpm --filter @voltess/energy-calc build
+
+
+> @voltess/contracts@0.0.0 build /home/adm_ub24/projects/ud-impact/Voltess/packages/contracts
+> tsc -p tsconfig.build.json
+
+
+> @voltess/energy-calc@0.0.0 build /home/adm_ub24/projects/ud-impact/Voltess/packages/energy-calc
+> tsc -p tsconfig.build.json
+
+
+ RUN  v4.1.12 /home/adm_ub24/projects/ud-impact/Voltess
+
+ ❯ tests/e2e/workflow.test.ts (0 test)
+ ❯ apps/api/src/ai/adapters/live/ocr-quality-gate.test.ts (10 tests | 1 failed) 34ms
+       × provides pipeline-specific fallback messages 18ms
+ ❯ apps/api/src/ai/ai-config.test.ts (11 tests | 1 failed) 33ms
+     × allows live in production with valid API keys 8ms
+ ❯ tests/integration/capture.test.ts (0 test)
+ ❯ apps/api/src/entitlement/entitlement.service.test.ts (10 tests | 10 failed) 119ms
+       × creates free entitlement for new business 39ms
+       × returns existing entitlement 11ms
+       × transitions free to trial 4ms
+       × is idempotent - does not restart trial 14ms
+       × rejects trial start from plus 4ms
+       × transitions expired trial to locked 5ms
+       × does not transition unexpired trial 6ms
+       × transitions trial to plus 4ms
+       × transitions locked to plus 18ms
+       × records status changes 4ms
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/e2e/workflow.test.ts [ tests/e2e/workflow.test.ts ]
+Error: Cannot find package '@jest/globals' imported from /home/adm_ub24/projects/ud-impact/Voltess/tests/e2e/workflow.test.ts
+ ❯ tests/e2e/workflow.test.ts:8:1
+      6|  */
+      7|
+      8| import { describe, it, expect, beforeAll, afterAll } from '@jest/globa…
+       | ^
+      9| import request from 'supertest';
+     10| import type {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/14]⎯
+
+ FAIL  tests/integration/capture.test.ts [ tests/integration/capture.test.ts ]
+Error: Cannot find module '../src/app.module' imported from /home/adm_ub24/projects/ud-impact/Voltess/tests/integration/capture.test.ts
+ ❯ tests/integration/capture.test.ts:4:1
+      2| import type { INestApplication } from '@nestjs/common';
+      3| import { Test } from '@nestjs/testing';
+      4| import { AppModule } from '../src/app.module';
+       | ^
+      5| import type {
+      6|   Capture,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/14]⎯
+
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 12 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  apps/api/src/ai/ai-config.test.ts > resolveAiConfig > allows live in production with valid API keys
+Error: AI_MODE=live membutuhkan API keys. Keys yang hilang: GROQ_API_KEY.
+Dapatkan keys dari:
+  - Gemini: https://aistudio.google.com/app/apikey
+  - AssemblyAI: https://www.assemblyai.com/dashboard
+  - Groq: https://console.groq.com/keys
+Tambahkan ke .env atau environment variables.
+ ❯ resolveAiConfig apps/api/src/ai/ai-config.ts:85:13
+     83|
+     84|     if (missingKeys.length > 0) {
+     85|       throw new Error(
+       |             ^
+     86|         `AI_MODE=${mode} membutuhkan API keys. Keys yang hilang: ${mis…
+     87|         `Dapatkan keys dari:\n` +
+ ❯ apps/api/src/ai/ai-config.test.ts:30:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/14]⎯
+
+ FAIL  apps/api/src/entitlement/entitlement.service.test.ts > EntitlementService > getOrCreateEntitlement > creates free entitlement for new business
+ FAIL  apps/api/src/entitlement/entitlement.service.test.ts > EntitlementService > getOrCreateEntitlement > returns existing entitlement
+ FAIL  apps/api/src/entitlement/entitlement.service.test.ts > EntitlementService > startTrial > transitions free to trial
+ FAIL  apps/api/src/entitlement/entitlement.service.test.ts > EntitlementService > startTrial > is idempotent - does not restart trial
+ FAIL  apps/api/src/entitlement/entitlement.service.test.ts > EntitlementService > startTrial > rejects trial start from plus
+ FAIL  apps/api/src/entitlement/entitlement.service.test.ts > EntitlementService > checkAndTransitionExpiredTrial > transitions expired trial to locked
+ FAIL  apps/api/src/entitlement/entitlement.service.test.ts > EntitlementService > checkAndTransitionExpiredTrial > does not transition unexpired trial
+ FAIL  apps/api/src/entitlement/entitlement.service.test.ts > EntitlementService > upgradeToPlusManual > transitions trial to plus
+ FAIL  apps/api/src/entitlement/entitlement.service.test.ts > EntitlementService > upgradeToPlusManual > transitions locked to plus
+ FAIL  apps/api/src/entitlement/entitlement.service.test.ts > EntitlementService > getAuditLog > records status changes
+Error: Nest can't resolve dependencies of the EntitlementService (?). Please make sure that the argument TrialService at index [0] is available in the RootTestModule module.
+
+Potential solutions:
+- Is RootTestModule a valid NestJS module?
+- If TrialService is a provider, is it part of the current RootTestModule?
+- If TrialService is exported from a separate @Module, is that module imported within RootTestModule?
+  @Module({
+    imports: [ /* the Module containing TrialService */ ]
+  })
+
+For more common dependency resolution issues, see: https://docs.nestjs.com/faq/common-errors
+ ❯ TestingInjector.lookupComponentInParentModules node_modules/.pnpm/@nestjs+core@12.3.3_@nestjs+common@12.3.3_class-transformer@0.5.1_class-validator@0.15._41fa433d8949205a734da8820f7c7c53/node_modules/@nestjs/core/injector/injector.js:411:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/14]⎯
+
+ FAIL  apps/api/src/ai/adapters/live/ocr-quality-gate.test.ts > OCR Quality Gate > checkQualityGate > provides pipeline-specific fallback messages
+AssertionError: expected 'Label tidak terbaca. Pilih alat dari …' to contain 'pilih alat'
+
+Expected: "pilih alat"
+Received: "Label tidak terbaca. Pilih alat dari daftar atau ketik manual."
+
+ ❯ apps/api/src/ai/adapters/live/ocr-quality-gate.test.ts:113:37
+    111|
+    112|       const decisionLabel = checkQualityGate(result, 'ocr-label', 2);
+    113|       expect(decisionLabel.message).toContain('pilih alat');
+       |                                     ^
+    114|     });
+    115|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/14]⎯
+
+
+ Test Files  5 failed | 25 passed (30)
+      Tests  12 failed | 205 passed (217)
+   Start at  16:03:21
+   Duration  3.58s (transform 3.53s, setup 0ms, import 17.35s, tests 5.01s, environment 6ms)
+
+ ELIFECYCLE  Test failed. See above for more details.

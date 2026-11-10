@@ -6,13 +6,15 @@ import { ENGINE_VERSION } from '@voltess/energy-calc';
 export class AppController {
   @Get('health')
   health(): {
-    status: 'ok';
-    service: 'voltess-api';
+    mode: 'live';
+    status: 'healthy';
+    service: string;
     contractVersion: string;
     engineVersion: string;
   } {
     return {
-      status: 'ok',
+      mode: 'live',
+      status: 'healthy',
       service: 'voltess-api',
       contractVersion: CONTRACT_VERSION,
       engineVersion: ENGINE_VERSION,

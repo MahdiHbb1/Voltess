@@ -19,6 +19,7 @@ import { QueueModule } from './queue/queue.module';
 import { DatabaseModule } from './database/database.module';
 import { NotificationModule } from './notifications/notification.module';
 import { SubscriptionModule } from './subscription/subscription.module';
+import { MonitoringModule } from './monitoring/monitoring.module';
 import { RequestIdMiddleware } from './ai/request-id.middleware';
 import { IdempotencyMiddleware } from './capture/idempotency.middleware';
 import { AppController } from './app.controller';
@@ -40,6 +41,7 @@ import { AppController } from './app.controller';
     QueueModule,
     NotificationModule,
     SubscriptionModule,
+    MonitoringModule,
   ],
   controllers: [AppController],
   providers: [
