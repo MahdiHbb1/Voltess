@@ -66,7 +66,7 @@ Stack ini **sudah dikunci untuk S1**. Keputusan O1/O4/O17 ada di ADR-001/003/004
 |---|---|---|---|
 | Dhifansa | [@Dhifansa](https://github.com/Dhifansa) | Frontend Engineer | Aplikasi FE, Kios Virtual, gamifikasi, design system |
 | Mahdi | [@MahdiHbb1](https://github.com/MahdiHbb1) | Backend + AI Engineer | API, data, kontrak, AI Gateway mock, `energy-calc`, infra |
-| Muchsin |  | Technical Support | Quality Control |
+| Muchsin | [@mmuchsin](https://github.com/mmuchsin) | Technical Support | Quality Control |
 | Yusri | [@yuzhuruuu](https://github.com/yuzhuruuu) | QA / E2E Engineer | Test strategy, contract/E2E test, dataset evaluation, release gate |
 
 Detail ownership ada di [`docs/TEAM.md`](docs/TEAM.md).
