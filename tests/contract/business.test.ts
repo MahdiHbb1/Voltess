@@ -101,6 +101,7 @@ describe('C2: Business profile contract validation', () => {
         'electricity_rate',
         'billing_type',
         'unit_label',
+        'appliances',
         'created_at',
         'updated_at',
       ],
@@ -112,6 +113,7 @@ describe('C2: Business profile contract validation', () => {
         electricity_rate: { type: 'number', minimum: 0 },
         billing_type: { type: 'string', enum: ['prepaid', 'postpaid'] },
         unit_label: { type: 'string', minLength: 1 },
+        appliances: { type: 'array' },
         address: { type: 'string' },
         notes: { type: 'string' },
         created_at: { type: 'string', format: 'date-time' },
@@ -129,6 +131,7 @@ describe('C2: Business profile contract validation', () => {
         electricity_rate: 1444.7,
         billing_type: 'prepaid',
         unit_label: 'unit',
+        appliances: [],
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       };
@@ -147,6 +150,7 @@ describe('C2: Business profile contract validation', () => {
         unit_label: 'toko',
         address: 'Jl. Test',
         notes: 'Catatan',
+        appliances: [],
         created_at: '2027-01-01T10:00:00Z',
         updated_at: '2027-01-01T10:00:00Z',
       };

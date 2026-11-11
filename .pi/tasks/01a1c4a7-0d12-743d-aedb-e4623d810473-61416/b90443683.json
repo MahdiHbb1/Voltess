@@ -1,0 +1,29 @@
+{
+  "id": "b90443683",
+  "name": "Run project tests",
+  "command": "cd /home/adm_ub24/projects/ud-impact/Voltess && pnpm test 2>&1",
+  "status": "failed",
+  "outputPath": ".pi/tasks/01a1c4a7-0d12-743d-aedb-e4623d810473-61416/b90443683.output",
+  "cwd": "/home/adm_ub24/projects/ud-impact/Voltess",
+  "startTime": 1794301396333,
+  "endTime": 1794301404999,
+  "exitCode": 1,
+  "signal": null,
+  "pid": 75982,
+  "bytesWritten": 6703,
+  "isAgent": false,
+  "surviveReload": false,
+  "error": "Exited with code 1",
+  "notified": true,
+  "notifyOnCompletion": true,
+  "triggerOnCompletion": true,
+  "timeoutSeconds": 180,
+  "shellPolicy": {
+    "policy": "inherit",
+    "executable": "/bin/bash",
+    "argvPrefix": [
+      "-c"
+    ],
+    "dialect": "bash"
+  }
+}

@@ -76,7 +76,7 @@ export class EntitlementService {
 
     // Check trial state
     const trialState = this.trialService.getState(businessId);
-    if (trialState.locked) {
+    if (trialState.locked || new Date(ent.trial_ends_at).getTime() <= Date.now()) {
       ent.status = 'locked';
       ent.features = this.getFeaturesForStatus('locked');
       ent.updated_at = new Date().toISOString();

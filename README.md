@@ -112,7 +112,47 @@ pnpm dev
 
 - Web: <http://localhost:3000>
 - API health: <http://localhost:3001/health>
-- Salin `.env.example` menjadi `.env` bila mulai memakai layanan eksternal. Scaffold saat ini belum membutuhkan kredensial.
+- Untuk mode demo live, salin `.env.example` ke `.env`, isi key provider secara lokal,
+  lalu salin ke `apps/api/.env`. Jangan commit file env.
+
+### Setup demo lokal dengan AI live
+
+Mode ini memakai provider AI sungguhan dan dapat mengonsumsi quota API.
+
+```bash
+cp .env.example .env
+cp .env apps/api/.env
+```
+
+Isi `apps/api/.env` dengan nilai lokal berikut:
+
+```env
+AI_MODE=live
+GEMINI_API_KEY=<Google AI Studio key>
+ASSEMBLYAI_API_KEY=<AssemblyAI key>
+GROQ_API_KEY=<Groq key>
+SESSION_SECRET=<random secret>
+```
+
+Supabase bersifat opsional untuk demo cepat. Jika digunakan, isi
+`SUPABASE_URL`, `SUPABASE_ANON_KEY`, dan `SUPABASE_SERVICE_ROLE_KEY`, lalu jalankan
+migration berikut dari Supabase SQL Editor:
+
+- [`migrations/001_initial_schema.sql`](migrations/001_initial_schema.sql)
+- [`migrations/002_ai_and_subscriptions.sql`](migrations/002_ai_and_subscriptions.sql)
+
+Redis dan Stripe belum diperlukan untuk demo; queue Redis adalah pekerjaan lanjutan.
+Tanpa Supabase, sebagian data memakai fallback in-memory dan hilang saat API restart.
+
+Jalankan API dan web di terminal terpisah:
+
+```bash
+pnpm --filter @voltess/api dev
+pnpm --filter @voltess/web dev
+```
+
+Gunakan foto meter atau label sungguhan saat menguji OCR live. Fixture berupa byte
+dummy tidak merepresentasikan gambar valid dan dapat menghasilkan error dari provider.
 
 Perintah wajib sebelum membuka PR:
 

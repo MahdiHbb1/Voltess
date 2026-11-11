@@ -32,6 +32,7 @@ describe('resolveAiConfig', () => {
       AI_MODE: 'live',
       GEMINI_API_KEY: 'test-gemini-key',
       ASSEMBLYAI_API_KEY: 'test-assemblyai-key',
+      GROQ_API_KEY: 'test-groq-key',
     });
 
     expect(config.mode).toBe('live');

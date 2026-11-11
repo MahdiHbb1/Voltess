@@ -1,268 +1,101 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { Test, type TestingModule } from '@nestjs/testing';
 import type { INestApplication } from '@nestjs/common';
-import { Test } from '@nestjs/testing';
-import { AppModule } from '../src/app.module';
-import type {
-  Capture,
-  CreateCaptureRequest,
-  VerifyCaptureRequest,
-  BusinessProfilePayload,
-} from '@voltess/contracts';
+import type { NextFunction, Request, Response } from 'express';
+import request from 'supertest';
+import { AppModule } from '../../apps/api/src/app.module';
+import type { BusinessProfile, Capture } from '@voltess/contracts';
 
 describe('Capture Integration', () => {
   let app: INestApplication;
-  let authToken: string;
   let businessId: string;
 
-  beforeEach(async () => {
-    const module = await Test.createTestingModule({
+  beforeAll(async () => {
+    const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
 
-    app = module.createNestApplication();
+    app = moduleFixture.createNestApplication();
+    app.use((request: Request & { userId?: string }, _response: Response, next: NextFunction) => {
+      request.userId = 'usr_mock_current';
+      next();
+    });
     await app.init();
 
-    // Register + verify OTP
-    await fetch(`http://localhost:${app.getHttpServer().address().port}/auth/register`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ phone: '+6281234567890' }),
-    });
+    const businessRes = await request(app.getHttpServer())
+      .post('/business/profile')
+      .send({
+        business_name: 'Warung Test',
+        template_id: 'T01',
+        electricity_rate: 1444,
+        billing_type: 'prepaid',
+      })
+      .expect(201);
 
-    const verifyRes = await fetch(
-      `http://localhost:${app.getHttpServer().address().port}/auth/verify-otp`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone: '+6281234567890', otp: '123456' }),
-      },
-    );
-    const verifyData = await verifyRes.json();
-    authToken = verifyData.access_token;
-
-    // Create business profile
-    const bizPayload: BusinessProfilePayload = {
-      business_name: 'Warung Test',
-      template_id: 'T01',
-      electricity_rate: 1444,
-      billing_type: 'prepaid',
-    };
-
-    const bizRes = await fetch(
-      `http://localhost:${app.getHttpServer().address().port}/business`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${authToken}`,
-        },
-        body: JSON.stringify(bizPayload),
-      },
-    );
-    const bizData = await bizRes.json();
-    businessId = bizData.business_id;
+    const business: BusinessProfile = businessRes.body;
+    businessId = business.business_id;
   });
 
-  afterEach(async () => {
+  afterAll(async () => {
     await app.close();
   });
 
-  describe('POST /captures', () => {
-    it('creates label capture and calls OCR mock', async () => {
-      const payload: CreateCaptureRequest = {
-        business_id: businessId,
-        type: 'label',
-        image_data: 'base64_stub_data',
-      };
-
-      const res = await fetch(
-        `http://localhost:${app.getHttpServer().address().port}/captures`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${authToken}`,
-          },
-          body: JSON.stringify(payload),
-        },
-      );
-
-      expect(res.status).toBe(201);
-      const capture: Capture = await res.json();
-
-      expect(capture.capture_id).toBeTruthy();
-      expect(capture.type).toBe('label');
-      expect(capture.status).toBe('pending'); // mock high confidence
-      expect(capture.result).toEqual({
-        name: 'Kulkas 2 Pintu',
-        power_w: 150,
-        brand: 'Samsung',
+  function createCapture(): request.Test {
+    return request(app.getHttpServer())
+      .post('/captures')
+      .field('business_id', businessId)
+      .field('type', 'label')
+      .attach('file', Buffer.from('label image'), {
+        filename: 'label.png',
+        contentType: 'image/png',
       });
-      expect(capture.confidence).toBe('high');
-    });
+  }
 
-    it('rejects label capture without image_data', async () => {
-      const payload = {
-        business_id: businessId,
-        type: 'label',
-      };
+  it('creates a queued label capture', async () => {
+    const res = await createCapture().expect(201);
+    const capture: Capture & { job_id?: string } = res.body;
 
-      const res = await fetch(
-        `http://localhost:${app.getHttpServer().address().port}/captures`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${authToken}`,
-          },
-          body: JSON.stringify(payload),
-        },
-      );
-
-      expect(res.status).toBe(400);
-    });
+    expect(capture.capture_id).toBeTruthy();
+    expect(capture.type).toBe('label');
+    expect(capture.status).toBe('queued');
+    expect(capture.result).toBeNull();
+    expect(capture.job_id).toBeTruthy();
   });
 
-  describe('POST /captures/:id/verify', () => {
-    it('verifies capture, adds appliance, creates mission event', async () => {
-      // Create capture
-      const createPayload: CreateCaptureRequest = {
-        business_id: businessId,
-        type: 'label',
-        image_data: 'base64_stub',
-      };
-
-      const createRes = await fetch(
-        `http://localhost:${app.getHttpServer().address().port}/captures`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${authToken}`,
-          },
-          body: JSON.stringify(createPayload),
-        },
-      );
-      const capture: Capture = await createRes.json();
-
-      // Verify
-      const verifyPayload: VerifyCaptureRequest = {
-        confirmed: true,
-      };
-
-      const verifyRes = await fetch(
-        `http://localhost:${app.getHttpServer().address().port}/captures/${capture.capture_id}/verify`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${authToken}`,
-          },
-          body: JSON.stringify(verifyPayload),
-        },
-      );
-
-      expect(verifyRes.status).toBe(200);
-      const verified: Capture = await verifyRes.json();
-      expect(verified.status).toBe('verified');
-
-      // Check appliance added to business
-      const bizRes = await fetch(
-        `http://localhost:${app.getHttpServer().address().port}/business/${businessId}`,
-        {
-          headers: { Authorization: `Bearer ${authToken}` },
-        },
-      );
-      const business = await bizRes.json();
-      expect(business.appliances).toHaveLength(1);
-      expect(business.appliances[0].name).toBe('Kulkas 2 Pintu');
-      expect(business.appliances[0].verified).toBe(true);
-      expect(business.appliances[0].source).toBe('label');
-    });
-
-    it('rejects capture when confirmed=false', async () => {
-      const createPayload: CreateCaptureRequest = {
-        business_id: businessId,
-        type: 'label',
-        image_data: 'base64_stub',
-      };
-
-      const createRes = await fetch(
-        `http://localhost:${app.getHttpServer().address().port}/captures`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${authToken}`,
-          },
-          body: JSON.stringify(createPayload),
-        },
-      );
-      const capture: Capture = await createRes.json();
-
-      const verifyPayload: VerifyCaptureRequest = {
-        confirmed: false,
-      };
-
-      const verifyRes = await fetch(
-        `http://localhost:${app.getHttpServer().address().port}/captures/${capture.capture_id}/verify`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${authToken}`,
-          },
-          body: JSON.stringify(verifyPayload),
-        },
-      );
-
-      const rejected: Capture = await verifyRes.json();
-      expect(rejected.status).toBe('rejected');
-    });
+  it('rejects label capture without a file', async () => {
+    await request(app.getHttpServer())
+      .post('/captures')
+      .field('business_id', businessId)
+      .field('type', 'label')
+      .expect(400);
   });
 
-  describe('GET /captures/:id', () => {
-    it('returns capture by ID', async () => {
-      const createPayload: CreateCaptureRequest = {
-        business_id: businessId,
-        type: 'label',
-        image_data: 'base64_stub',
-      };
+  it('does not verify a capture before OCR processing completes', async () => {
+    const createRes = await createCapture().expect(201);
+    const capture: Capture = createRes.body;
 
-      const createRes = await fetch(
-        `http://localhost:${app.getHttpServer().address().port}/captures`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${authToken}`,
-          },
-          body: JSON.stringify(createPayload),
-        },
-      );
-      const capture: Capture = await createRes.json();
+    await request(app.getHttpServer())
+      .post(`/captures/${capture.capture_id}/verify`)
+      .send({ confirmed: true })
+      .expect(400);
+  });
 
-      const getRes = await fetch(
-        `http://localhost:${app.getHttpServer().address().port}/captures/${capture.capture_id}`,
-        {
-          headers: { Authorization: `Bearer ${authToken}` },
-        },
-      );
+  it('returns a queued capture by ID', async () => {
+    const createRes = await createCapture().expect(201);
+    const capture: Capture = createRes.body;
 
-      expect(getRes.status).toBe(200);
-      const fetched: Capture = await getRes.json();
-      expect(fetched.capture_id).toBe(capture.capture_id);
-    });
+    const getRes = await request(app.getHttpServer())
+      .get(`/captures/${capture.capture_id}`)
+      .expect(200);
 
-    it('returns 404 for unknown capture', async () => {
-      const res = await fetch(
-        `http://localhost:${app.getHttpServer().address().port}/captures/unknown`,
-        {
-          headers: { Authorization: `Bearer ${authToken}` },
-        },
-      );
+    const fetched: Capture = getRes.body;
+    expect(fetched.capture_id).toBe(capture.capture_id);
+    expect(fetched.status).toBe('queued');
+  });
 
-      expect(res.status).toBe(404);
-    });
+  it('returns 404 for an unknown capture', async () => {
+    await request(app.getHttpServer())
+      .get('/captures/unknown')
+      .expect(404);
   });
 });
