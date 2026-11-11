@@ -1,13 +1,18 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import type { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { AppModule } from '../src/app.module';
+import { AppModule } from '../../apps/api/src/app.module';
 import type {
+  BusinessProfile,
   Capture,
   CreateCaptureRequest,
   VerifyCaptureRequest,
   BusinessProfilePayload,
 } from '@voltess/contracts';
+
+async function parseJson<T>(response: Response): Promise<T> {
+  return (await response.json()) as T;
+}
 
 describe('Capture Integration', () => {
   let app: INestApplication;
@@ -21,6 +26,7 @@ describe('Capture Integration', () => {
 
     app = module.createNestApplication();
     await app.init();
+    await app.listen(0);
 
     // Register + verify OTP
     await fetch(`http://localhost:${app.getHttpServer().address().port}/auth/register`, {
@@ -37,7 +43,7 @@ describe('Capture Integration', () => {
         body: JSON.stringify({ phone: '+6281234567890', otp: '123456' }),
       },
     );
-    const verifyData = await verifyRes.json();
+    const verifyData = await parseJson<{ access_token: string }>(verifyRes);
     authToken = verifyData.access_token;
 
     // Create business profile
@@ -59,7 +65,7 @@ describe('Capture Integration', () => {
         body: JSON.stringify(bizPayload),
       },
     );
-    const bizData = await bizRes.json();
+    const bizData = await parseJson<BusinessProfile>(bizRes);
     businessId = bizData.business_id;
   });
 
@@ -88,7 +94,7 @@ describe('Capture Integration', () => {
       );
 
       expect(res.status).toBe(201);
-      const capture: Capture = await res.json();
+      const capture = await parseJson<Capture>(res);
 
       expect(capture.capture_id).toBeTruthy();
       expect(capture.type).toBe('label');
@@ -143,7 +149,7 @@ describe('Capture Integration', () => {
           body: JSON.stringify(createPayload),
         },
       );
-      const capture: Capture = await createRes.json();
+      const capture = await parseJson<Capture>(createRes);
 
       // Verify
       const verifyPayload: VerifyCaptureRequest = {
@@ -163,7 +169,7 @@ describe('Capture Integration', () => {
       );
 
       expect(verifyRes.status).toBe(200);
-      const verified: Capture = await verifyRes.json();
+      const verified = await parseJson<Capture>(verifyRes);
       expect(verified.status).toBe('verified');
 
       // Check appliance added to business
@@ -173,11 +179,16 @@ describe('Capture Integration', () => {
           headers: { Authorization: `Bearer ${authToken}` },
         },
       );
-      const business = await bizRes.json();
+      const business = await parseJson<BusinessProfile>(bizRes);
       expect(business.appliances).toHaveLength(1);
-      expect(business.appliances[0].name).toBe('Kulkas 2 Pintu');
-      expect(business.appliances[0].verified).toBe(true);
-      expect(business.appliances[0].source).toBe('label');
+      const appliance = business.appliances[0];
+      expect(appliance).toBeDefined();
+      if (!appliance) {
+        throw new Error('Expected the verified capture to add an appliance');
+      }
+      expect(appliance.name).toBe('Kulkas 2 Pintu');
+      expect(appliance.verified).toBe(true);
+      expect(appliance.source).toBe('label');
     });
 
     it('rejects capture when confirmed=false', async () => {
@@ -198,7 +209,7 @@ describe('Capture Integration', () => {
           body: JSON.stringify(createPayload),
         },
       );
-      const capture: Capture = await createRes.json();
+      const capture = await parseJson<Capture>(createRes);
 
       const verifyPayload: VerifyCaptureRequest = {
         confirmed: false,
@@ -216,7 +227,7 @@ describe('Capture Integration', () => {
         },
       );
 
-      const rejected: Capture = await verifyRes.json();
+      const rejected = await parseJson<Capture>(verifyRes);
       expect(rejected.status).toBe('rejected');
     });
   });
@@ -240,7 +251,7 @@ describe('Capture Integration', () => {
           body: JSON.stringify(createPayload),
         },
       );
-      const capture: Capture = await createRes.json();
+      const capture = await parseJson<Capture>(createRes);
 
       const getRes = await fetch(
         `http://localhost:${app.getHttpServer().address().port}/captures/${capture.capture_id}`,
@@ -250,7 +261,7 @@ describe('Capture Integration', () => {
       );
 
       expect(getRes.status).toBe(200);
-      const fetched: Capture = await getRes.json();
+      const fetched = await parseJson<Capture>(getRes);
       expect(fetched.capture_id).toBe(capture.capture_id);
     });
 

@@ -33,6 +33,9 @@ secrets/
 npm-debug.log*
 pnpm-debug.log*
 
+# Local planning artifacts
+PR-PLAN-*.md
+
 # OS / editor
 .DS_Store
 Thumbs.db

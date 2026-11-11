@@ -123,7 +123,11 @@ export function pickRandomScenario(): UserScenario {
       return scenario;
     }
   }
-  return USER_PERSONAS[USER_PERSONAS.length - 1];
+  const fallback = USER_PERSONAS[USER_PERSONAS.length - 1];
+  if (!fallback) {
+    throw new Error('No user personas configured');
+  }
+  return fallback;
 }
 
 /**
@@ -207,7 +211,13 @@ function shuffleArray<T>(array: T[]): T[] {
   const shuffled = [...array];
   for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    const current = shuffled[i];
+    const replacement = shuffled[j];
+    if (current === undefined || replacement === undefined) {
+      throw new Error('Cannot shuffle undefined array elements');
+    }
+    shuffled[i] = replacement;
+    shuffled[j] = current;
   }
   return shuffled;
 }

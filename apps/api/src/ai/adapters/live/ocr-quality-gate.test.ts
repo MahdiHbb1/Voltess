@@ -110,7 +110,7 @@ describe('OCR Quality Gate', () => {
       expect(decisionMeter.message).toContain('angka kWh manual');
 
       const decisionLabel = checkQualityGate(result, 'ocr-label', 2);
-      expect(decisionLabel.message).toContain('pilih alat');
+      expect(decisionLabel.message).toContain('Pilih alat');
     });
   });
 

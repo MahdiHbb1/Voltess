@@ -5,10 +5,10 @@
  * to receiving personalized energy recommendations.
  */
 
-import { describe, it, expect, beforeAll, afterAll } from '@jest/globals';
+import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import request from 'supertest';
 import type { 
-  CaptureResponse, 
+  Capture,
   OcrMeterResponse, 
   EstimateResult, 
   RecommendResponse 
@@ -31,7 +31,7 @@ describe('E2E: Complete Energy Analysis Workflow', () => {
       })
       .expect(201);
 
-    const capture: CaptureResponse = response.body;
+    const capture: Capture = response.body;
     expect(capture.capture_id).toBeDefined();
     expect(capture.status).toBe('pending');
     
@@ -126,7 +126,12 @@ describe('E2E: Complete Energy Analysis Workflow', () => {
     }
     
     console.log('✓ Recommendations:', recommendations.recommendations.length, 'items');
-    console.log('  Top:', recommendations.recommendations[0].title);
+    const topRecommendation = recommendations.recommendations[0];
+    expect(topRecommendation).toBeDefined();
+    if (!topRecommendation) {
+      throw new Error('Expected at least one recommendation');
+    }
+    console.log('  Top:', topRecommendation.title);
   });
 
   it('Step 5: Complete workflow - capture to recommendations in one flow', async () => {

@@ -6,6 +6,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { EntitlementService } from './entitlement.service';
+import { TrialService } from './trial.service';
 import type { EntitlementStatus } from '@voltess/contracts';
 
 describe('EntitlementService', () => {
@@ -13,7 +14,7 @@ describe('EntitlementService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [EntitlementService],
+      providers: [EntitlementService, TrialService],
     }).compile();
 
     service = module.get<EntitlementService>(EntitlementService);

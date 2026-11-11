@@ -24,6 +24,14 @@ interface TestMetrics {
   errors: Array<{ action: string; error: string }>;
 }
 
+interface LoginResponse {
+  access_token?: string;
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null;
+}
+
 async function makeRequest(
   endpoint: string,
   payload: Record<string, unknown>,
@@ -90,9 +98,8 @@ function isFallbackResponse(data: unknown): boolean {
 
 function isRateLimited(status: number, data: unknown): boolean {
   if (status === 429) return true;
-  if (!data || typeof data !== 'object') return false;
-  const obj = data as Record<string, unknown>;
-  return obj.error?.code === 'RATE_LIMITED';
+  if (!isRecord(data) || !isRecord(data.error)) return false;
+  return data.error.code === 'RATE_LIMITED';
 }
 
 describe('Load Test: Simulated UMKM Users', () => {
@@ -116,7 +123,7 @@ describe('Load Test: Simulated UMKM Users', () => {
         body: JSON.stringify({ phone: '+6281234567890' }),
       });
       if (loginRes.ok) {
-        const data = await loginRes.json();
+        const data = (await loginRes.json()) as LoginResponse;
         authToken = data.access_token;
       }
     } catch {
@@ -135,6 +142,9 @@ describe('Load Test: Simulated UMKM Users', () => {
     const p95Latency = metrics.latencies.length > 0
       ? metrics.latencies.sort((a, b) => a - b)[Math.floor(metrics.latencies.length * 0.95)]
       : 0;
+    if (p95Latency === undefined) {
+      return;
+    }
 
     console.log('\n=== LOAD TEST SUMMARY ===');
     console.log(`Total Requests: ${total}`);
@@ -263,6 +273,9 @@ describe('Load Test: Simulated UMKM Users', () => {
     if (metrics.latencies.length > 0) {
       const p95Latency = metrics.latencies
         .sort((a, b) => a - b)[Math.floor(metrics.latencies.length * 0.95)];
+      if (p95Latency === undefined) {
+        return;
+      }
       
       console.log(`P95 Latency: ${p95Latency}ms`);
       // Requirement: P95 latency < 2s
