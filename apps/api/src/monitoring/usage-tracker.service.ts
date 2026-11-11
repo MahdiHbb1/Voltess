@@ -1,4 +1,4 @@
-import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import { Inject, Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
@@ -43,7 +43,7 @@ export class UsageTrackerService implements OnModuleInit {
     'groq-llm': 500,
   };
 
-  constructor(private readonly configService: ConfigService) {}
+  constructor(@Inject(ConfigService) private readonly configService: ConfigService) {}
 
   async onModuleInit() {
     const supabaseUrl = this.configService.get<string>('SUPABASE_URL');
